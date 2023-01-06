@@ -1,3 +1,5 @@
+#https://stackoverflow.com/questions/35344649/reading-input-sound-signal-using-python
+
 import sounddevice as sd
 import numpy as np
 import scipy.io.wavfile as wav
@@ -11,3 +13,4 @@ print ("Audio recording complete , Play Audio")
 sd.play(myrecording, fs)
 sd.wait()
 print ("Play Audio Complete")
+
