@@ -1,1 +1,1 @@
-print('kuy')
+print('kuy')โง่
