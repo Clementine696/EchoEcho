@@ -1,9 +1,10 @@
+# Source from https://www.youtube.com/watch?v=n8ebYr25LO0
+
 import sounddevice as sd
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, ISimpleAudioVolume
 
-# Source from https://www.youtube.com/watch?v=n8ebYr25LO0
 devices = AudioUtilities.GetSpeakers()
 interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
 volume = cast(interface, POINTER(IAudioEndpointVolume))
@@ -17,7 +18,7 @@ volume.SetMute(0, None)
 # volume.SetMute(1, None)
 
 current = volume.GetMasterVolumeLevel()
-print("Current Value : ", current )
+print("Current Value MasterVolumeLevel: ", current )
 # หากจะปรับ volume ที่ละ 1 ให้ปรับตวามต่างไปที่ 0.151 หรือ -0.15066957473754883
 
 # ปรับ volume ลง

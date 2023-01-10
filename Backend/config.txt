@@ -1,2 +1,5 @@
 pip install sounddevice
 pip install pyaudio
+
+pip install comtypes
+pip install pycaw
