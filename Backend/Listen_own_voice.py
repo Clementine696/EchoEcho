@@ -1,5 +1,3 @@
-# https://stackoverflow.com/questions/510357/how-to-read-a-single-character-from-the-user
-
 import sounddevice as sd
 import numpy as np
 import time
