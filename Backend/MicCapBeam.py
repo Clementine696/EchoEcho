@@ -44,10 +44,9 @@ for session in sessions:
     # if session.Process and session.Process.name() == "brave.exe":
     #     volume.SetMasterVolume(0.5 ,None)
     
-
-
 # devices = sd.query_devices()
 # # I_device = sd.query_devices(kind = "input")
 # # O_device = sd.query_devices(kind = "output")
 # # print(I_device)
 # # print(O_device)
+
