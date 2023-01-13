@@ -1,3 +1,5 @@
+#https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#plot-microphone-signal-s-in-real-time
+
 import argparse
 import queue
 import sys

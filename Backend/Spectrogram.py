@@ -1,3 +1,5 @@
+#https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
+
 import argparse
 import math
 import shutil
