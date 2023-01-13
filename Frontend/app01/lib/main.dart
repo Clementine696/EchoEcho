@@ -10,9 +10,7 @@ import 'package:flutter/material.dart';
 import 'controllers/menu_controller.dart';
 import 'themes/Color_app.dart';
 
-
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
   const winsize = Size(1280, 720);
@@ -27,7 +25,7 @@ void main() async{
     await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
     await windowManager.setResizable(false);
   });
-  
+
   // doWhenWindowReady(() {
   //   final win = appWindow;
   //   const initialSize = Size(1280, 720); // ขนาดที่เล็กที่สุดที่สามารถย่อได้
