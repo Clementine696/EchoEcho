@@ -8,7 +8,7 @@ p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paInt16,
                 channels=1,
                 rate=44100,
-                output=True,
+                input=True,
                 frames_per_buffer=1024)
 
 # open the audio file to be played
