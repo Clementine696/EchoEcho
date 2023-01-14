@@ -12,7 +12,7 @@ stream = p.open(format=pyaudio.paInt16,
                 frames_per_buffer=1024)
 
 # open the audio file to be played
-wf = wave.open("sound/StarWars60.wav", "rb")
+wf = wave.open("Backend/sound/StarWars60.wav", "rb")
 
 # start playing the audio
 
