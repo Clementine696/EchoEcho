@@ -22,6 +22,7 @@ class RightSide extends StatelessWidget {
           WindowTitleBarBox(
             child: Row(
               children: [Expanded(child: MoveWindow()), const WindowButtons()],
+              
             ),
           )
         ]),
