@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class RightPage extends StatelessWidget {
-  const RightPage({super.key});
+  RightPage({super.key});
+  // final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
