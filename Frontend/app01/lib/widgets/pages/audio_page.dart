@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-class RightPage extends StatelessWidget {
-  RightPage({super.key});
-  // final _appRouter = AppRouter();
+class AudioPage extends StatelessWidget {
+  const AudioPage({super.key});
 
   @override
   Widget build(BuildContext context) {
