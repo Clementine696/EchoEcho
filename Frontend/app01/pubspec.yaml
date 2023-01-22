@@ -43,7 +43,7 @@ dependencies:
   auto_route: ^5.0.4
   build_runner: ^2.3.3
   salomon_bottom_bar: ^3.3.1 #bottombar ถ้าไม่ใช้ลบออด
-
+  chaquopy: ^0.0.19
 dev_dependencies:
   flutter_test:
     sdk: flutter

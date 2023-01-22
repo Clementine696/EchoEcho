@@ -141,6 +141,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "8.4.3"
+  chaquopy:
+    dependency: "direct main"
+    description:
+      name: chaquopy
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.19"
   characters:
     dependency: transitive
     description:

@@ -51,6 +51,10 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        python {
+        buildPython "C:/Users/user/AppData/Local/Programs/Python/Python310/python.exe"
+    }
     }
 
     buildTypes {
