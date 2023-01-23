@@ -18,10 +18,24 @@ class MicrophonePage extends StatelessWidget {
     ElevatedButton(
       onPressed: () {
         debugPrint('Test Mic');
+        
+        //TODO:
 
-        Python.start();
-        Python.run("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
+        Map<String,String> myMap = Map.from( snapshot.data )
 
+        String textOutputOrError = Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
+        // debugPrint(textOutputOrError);
+
+        // builder: (Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");, AsyncSnapshot<Map<String,String>> snapshot) {
+        //   switch( snapshot.connectionState){
+        //     case ConnectionState.none:
+        //       return Text("there is no connection");
+        // try {
+        //   Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
+        // }
+        // on Exception catch(e) {
+        //   debugPrint('error caught: $e');
+        // }
       },
       child: const Text('Test Microphone'),
     ),
