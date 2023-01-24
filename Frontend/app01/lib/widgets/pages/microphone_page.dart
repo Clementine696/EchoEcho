@@ -18,12 +18,20 @@ class MicrophonePage extends StatelessWidget {
     ElevatedButton(
       onPressed: () {
         debugPrint('Test Mic');
+
+        // final code = 'a=10/nprint(a)';
+        // Chaquopy.executeCode(code);
         
         //TODO:
 
-        Map<String,String> myMap = Map.from( snapshot.data )
+        // Future<bool> textOutputOrError(String Output, String Error) async {
+        //   var result = await Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
+        //   return result["Output"];
+        // }
 
-        String textOutputOrError = Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
+        // Map<String,String> myMap = Map.from( snapshot.data )
+
+        // String textOutputOrError = Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
         // debugPrint(textOutputOrError);
 
         // builder: (Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");, AsyncSnapshot<Map<String,String>> snapshot) {
