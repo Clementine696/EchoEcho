@@ -26,9 +26,9 @@ class MicrophonePage extends StatelessWidget {
         // String textOutputOrError = Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
 
         Future<bool> textOutputOrError(String Output, String Error) async {
-        var result = await Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
-        return result["Output"];
-}
+          var result = await Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
+          return result["Output"];
+        }
 
         // try {
         //   Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
