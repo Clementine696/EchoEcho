@@ -27,8 +27,8 @@ def callback(indata, outdata, frames, time, status):
     # print(np.shape(filtered_indata))
     outdata[:] = filtered_indata
     
-    plt.plot(filtered_indata)
-    plt.show()
+    # plt.plot(filtered_indata)
+    # plt.show()
 
 def main():
     with sd.Stream(samplerate=44100, blocksize=1024, dtype=np.float32,

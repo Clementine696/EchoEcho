@@ -26,7 +26,9 @@ while True:
     audio_data = reduced_noise.tobytes()
     # Write the audio data to the output microphone stream
     output_stream.write(audio_data)
-
+    # write the audio data into microphone stream
+    # output_stream.write(input_data)
+    
 input_stream.stop_stream()
 input_stream.close()
 output_stream.stop_stream()
