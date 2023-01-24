@@ -21,15 +21,15 @@ class MicrophonePage extends StatelessWidget {
         
         //TODO:
 
-        Map<String,String> myMap = Map.from( snapshot.data )
+        // Map<String,String> myMap = Map.from(snapshot.data)
 
-        String textOutputOrError = Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
-        // debugPrint(textOutputOrError);
+        // String textOutputOrError = Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
 
-        // builder: (Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");, AsyncSnapshot<Map<String,String>> snapshot) {
-        //   switch( snapshot.connectionState){
-        //     case ConnectionState.none:
-        //       return Text("there is no connection");
+        Future<bool> textOutputOrError(String Output, String Error) async {
+        var result = await Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
+        return result["Output"];
+}
+
         // try {
         //   Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
         // }
