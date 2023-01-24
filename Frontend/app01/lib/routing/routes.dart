@@ -73,12 +73,12 @@ import 'package:app01/main.dart';
 
 //SinglePostPagesRoute
 
-class RouteGenerator {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments;
+// class RouteGenerator {
+//   static Route<dynamic> generateRoute(RouteSettings settings) {
+//     final args = settings.arguments;
 
-    switch (settings.name) {
+//     switch (settings.name) {
 
-    }
-  }
-}
+//     }
+//   }
+// }
