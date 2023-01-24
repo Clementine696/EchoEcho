@@ -34,10 +34,37 @@ class MicrophonePage extends StatelessWidget {
         // String textOutputOrError = Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
         // debugPrint(textOutputOrError);
 
-        // builder: (Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");, AsyncSnapshot<Map<String,String>> snapshot) {
-        //   switch( snapshot.connectionState){
-        //     case ConnectionState.none:
-        //       return Text("there is no connection");
+        // String code = 'a=10\nprint(a)';
+
+        // Future<String> fileContains(String Output, String Error) async {
+        //   var result = await Chaquopy.executeCode(code);
+        //   return result["Output"];
+        // }
+
+        // Future myFutureAsVoid() {}
+
+
+        Future fetchUserOrder(String Output, String Error) {
+          String code = 'a=10\nprint(a)';
+          return Chaquopy.executeCode(code);
+        }
+          
+
+        var result = fetchUserOrder();
+        debugPrint('Fetching user order..');
+        
+
+        
+        // Future<bool> fileContains(String path, String needle) async {
+        //   var haystack = await File(path).readAsString();
+        //   return haystack.contains(needle);
+        // }
+
+        // String code = 'a=10/nprint(a)';
+        // Chaquopy.executeCode(code);
+
+        // Map map = new HashMap();
+        // map.put(Chaquopy.executeCode(code));
         // try {
         //   Chaquopy.executeCode("C:/Users/user/Desktop/EchoEcho/Backend/OnOff.py");
         // }
