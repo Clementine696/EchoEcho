@@ -1,3 +1,4 @@
+import 'package:app01/widgets/pages/dropandslider.dart';
 import 'package:app01/widgets/sidemenu_item.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
@@ -23,7 +24,9 @@ class _LeftSideState extends State<LeftSide> {
           child: Column(
             children: [
               WindowTitleBarBox(child: MoveWindow()),
-              const Expanded(child: SidemenuItem())
+              const Expanded(child: SidemenuItem()),
+              const Expanded(child: DropandSlider()),
+              //const Expanded(child: Sliderbar())
             ],
           )),
     );
