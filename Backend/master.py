@@ -15,7 +15,7 @@ def callback(indata, outdata, frames, time, status):
         
     # fft_indata = np.abs(fft(indata[:, 0]))
     # print(np.shape(outdata[:]))
-    # outdata[:] = indata
+    outdata[:] = indata
     
     fft_indata = np.abs(fft(indata[:, 0]))
     # Process the data
@@ -26,7 +26,7 @@ def callback(indata, outdata, frames, time, status):
     filtered_indata = np.real(np.fft.ifft(fft_indata))
     filtered_indata = filtered_indata.reshape(np.shape(indata)[0],1)
     # print(np.shape(filtered_indata))
-    outdata[:] = filtered_indata
+    # outdata[:] = filtered_indata
     
     # plt.plot(filtered_indata)
     # plt.show()
@@ -62,7 +62,6 @@ def main():
         #         Denoise = Denoise - 1
         #         time.sleep(0.1)
                 
-        
-        
+
 if __name__ == '__main__':
     main()
