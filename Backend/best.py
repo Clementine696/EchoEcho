@@ -1,5 +1,6 @@
 import pyaudio
 import keyboard
+import wave
 
 # Create a PyAudio object
 p = pyaudio.PyAudio()
@@ -30,6 +31,12 @@ print('running')
 while keyboard.is_pressed('x')==0:
     audio_data = input_stream.read(1024)
     output_stream.write(audio_data)
+    if(keyboard.is_pressed('s')):
+        wf = wave.open("Backend/sound/StarWars60.wav", "rb")
+        data = wf.readframes(1024)
+        output_stream.write(data)
+        if len(data) == 0:
+            break
 
 # Close the streams and terminate the PyAudio object when done
 print('stop and terminate program')

@@ -23,8 +23,8 @@ def callback(indata, outdata, frames, time, status):
         # cutoff_freq = 1000
         # fft_indata[cutoff_freq:] = 0
     # Inverse FFT to get back to time domain
-    filtered_indata = np.real(np.fft.ifft(fft_indata))
-    filtered_indata = filtered_indata.reshape(np.shape(indata)[0],1)
+    # filtered_indata = np.real(np.fft.ifft(fft_indata))
+    # filtered_indata = filtered_indata.reshape(np.shape(indata)[0],1)
     # print(np.shape(filtered_indata))
     # outdata[:] = filtered_indata
     
