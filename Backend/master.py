@@ -32,22 +32,27 @@ def callback(indata, outdata, frames, time, status):
     # plt.show()
 
 def main():
-    run = 1
+    run = 0
     stream = sd.Stream(samplerate=44100, blocksize=1024, dtype=np.float32,
                     channels=2, callback=callback)
-    stream.start()
-    while True:
+    print('')
+    print('Press X to exit program')
+    print('Press M to toggle microphone test')
+    print("Program is running")
+    while keyboard.is_pressed('x')==0:
         if keyboard.is_pressed('m'):
             # quit()
-            if(run==1):
-                run = run + 1
-                stream.stop()
-                time.sleep(0.1)
-            else:
-                run = run - 1
+            if(run==0):
+                run = 1
                 stream.start()
                 time.sleep(0.1)
-
+                print('start mic test')
+            else:
+                run = 0
+                stream.stop()
+                time.sleep(0.1)
+                print('stop mic test')
+    print("stop running")
         # if keyboard.is_pressed('n'):
         #     # quit()
         #     if(Denoise==1):
@@ -57,7 +62,7 @@ def main():
         #         Denoise = Denoise - 1
         #         time.sleep(0.1)
                 
-        print("running", run)
+        
         
 if __name__ == '__main__':
     main()
