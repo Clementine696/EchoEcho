@@ -56,6 +56,7 @@ class MicrophonePage extends StatelessWidget {
                 height: 400,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                        foregroundColor: Color.fromARGB(255, 3, 253, 240),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(25),
@@ -69,7 +70,9 @@ class MicrophonePage extends StatelessWidget {
                       TextSpan(
                           text: "Echo Cancallation\n\n",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 30)),
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30)),
                       TextSpan(
                           text:
                               "methods used in telephony to improve voice quality by preventing echo from being created or removing it after it is already present.",
