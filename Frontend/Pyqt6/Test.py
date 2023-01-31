@@ -15,7 +15,7 @@ class App(QWidget):
     # Open the input microphone stream
     p = pyaudio.PyAudio()
     input_stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
-    output_stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, output=True, frames_per_buffer=1024)
+    output_stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, output=True)
     # Read input microphone data
     input_data = input_stream.read(1024)
     # Perform noise reduction
@@ -24,7 +24,8 @@ class App(QWidget):
     audio_data = reduced_noise.tobytes()
     # Write the audio data to the output microphone stream
     output_stream.write(audio_data)
-    output_stream.stop_stream()
+    output_stream.start_stream()
+    # output_stream.stop_stream()
     # input_stream.stop_stream()
     # input_stream.close()
     # output_stream.stop_stream()
