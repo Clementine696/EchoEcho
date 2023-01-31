@@ -8,30 +8,26 @@ import pyaudio
 import numpy as np
 import sounddevice as sd
 
+import sounddevice as sd
+import numpy as np
+import time
+import keyboard
+import os
+from scipy.fft import fft
+import matplotlib.pyplot as plt
+
 class App(QWidget):
+
 
     test_mic = 0
     #init sound system
-    # Open the input microphone stream
-    p = pyaudio.PyAudio()
-    input_stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
-    output_stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, output=True)
-    # Read input microphone data
-    input_data = input_stream.read(1024)
-    # Perform noise reduction
-    audio_frame = np.frombuffer(input_data, dtype=np.int16)
-    # reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
-    # audio_data = reduced_noise.tobytes()
-    # Write the audio data to the output microphone stream
-    output_stream.write(audio_frame)
-    # output_stream.write(audio_data)
-    # output_stream.start_stream()
-    # output_stream.stop_stream()
-    # input_stream.stop_stream()
-    # input_stream.close()
-    # output_stream.stop_stream()
-    # output_stream.close()
-    # p.terminate() 
+    def callback(indata, outdata, frames, time, status):
+        if status:
+            print(status)
+        outdata[:] = indata
+    
+    stream = sd.Stream(samplerate=44100, blocksize=1024, dtype=np.float32,
+                    channels=2, callback=callback)
 
     def __init__(self):
         super().__init__()
@@ -58,13 +54,13 @@ class App(QWidget):
         print('PyQt5 button click')
         
         if(App.test_mic==0):
-            print("Mic Start")
             App.test_mic=1
-            App.output_stream.start_stream()
+            print("Mic Start")
+            App.stream.start()
         else:
             print("Mic Stop")
             App.test_mic=0
-            App.output_stream.stop_stream()
+            App.stream.stop()
 
 
 if __name__ == '__main__':
