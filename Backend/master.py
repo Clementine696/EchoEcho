@@ -17,7 +17,7 @@ def callback(indata, outdata, frames, time, status):
     # print(np.shape(outdata[:]))
     outdata[:] = indata
     
-    fft_indata = np.abs(fft(indata[:, 0]))
+    # fft_inmm
     # Process the data
     # for example, you can apply a low-pass filter
         # cutoff_freq = 1000
