@@ -1,3 +1,4 @@
+import 'package:app01/widgets/pages/microphone_page.dart';
 import 'package:app01/widgets/windowbuttons.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
@@ -22,9 +23,9 @@ class RightSide extends StatelessWidget {
           WindowTitleBarBox(
             child: Row(
               children: [Expanded(child: MoveWindow()), const WindowButtons()],
-              
             ),
-          )
+          ),
+          const Expanded(child: MicrophonePage())
         ]),
       ),
     );
