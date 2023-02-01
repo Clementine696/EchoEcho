@@ -7,7 +7,9 @@ class MicrophonePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
       children: <Widget>[
         const Text(
           "Microphone Mode",
@@ -24,12 +26,16 @@ class MicrophonePage extends StatelessWidget {
               height: 400,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
+
+                      shape: RoundedRectangleBorder(
+
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(25),
                               bottomLeft: Radius.circular(25)),
                           side: BorderSide(color: AppColors.blackColor)),
-                      foregroundColor: const Color.fromARGB(255, 3, 253, 240),
+
+                      foregroundColor: Color.fromARGB(255, 3, 253, 240),
+
                       // backgroundColor: Color.fromARGB(47, 21, 227, 241),
                       primary: AppColors.secDarkerColor),
                   onPressed: () {
@@ -56,12 +62,14 @@ class MicrophonePage extends StatelessWidget {
                 height: 400,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color.fromARGB(255, 3, 253, 240),
-                        shape: const RoundedRectangleBorder(
+
+                        foregroundColor: Color.fromARGB(255, 3, 253, 240),
+                        shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(25),
                                 bottomRight: Radius.circular(25))),
-                        side: const BorderSide(color: AppColors.blackColor),
+                        side: BorderSide(color: AppColors.blackColor),
+
                         primary: AppColors.secDarkerColor),
                     onPressed: () {
                       debugPrint("Echo Cancallation");
