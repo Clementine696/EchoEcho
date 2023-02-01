@@ -7,9 +7,7 @@ class MicrophonePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
       children: <Widget>[
         const Text(
           "Microphone Mode",
@@ -26,14 +24,11 @@ class MicrophonePage extends StatelessWidget {
               height: 400,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-
                       shape: RoundedRectangleBorder(
-
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(25),
                               bottomLeft: Radius.circular(25)),
                           side: BorderSide(color: AppColors.blackColor)),
-
                       foregroundColor: Color.fromARGB(255, 3, 253, 240),
 
                       // backgroundColor: Color.fromARGB(47, 21, 227, 241),
@@ -46,14 +41,14 @@ class MicrophonePage extends StatelessWidget {
                         text: "Noise Suppression\n\n",
                         style: TextStyle(
                             color: Color.fromARGB(255, 255, 255, 255),
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                             fontSize: 30)),
                     TextSpan(
                         text:
                             "detecting the sound coming into the headset, and generating signals that are out-of-phase with the offending signals, cancelling them out.",
                         style: TextStyle(
                             color: Color.fromARGB(255, 117, 115, 115),
-                            fontWeight: FontWeight.normal,
+                            fontWeight: FontWeight.w100,
                             fontSize: 20))
                   ]))),
             ),
@@ -62,14 +57,12 @@ class MicrophonePage extends StatelessWidget {
                 height: 400,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-
                         foregroundColor: Color.fromARGB(255, 3, 253, 240),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(25),
                                 bottomRight: Radius.circular(25))),
                         side: BorderSide(color: AppColors.blackColor),
-
                         primary: AppColors.secDarkerColor),
                     onPressed: () {
                       debugPrint("Echo Cancallation");
@@ -79,14 +72,14 @@ class MicrophonePage extends StatelessWidget {
                           text: "Echo Cancallation\n\n",
                           style: TextStyle(
                               color: Color.fromARGB(255, 255, 255, 255),
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               fontSize: 30)),
                       TextSpan(
                           text:
                               "methods used in telephony to improve voice quality by preventing echo from being created or removing it after it is already present.",
                           style: TextStyle(
                               color: Color.fromARGB(255, 117, 115, 115),
-                              fontWeight: FontWeight.normal,
+                              fontWeight: FontWeight.w100,
                               fontSize: 20))
                     ]))))
           ],
@@ -96,6 +89,7 @@ class MicrophonePage extends StatelessWidget {
             height: 82,
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                    alignment: Alignment(-1, 0),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25)),
                     primary: AppColors.secDarkerColor),
@@ -104,7 +98,7 @@ class MicrophonePage extends StatelessWidget {
                 },
                 child: const Text(
                   "Test microphone",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w100),
                 ))),
       ],
     );
