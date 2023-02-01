@@ -8,12 +8,12 @@ p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paInt16,
                 channels=1,
                 rate=44100,
-                input=True,
+                output=True,
                 frames_per_buffer=1024)
 
 # open the audio file to be played
-wf = wave.open("Backend/sound/StarWars60.wav", "rb")
-
+# wf = wave.open("Backend/sound/StarWars60.wav", "rb")
+wf = wave.open("Backend/sound/Cheer.wav", "rb")
 # start playing the audio
 
 stream.start_stream()

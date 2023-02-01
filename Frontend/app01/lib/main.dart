@@ -37,7 +37,7 @@ void main() async {
   //   win.title = "Echo-Echo";
   //   win.show();
   // });
-  Get.put(MenuController());
+  // Get.put(MenuController());
   runApp(const MyApp());
 }
 
