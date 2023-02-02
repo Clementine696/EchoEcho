@@ -70,20 +70,50 @@ class Dropdownicon extends StatefulWidget {
 class _DropdowniconState extends State<Dropdownicon> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
         width: 380,
         child: Container(
           padding: EdgeInsets.only(left: 15),
           child: Row(
             children: [
-              Icon(
-                Icons.mic,
-                color: AppColors.whiteColor,
-                size: 40,
-              ),
-              const Expanded(child: Dropdown())
+              const Expanded(flex: 0, child: icons()),
+              const Expanded(flex: 0, child: Dropdown())
             ],
           ),
         ));
+  }
+}
+
+class icons extends StatefulWidget {
+  const icons({super.key});
+
+  @override
+  State<icons> createState() => _iconsState();
+}
+
+class _iconsState extends State<icons> {
+  bool click = true;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          elevation: 0,
+          shadowColor: Colors.transparent.withOpacity(0),
+          foregroundColor: AppColors.fdColor,
+        ),
+        onPressed: () {
+          setState(() {
+            click = !click;
+          });
+        },
+        child: Icon(
+          (click == false) ? Icons.mic : Icons.mic_off,
+          size: 40,
+          color: AppColors.whiteColor,
+        ),
+      ),
+    );
   }
 }
