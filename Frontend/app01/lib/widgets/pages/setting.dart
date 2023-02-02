@@ -16,6 +16,12 @@ class _SettingState extends State<Setting> {
   Widget build(BuildContext context) {
     return Container(
       child: TextButton.icon(
+        style: TextButton.styleFrom(
+          primary: Colors.transparent,
+          elevation: 0,
+          shadowColor: Colors.transparent.withOpacity(0),
+          foregroundColor: AppColors.fdColor,
+        ),
         onPressed: () {
           print("Setting");
         },
