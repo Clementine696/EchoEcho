@@ -16,20 +16,27 @@ class _SettingState extends State<Setting> {
   Widget build(BuildContext context) {
     return Container(
       child: TextButton.icon(
+        style: TextButton.styleFrom(
+          primary: Colors.transparent,
+          elevation: 0,
+          shadowColor: Colors.transparent.withOpacity(0),
+          foregroundColor: AppColors.fdColor,
+        ),
         onPressed: () {
-          print("Setting");
+          print("Settings");
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.settings,
           color: AppColors.whiteColor,
           size: 40,
         ),
-        label: Text(
-          "Setting",
+        label: const Text(
+          "Settings",
           style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.normal,
-              color: AppColors.whiteColor),
+              color: AppColors.whiteColor
+              ),
         ),
       ),
     );
