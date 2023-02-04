@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import bitsdojo_window_macos
-import path_provider_foundation
+import path_provider_macos
 import screen_retriever
 import window_manager
 
