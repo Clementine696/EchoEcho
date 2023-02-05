@@ -28,16 +28,18 @@ output_stream = p.open(format=pyaudio.paInt16,
 
 # Start a loop to read audio from the input stream and write it to the output stream
 print('running')
-while keyboard.is_pressed('x')==0:
+while output_stream.is_active():
     audio_data = input_stream.read(1024)
     output_stream.write(audio_data)
     if(keyboard.is_pressed('s')):
+        print('Starwar')
         wf = wave.open("Backend/sound/StarWars60.wav", "rb")
         data = wf.readframes(1024)
         output_stream.write(data)
         if len(data) == 0:
             break
-
+    if(keyboard.is_pressed('x')):
+        break
 # Close the streams and terminate the PyAudio object when done
 print('stop and terminate program')
 input_stream.stop_stream()
