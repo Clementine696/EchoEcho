@@ -23,20 +23,19 @@ class _SettingState extends State<Setting> {
           foregroundColor: AppColors.fdColor,
         ),
         onPressed: () {
-          print("Settings");
+          print("Setting");
         },
-        icon: const Icon(
+        icon: Icon(
           Icons.settings,
           color: AppColors.whiteColor,
           size: 40,
         ),
-        label: const Text(
-          "Settings",
+        label: Text(
+          "Setting",
           style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.normal,
-              color: AppColors.whiteColor
-              ),
+              color: AppColors.whiteColor),
         ),
       ),
     );

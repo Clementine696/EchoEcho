@@ -11,7 +11,7 @@ import sounddevice as sd
 import sounddevice as sd
 import numpy as np
 import time
-# import keyboard
+import keyboard
 import os
 from scipy.fft import fft
 import matplotlib.pyplot as plt
