@@ -1,12 +1,16 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QFileDialog, QListWidget
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtCore import QUrl
 
 class App(QWidget):
     def __init__(self):
         super().__init__()
 
         self.filenames = []
+        self.player = QMediaPlayer()
         self.list = QListWidget(self)
+        self.list.itemClicked.connect(self.play_media)
 
         self.title = 'EchoEcho'
         self.left = 200
@@ -38,6 +42,15 @@ class App(QWidget):
             self.filenames.append(fname)
         # Display list in UI
             self.list.addItem(fname)
+
+    def play_media(self, item):
+        fname = item.text()
+        # convert string to QUrl object using the QUrl constructor
+        file = QUrl.fromLocalFile(fname)
+        media = QMediaContent(file)
+        self.player.setMedia(media)
+        # play the media
+        self.player.play()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
