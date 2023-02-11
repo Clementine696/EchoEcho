@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Interface</class>
- <widget class="QWidget" name="Interface">
+ <class>ui_main</class>
+ <widget class="QWidget" name="ui_main">
   <property name="enabled">
    <bool>true</bool>
   </property>
@@ -384,7 +384,7 @@ QPushButton:hover{
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="Microphone_page">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
