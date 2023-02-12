@@ -1,6 +1,11 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QFileDialog, QListWidget
+import os
+import shutil
+import pickle
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QDesktopWidget, QFileDialog, QListWidget, QListWidgetItem, QLabel, QMainWindow, QFormLayout, QGroupBox, QScrollArea, QVBoxLayout
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtCore import QUrl
 
 class App(QWidget):
@@ -9,8 +14,12 @@ class App(QWidget):
 
         self.filenames = []
         self.player = QMediaPlayer()
-        self.list = QListWidget(self)
+        self.list = QListWidget()
         self.list.itemClicked.connect(self.play_media)
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidget(self.list)
+        self.scroll_area.setWidgetResizable(True)
 
         self.title = 'EchoEcho'
         self.left = 200
@@ -18,6 +27,7 @@ class App(QWidget):
         self.width = 1280
         self.height = 720
         self.initUI()
+        self.load_file()
 
     def initUI(self):
         
@@ -25,25 +35,72 @@ class App(QWidget):
         self.setGeometry(self.left, self.top, self.width, self.height)
         
         self.button = QPushButton("Add", self)
-        self.button.clicked.connect(self.add_sound)
+        self.button.clicked.connect(self.add_file)
 
-    def add_sound(self):
-        # 
-        options = QFileDialog.Options()
+        self.remove_button = QPushButton("Remove", self)
+        self.remove_button.clicked.connect(self.remove_file)
 
-        # เห็นแค่ไฟล์ mp3, mp4, wav
-        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "", "MP3 Files (*.mp3);; MP4 Files (*.mp4);; WAV Files (*.wav)", options=options)
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.button)
+
+        layout.addWidget(self.scroll_area)
+        layout.addWidget(self.remove_button)
         
-        # เห็นทุกไฟล์
-        fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "", "All Files (*)", options=options)
+        self.setLayout(layout)
 
-        if fname:
-        # Put files in list
-            self.filenames.append(fname)
-        # Display list in UI
+    def load_file(self):
+        # read file in pickle
+        try:
+            with open("filenames.pickle", "rb") as file:
+                self.filenames = pickle.load(file)
+                for file_select in self.filenames:
+                    self.list.addItem(file_select)
+        except:
+            pass
+
+        for fname in self.filenames:
             self.list.addItem(fname)
 
+    def add_file(self, file_path):
+        
+        options = QFileDialog.Options()
+        # เห็นแค่ไฟล์ mp3, mp4, wav
+        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "", "MP3 Files (*.mp3);; MP4 Files (*.mp4);; WAV Files (*.wav)", options=options)
+        folder = r""
+        # เห็นทุกไฟล์    
+        fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "All Files (*)", options=options)
+
+        item = os.path.basename(fname)
+        self.list.addItem(item)
+        self.filenames.append(fname)
+        self.save_file()
+
+    def save_file(self):
+
+        # save file in pickle
+        with open("filenames.pickle", "wb") as file:
+            pickle.dump(self.filenames, file)
+
+    def remove_file(self):
+        
+        selected = self.list.selectedItems()
+
+        # ลบไฟล์ที่เลือกออกจาก list
+        for item in selected:
+            row = self.list.row(item)
+            self.list.takeItem(row)
+            removed_file = self.filenames.pop(row)
+        # read file in pickle
+            with open("filenames.pickle", "rb") as file:
+                filenames = pickle.load(file)
+        # remove file
+                filenames.remove(removed_file)
+        # write pickle
+            with open("filenames.pickle", "wb") as file:
+                pickle.dump(filenames, file)
+
     def play_media(self, item):
+
         fname = item.text()
         # convert string to QUrl object using the QUrl constructor
         file = QUrl.fromLocalFile(fname)
