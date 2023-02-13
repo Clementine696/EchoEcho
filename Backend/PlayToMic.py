@@ -61,12 +61,12 @@ def threaded_function2():
 
 
 
-# threadA = Thread(target = threaded_function)
-# threadA.start()
-# threadA.join()
-
+threadA = Thread(target = threaded_function)
+threadA.start()
 threadB = Thread(target = threaded_function2)
 threadB.start()
+
+threadA.join()
 threadB.join()
 
 
