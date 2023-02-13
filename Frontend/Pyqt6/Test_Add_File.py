@@ -30,7 +30,7 @@ class App(QWidget):
         self.load_file()
 
     def initUI(self):
-        
+
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         
@@ -49,14 +49,10 @@ class App(QWidget):
         self.setLayout(layout)
 
     def load_file(self):
+        
         # read file in pickle
-        try:
-            with open("filenames.pickle", "rb") as file:
-                self.filenames = pickle.load(file)
-                for file_select in self.filenames:
-                    self.list.addItem(file_select)
-        except:
-            pass
+        with open("filenames.pickle", "rb") as file:
+            self.filenames = pickle.load(file)
 
         for fname in self.filenames:
             self.list.addItem(fname)
