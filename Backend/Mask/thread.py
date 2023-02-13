@@ -11,8 +11,8 @@ def threaded_function(name, arg):
  
  
 if __name__ == "__main__":
-    threadA = Thread(target = threaded_function, args = ("A",5, ))
-    threadB = Thread(target = threaded_function, args = ("B",5, ))
+    threadA = Thread(target = threaded_function, args = ("A",20, ))
+    threadB = Thread(target = threaded_function, args = ("B",20, ))
     threadA.start()
     threadB.start()
     threadA.join()

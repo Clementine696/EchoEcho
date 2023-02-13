@@ -7,6 +7,7 @@ import keyboard
 p = pyaudio.PyAudio()
 vb_index = p.get_default_output_device_info()['index']
 #Search for virtual microphone index
+
 device_list = sd.query_devices()
 for i in (device_list):
     if "CABLE Input " in i['name']:
@@ -15,7 +16,7 @@ for i in (device_list):
 
 #open a stream for microphone 
 input_stream = p.open(format=pyaudio.paInt16,
-                      channels=2,
+                      channels=1,
                       rate=44100,
                       input=True,
                     #   input_device_index=input_device_index,
@@ -23,7 +24,7 @@ input_stream = p.open(format=pyaudio.paInt16,
 
 # open a stream for playing audio
 output_stream = p.open(format=pyaudio.paInt16,
-                channels=2,
+                channels=1,
                 rate=44100,
                 output=True,
                 frames_per_buffer=1024,
@@ -33,7 +34,6 @@ output_stream = p.open(format=pyaudio.paInt16,
 # wf = wave.open("Backend/sound/StarWars60.wav", "rb")
 # wf = wave.open("Backend/sound/Cheer.wav", "rb")
 # start playing the audio
-
 #read microphone "NEW"
 # audio_data = input_stream.read(1024)
 
@@ -47,7 +47,7 @@ def threaded_function():
         output_stream.write(data)
         if(keyboard.is_pressed('x')):
           break
-    
+
 def threaded_function2():
     audio_data = input_stream.read(1024)
     while len(audio_data) != 0:
@@ -78,6 +78,16 @@ output_stream.start_stream()
 #     print('running')
     # audio_data = input_stream.read(1024)
     # output_stream.write(audio_data)
+
+
+
+
+# stream.start_stream()
+# while stream.is_active():
+#     data = wf.readframes(1024)
+#     stream.write(data)
+#     if len(data) == 0:
+#         break
 
 # stop the stream
 output_stream.stop_stream()

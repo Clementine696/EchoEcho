@@ -38,8 +38,9 @@ while output_stream.is_active():
         output_stream.write(data)
         if len(data) == 0:
             break
-    if(keyboard.is_pressed('x')):
-        break
+        if(keyboard.is_pressed('x')):
+            break
+
 # Close the streams and terminate the PyAudio object when done
 print('stop and terminate program')
 input_stream.stop_stream()
