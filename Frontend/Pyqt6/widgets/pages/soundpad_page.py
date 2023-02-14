@@ -1,4 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+# from PyQt5.QtWidgets import QApplication, QMainWindow
+# import sys
 
 
 class Ui_Soundpad_F(object):
@@ -15,16 +17,19 @@ class Ui_Soundpad_F(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
+
         self.body = QtWidgets.QFrame(Soundpad_F)
         self.body.setMaximumSize(QtCore.QSize(900, 680))
         self.body.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.body.setFrameShadow(QtWidgets.QFrame.Raised)
         self.body.setObjectName("body")
+
         self.SP_title = QtWidgets.QFrame(self.body)
         self.SP_title.setGeometry(QtCore.QRect(1, 0, 900, 130))
         self.SP_title.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_title.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_title.setObjectName("SP_title")
+
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.SP_title)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setSpacing(0)

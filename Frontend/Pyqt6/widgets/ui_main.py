@@ -1,6 +1,8 @@
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+# IMPORT GUI FILE
+# from ..widgets.pages import Ui_Microphone_page, Ui_Audio_page, Ui_Soundpad_page, Ui_Voicechanger_page
 
 class Ui_main(object):
     def setupUi(self, ui_main):
@@ -206,6 +208,8 @@ class Ui_main(object):
         self.Right_side.setStyleSheet("QFrame{\n"
                                       "    background-color: qlineargradient(spread:pad, x1:0.506091, y1:0, x2:0.506, y2:1, stop:0 rgba(74, 111, 117, 255), stop:1 rgba(98, 148, 156, 255));\n"
                                       "}")
+        
+
         self.Right_side.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Right_side.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Right_side.setObjectName("Right_side")

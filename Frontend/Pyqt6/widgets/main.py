@@ -11,7 +11,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_main()
         self.ui.setupUi(self)
 
-        #Page links
+        #Page links33
         ########################################################################################
         #Page Micrphone
         self.ui.Microphone_button.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Microphone_page))
