@@ -53,7 +53,7 @@ def threaded_function2():
     while len(audio_data) != 0:
         audio_data = input_stream.read(1024)
         output_stream.write(audio_data)
-        if(keyboard.is_pressed('z')):
+        if(keyboard.is_pressed('x')):
           break
     # while(keyboard.is_pressed('x')==0):
     #     break
@@ -61,13 +61,13 @@ def threaded_function2():
 
 
 
-threadA = Thread(target = threaded_function)
-threadA.start()
-threadA.join()
+# threadA = Thread(target = threaded_function)
+# threadA.start()
+# threadA.join()
 
-# threadB = Thread(target = threaded_function2)
-# threadB.start()
-# threadB.join()
+threadB = Thread(target = threaded_function2)
+threadB.start()
+threadB.join()
 
 
 output_stream.start_stream()

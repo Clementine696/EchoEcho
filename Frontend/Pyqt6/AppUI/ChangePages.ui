@@ -69,7 +69,7 @@
      <x>-1</x>
      <y>0</y>
      <width>380</width>
-     <height>720</height>
+     <height>721</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -340,10 +340,10 @@ QPushButton:hover{
   <widget class="QFrame" name="Right_side">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>0</y>
+     <x>378</x>
+     <y>-1</y>
      <width>900</width>
-     <height>720</height>
+     <height>721</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -360,8 +360,8 @@ QPushButton:hover{
    </property>
    <property name="maximumSize">
     <size>
-     <width>900</width>
-     <height>720</height>
+     <width>1000</width>
+     <height>1000</height>
     </size>
    </property>
    <property name="font">
@@ -371,7 +371,7 @@ QPushButton:hover{
    </property>
    <property name="styleSheet">
     <string notr="true">QFrame{
-	background-color: qlineargradient(spread:pad, x1:0.506091, y1:1, x2:0.501, y2:0, stop:0 rgba(74, 111, 117, 255), stop:1 rgba(98, 148, 156, 255))
+	background-color: qlineargradient(spread:pad, x1:0.506091, y1:0, x2:0.506, y2:1, stop:0 rgba(74, 111, 117, 255), stop:1 rgba(98, 148, 156, 255));
 }</string>
    </property>
    <property name="frameShape">
@@ -381,51 +381,12 @@ QPushButton:hover{
     <enum>QFrame::Raised</enum>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
-    <property name="spacing">
-     <number>0</number>
-    </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
-      <property name="minimumSize">
-       <size>
-        <width>900</width>
-        <height>720</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>900</width>
-        <height>720</height>
-       </size>
-      </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="Microphone_page">
-       <property name="minimumSize">
-        <size>
-         <width>900</width>
-         <height>720</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>900</width>
-         <height>720</height>
-        </size>
-       </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="spacing">
          <number>0</number>
@@ -443,330 +404,24 @@ QPushButton:hover{
          <number>0</number>
         </property>
         <item>
-         <widget class="QFrame" name="frame">
-          <property name="minimumSize">
-           <size>
-            <width>900</width>
-            <height>720</height>
-           </size>
+         <widget class="QLabel" name="mic_label">
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>36</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>900</width>
-            <height>720</height>
-           </size>
+          <property name="styleSheet">
+           <string notr="true">color: #66DAED</string>
           </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+          <property name="text">
+           <string>Microphone</string>
           </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QFrame" name="Mic_title">
-             <property name="minimumSize">
-              <size>
-               <width>900</width>
-               <height>120</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>900</width>
-               <height>120</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QFrame{
-	background-color: rgba(0, 0, 0, 0);
-}</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label_2">
-                <property name="minimumSize">
-                 <size>
-                  <width>900</width>
-                  <height>120</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>900</width>
-                  <height>120</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>40</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Microphone</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QFrame" name="Noise">
-             <property name="minimumSize">
-              <size>
-               <width>900</width>
-               <height>190</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>900</width>
-               <height>190</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QFrame{
-	background-color: rgba(0, 0, 0, 0);
-}</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <widget class="QPushButton" name="Noise_button">
-              <property name="geometry">
-               <rect>
-                <x>60</x>
-                <y>10</y>
-                <width>780</width>
-                <height>170</height>
-               </rect>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>780</width>
-                <height>170</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>780</width>
-                <height>170</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>16</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton{
-	background-color: #244D54;
-	border-style : outset;
-	border-width : 0.5px;
-	border-radius: 40px;
-	border-color : black;
-
-	color: rgb(104, 104, 104);
-	text-align : center;
-}
-QPushButton:hover{
-	background-color: rgb(53, 112, 122);
-
-	border-width : 0.5px;
-	border-color :  rgb(1, 209, 158) ;
-	color: rgb(204, 204, 204);
-}
-</string>
-              </property>
-              <property name="text">
-               <string>
-detecting the sound coming into the headset, and generating signals 
-that are  out-of-phase with the  offending signals, canceling them out.</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="label_3">
-              <property name="geometry">
-               <rect>
-                <x>330</x>
-                <y>20</y>
-                <width>270</width>
-                <height>60</height>
-               </rect>
-              </property>
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>24</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QLabel {
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
-
-	color: rgb(204, 204, 204);
-}</string>
-              </property>
-              <property name="text">
-               <string>Noise Suppression</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </widget>
-           </item>
-           <item>
-            <widget class="QFrame" name="Graph">
-             <property name="styleSheet">
-              <string notr="true">QFrame{
-	background-color: rgba(0, 0, 0, 0);
-}</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>Graph</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QFrame" name="TestMic">
-             <property name="minimumSize">
-              <size>
-               <width>900</width>
-               <height>120</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>900</width>
-               <height>120</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QFrame{
-	background-color: rgba(0, 0, 0, 0);
-
-	padding-left: 60px;
-	padding-right: 60px;
-	padding-top: 0px;
-	padding-bottom: 20px;
-}</string>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <widget class="QPushButton" name="Testmic_button">
-                <property name="minimumSize">
-                 <size>
-                  <width>780</width>
-                  <height>80</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>780</width>
-                  <height>80</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>20</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton {
-	background-color: #244D54;
-	border-style: outset;
-	border-width: 0.5px;
-	border-radius: 25px;
-	border-color: black;
-	
-	color: rgb(255, 255, 255);
-	text-align: center;
-
-	padding: 20px
-}
-
-QPushButton:hover{
-	border-width : 0.5px;
-	border-color :  rgb(1, 209, 158) ;
-}</string>
-                </property>
-                <property name="text">
-                 <string>Test Microphone</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
          </widget>
         </item>
        </layout>
