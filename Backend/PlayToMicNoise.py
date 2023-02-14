@@ -59,12 +59,16 @@ def threaded_function2():
         audio_data = input_stream.read(1024)
 
         #Noise suppression
-        if(nr):
-            audio_frame = np.frombuffer(input_data, dtype=np.int16)
-            reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
-            suppressed_audio_data = reduced_noise.tobytes()
+        # if(nr):
+        #     audio_frame = np.frombuffer(input_data, dtype=np.int16)
+        #     reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
+        #     suppressed_audio_data = reduced_noise.tobytes()
 
-        output_stream.write(audio_data)
+        audio_frame = np.frombuffer(input_data, dtype=np.int16)
+        reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
+        suppressed_audio_data = reduced_noise.tobytes()
+
+        output_stream.write(suppressed_audio_data)
         if(keyboard.is_pressed('z')):
           break
     # while(keyboard.is_pressed('x')==0):

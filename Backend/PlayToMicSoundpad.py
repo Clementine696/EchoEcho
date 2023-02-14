@@ -24,7 +24,7 @@ input_stream = p.open(format=pyaudio.paInt16,
 
 # open a stream for playing audio
 output_stream = p.open(format=pyaudio.paInt16,
-                channels=1,
+                channels=2,
                 rate=44100,
                 output=True,
                 frames_per_buffer=1024,
@@ -40,7 +40,7 @@ output_stream = p.open(format=pyaudio.paInt16,
 from threading import Thread
 def threaded_function():
     print('Press X to stop')
-    wf = wave.open("Backend/sound/Cheer.wav", "rb")
+    wf = wave.open("Backend/sound/MRE.wav", "rb")
     data = wf.readframes(1024)
     while len(data) != 0:
         data = wf.readframes(1024)
