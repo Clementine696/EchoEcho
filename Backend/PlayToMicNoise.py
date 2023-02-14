@@ -3,6 +3,9 @@ import wave
 import sounddevice as sd
 import keyboard
 
+import numpy as np
+import noisereduce as nr
+
 # initialize PyAudio
 p = pyaudio.PyAudio()
 vb_index = p.get_default_output_device_info()['index']
@@ -13,6 +16,8 @@ for i in (device_list):
     if "CABLE Input " in i['name']:
         vb_index = i['index']
         break
+
+# if()...
 
 #open a stream for microphone 
 input_stream = p.open(format=pyaudio.paInt16,
@@ -52,11 +57,29 @@ def threaded_function2():
     audio_data = input_stream.read(1024)
     while len(audio_data) != 0:
         audio_data = input_stream.read(1024)
+
+        #Noise suppression
+        if(nr):
+            audio_frame = np.frombuffer(input_data, dtype=np.int16)
+            reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
+            suppressed_audio_data = reduced_noise.tobytes()
+
         output_stream.write(audio_data)
         if(keyboard.is_pressed('z')):
           break
     # while(keyboard.is_pressed('x')==0):
     #     break
+
+
+while True:
+    # Read input microphone data
+    input_data = input_stream.read(1024)
+    # Perform noise reduction
+    audio_frame = np.frombuffer(input_data, dtype=np.int16)
+    reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
+    audio_data = reduced_noise.tobytes()
+    # Write the audio data to the output microphone stream
+    output_stream.write(audio_data)
 
 
 
