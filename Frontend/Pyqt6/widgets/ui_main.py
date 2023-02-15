@@ -390,7 +390,6 @@ class Ui_main(object):
 
         # Test Mic Button Function
         self.Testmic_button.clicked.connect(self.TestMic_button_clicked)
-        self.Noise_button.clicked.connect(self.Noise_button_clicked)
 
         self.verticalLayout_5.addWidget(self.Testmic_button)
         self.verticalLayout_2.addWidget(self.TestMic)

@@ -75,16 +75,15 @@ def threaded_function2():
     #     break
 
 
-while True:
-    # Read input microphone data
-    input_data = input_stream.read(1024)
-    # Perform noise reduction
-    audio_frame = np.frombuffer(input_data, dtype=np.int16)
-    reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
-    audio_data = reduced_noise.tobytes()
-    # Write the audio data to the output microphone stream
-    output_stream.write(audio_data)
-
+# while True:
+#     # Read input microphone data
+#     input_data = input_stream.read(1024)
+#     # Perform noise reduction
+#     audio_frame = np.frombuffer(input_data, dtype=np.int16)
+#     reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
+#     audio_data = reduced_noise.tobytes()
+#     # Write the audio data to the output microphone stream
+#     output_stream.write(audio_data)
 
 
 
