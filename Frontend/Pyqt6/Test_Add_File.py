@@ -30,7 +30,7 @@ class App(QWidget):
         self.load_file()
 
     def initUI(self):
-        
+
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         
@@ -49,28 +49,26 @@ class App(QWidget):
         self.setLayout(layout)
 
     def load_file(self):
+
         # read file in pickle
         try:
             with open("filenames.pickle", "rb") as file:
                 self.filenames = pickle.load(file)
-                for file_select in self.filenames:
-                    self.list.addItem(file_select)
-        except:
-            pass
-
-        for fname in self.filenames:
-            self.list.addItem(fname)
+                for fname in self.filenames:
+                    self.list.addItem(fname)
+                    print("audio load successfully")
+        except Exception as e:  
+            print(e)  
 
     def add_file(self, file_path):
         
         options = QFileDialog.Options()
-        # เห็นแค่ไฟล์ mp3, mp4, wav
-        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "", "MP3 Files (*.mp3);; MP4 Files (*.mp4);; WAV Files (*.wav)", options=options)
         folder = r""
         # เห็นทุกไฟล์    
         fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "All Files (*)", options=options)
+        print("add file :", fname)
 
-        item = os.path.basename(fname)
+        item = QListWidgetItem(fname)
         self.list.addItem(item)
         self.filenames.append(fname)
         self.save_file()
