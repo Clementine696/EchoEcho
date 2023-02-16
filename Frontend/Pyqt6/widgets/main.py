@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 
 # IMPORT GUI FILE
 from ui_main import *
+from soundpad_page import *
 
 
 class MainWindow(QMainWindow):

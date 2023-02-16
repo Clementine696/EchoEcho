@@ -1,7 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-# from PyQt5.QtWidgets import QApplication, QMainWindow
-# import sys
-
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QPushButton, QDesktopWidget, QFileDialog,
+    QTableWidget, QTableWidgetItem, QLabel, QMainWindow, QFormLayout,
+    QGroupBox, QScrollArea, QVBoxLayout, QHBoxLayout, QTableWidgetItem,
+)
+import sys
 
 class Ui_Soundpad_F(object):
     def setupUi(self, Soundpad_F):
@@ -17,19 +20,18 @@ class Ui_Soundpad_F(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
-
         self.body = QtWidgets.QFrame(Soundpad_F)
         self.body.setMaximumSize(QtCore.QSize(900, 680))
         self.body.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.body.setFrameShadow(QtWidgets.QFrame.Raised)
         self.body.setObjectName("body")
 
+        # Title Frame
         self.SP_title = QtWidgets.QFrame(self.body)
-        self.SP_title.setGeometry(QtCore.QRect(1, 0, 900, 130))
+        self.SP_title.setGeometry(QtCore.QRect(1, 0, 900, 120))
         self.SP_title.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_title.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_title.setObjectName("SP_title")
-
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.SP_title)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setSpacing(0)
@@ -38,42 +40,49 @@ class Ui_Soundpad_F(object):
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
-        self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(0, 0, 901, 100))
+
+        # Title label
+        self.SP_title_label = QtWidgets.QLabel(self.frame)
+        self.SP_title_label.setGeometry(QtCore.QRect(0, 0, 900, 120))
+        self.SP_title_label.setMinimumSize(QtCore.QSize(900, 120))
+        self.SP_title_label.setMaximumSize(QtCore.QSize(900, 120))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(56)
+        font.setPointSize(40)
         font.setBold(True)
         font.setWeight(75)
-        self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(255, 255, 255)")
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
+        self.SP_title_label.setFont(font)
+        self.SP_title_label.setStyleSheet("color: rgb(255, 255, 255)")
+        self.SP_title_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.SP_title_label.setObjectName("SP_title_label")
+
+        # Table Frame
         self.verticalLayout_2.addWidget(self.frame)
         self.SP_table = QtWidgets.QFrame(self.body)
-        self.SP_table.setGeometry(QtCore.QRect(0, 130, 900, 550))
+        self.SP_table.setGeometry(QtCore.QRect(0, 130, 900, 560))
         self.SP_table.setMaximumSize(QtCore.QSize(900, 680))
         self.SP_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_table.setObjectName("SP_table")
-        self.tableWidget = QtWidgets.QTableWidget(self.SP_table)
-        self.tableWidget.setGeometry(QtCore.QRect(0, -1, 900, 550))
-        self.tableWidget.setMinimumSize(QtCore.QSize(900, 550))
-        self.tableWidget.setMaximumSize(QtCore.QSize(900, 680))
-        self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
-        self.tableWidget.setRowCount(0)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
         self.verticalLayout.addWidget(self.body)
+
+        # Table
+        self.SP_tabel_widget = QtWidgets.QWidget(self.SP_table)
+        self.SP_tabel_widget.setGeometry(QtCore.QRect(0, 0, 900, 560))
+        self.SP_tabel_widget.setMinimumSize(QtCore.QSize(900, 560))
+        self.SP_tabel_widget.setMaximumSize(QtCore.QSize(900, 560))
+        self.filenames = []
+        # self.player = QMediaPlayer()
+        self.SP_tabel_widget = QTableWidget()
+        self.SP_tabel_widget.setColumnCount(3)
+        self.SP_tabel_widget.setHorizontalHeaderLabels(
+            ["Filename", "Duration", "Action"])
+        self.SP_tabel_widget.horizontalHeader().setStretchLastSection(True)
+        # self.SP_tabel_widget.cellClicked.connect(self.create_button_widget)
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidget(self.SP_tabel_widget)
+        self.scroll_area.setWidgetResizable(True)
 
         self.retranslateUi(Soundpad_F)
         QtCore.QMetaObject.connectSlotsByName(Soundpad_F)
@@ -81,14 +90,11 @@ class Ui_Soundpad_F(object):
     def retranslateUi(self, Soundpad_F):
         _translate = QtCore.QCoreApplication.translate
         Soundpad_F.setWindowTitle(_translate("Soundpad_F", "Form"))
-        self.label.setText(_translate("Soundpad_F", "Soundpad"))
-        item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("Soundpad_F", "New Column"))
-        item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("Soundpad_F", "No. "))
-        item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("Soundpad_F", "Name"))
-        item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("Soundpad_F", "Duration"))
-        item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("Soundpad_F", "Settings"))
+        self.SP_title_label.setText(_translate("Soundpad_F", "Soundpad"))
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    nextGui = Ui_Soundpad_F()
+    nextGui.show()
+    sys.exit(app.exec_())

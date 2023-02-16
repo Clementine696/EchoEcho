@@ -1,9 +1,15 @@
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QPushButton, QDesktopWidget, QFileDialog,
+    QTableWidget, QTableWidgetItem, QLabel, QMainWindow, QFormLayout,
+    QGroupBox, QScrollArea, QVBoxLayout, QHBoxLayout, QTableWidgetItem,
+)
 
 # IMPORT GUI FILE
 # from ..widgets.pages import Ui_Microphone_page, Ui_Audio_page, Ui_Soundpad_page, Ui_Voicechanger_page
+
 
 class Ui_main(object):
     def setupUi(self, ui_main):
@@ -209,7 +215,6 @@ class Ui_main(object):
         self.Right_side.setStyleSheet("QFrame{\n"
                                       "    background-color: qlineargradient(spread:pad, x1:0.506091, y1:0, x2:0.506, y2:1, stop:0 rgba(74, 111, 117, 255), stop:1 rgba(98, 148, 156, 255));\n"
                                       "}")
-        
 
         self.Right_side.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Right_side.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -218,12 +223,13 @@ class Ui_main(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
 
         # stacked widget
+        # set stacked widget
         self.stackedWidget = QtWidgets.QStackedWidget(self.Right_side)
-
-        # Microphone page size
         self.stackedWidget.setMinimumSize(QtCore.QSize(900, 720))
         self.stackedWidget.setMaximumSize(QtCore.QSize(900, 720))
         self.stackedWidget.setObjectName("stackedWidget")
+
+        # Microphone page size
         self.Microphone_page = QtWidgets.QWidget()
         self.Microphone_page.setMinimumSize(QtCore.QSize(900, 720))
         self.Microphone_page.setMaximumSize(QtCore.QSize(900, 720))
@@ -261,24 +267,24 @@ class Ui_main(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.label_2 = QtWidgets.QLabel(self.Mic_title)
-        self.label_2.setMinimumSize(QtCore.QSize(900, 120))
-        self.label_2.setMaximumSize(QtCore.QSize(900, 120))
+        self.Mic_title_label = QtWidgets.QLabel(self.Mic_title)
+        self.Mic_title_label.setMinimumSize(QtCore.QSize(900, 120))
+        self.Mic_title_label.setMaximumSize(QtCore.QSize(900, 120))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(40)
         font.setBold(True)
         font.setWeight(75)
-        self.label_2.setFont(font)
-        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout_4.addWidget(self.label_2)
+        self.Mic_title_label.setFont(font)
+        self.Mic_title_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.Mic_title_label.setObjectName("Mic_title_label")
+        self.verticalLayout_4.addWidget(self.Mic_title_label)
         self.verticalLayout_2.addWidget(self.Mic_title)
 
         # Mic settings
         self.Noise = QtWidgets.QFrame(self.frame)
-        self.Noise.setMinimumSize(QtCore.QSize(900, 190))
-        self.Noise.setMaximumSize(QtCore.QSize(900, 190))
+        self.Noise.setMinimumSize(QtCore.QSize(900, 200))
+        self.Noise.setMaximumSize(QtCore.QSize(900, 200))
         self.Noise.setStyleSheet("QFrame{\n"
                                  "    background-color: rgba(0, 0, 0, 0);\n"
                                  "}")
@@ -288,12 +294,12 @@ class Ui_main(object):
 
         # noise button
         self.Noise_button = QtWidgets.QPushButton(self.Noise)
-        self.Noise_button.setGeometry(QtCore.QRect(60, 10, 780, 170))
-        self.Noise_button.setMinimumSize(QtCore.QSize(780, 170))
-        self.Noise_button.setMaximumSize(QtCore.QSize(780, 170))
+        self.Noise_button.setGeometry(QtCore.QRect(60, 10, 780, 180))
+        self.Noise_button.setMinimumSize(QtCore.QSize(780, 180))
+        self.Noise_button.setMaximumSize(QtCore.QSize(780, 180))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(16)
+        font.setPointSize(14)
         self.Noise_button.setFont(font)
         self.Noise_button.setStyleSheet("QPushButton{\n"
                                         "    background-color: #244D54;\n"
@@ -318,19 +324,19 @@ class Ui_main(object):
         # Noice button Function
         self.Noise_button.clicked.connect(self.Noise_button_clicked)
 
-        self.label_3 = QtWidgets.QLabel(self.Noise)
-        self.label_3.setGeometry(QtCore.QRect(330, 20, 270, 60))
+        self.Noise_label = QtWidgets.QLabel(self.Noise)
+        self.Noise_label.setGeometry(QtCore.QRect(280, 16, 340, 60))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(24)
-        self.label_3.setFont(font)
-        self.label_3.setStyleSheet("QLabel {\n"
-                                   "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));\n"
-                                   "\n"
-                                   "    color: rgb(204, 204, 204);\n"
-                                   "}")
-        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_3.setObjectName("label_3")
+        self.Noise_label.setFont(font)
+        self.Noise_label.setStyleSheet("QLabel {\n"
+                                       "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));\n"
+                                       "\n"
+                                       "    color: rgb(204, 204, 204);\n"
+                                       "}")
+        self.Noise_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.Noise_label.setObjectName("Noise_label")
         self.verticalLayout_2.addWidget(self.Noise)
         self.Graph = QtWidgets.QFrame(self.frame)
         self.Graph.setStyleSheet("QFrame{\n"
@@ -346,7 +352,7 @@ class Ui_main(object):
         self.label.setObjectName("label")
         self.verticalLayout_3.addWidget(self.label)
         self.verticalLayout_2.addWidget(self.Graph)
-        
+
         # Test Mic layout
         self.TestMic = QtWidgets.QFrame(self.frame)
         self.TestMic.setMinimumSize(QtCore.QSize(900, 120))
@@ -401,6 +407,7 @@ class Ui_main(object):
         self.horizontalLayout_2.addWidget(self.frame)
         self.stackedWidget.addWidget(self.Microphone_page)
 
+        # Audio Page
         self.Audio_page = QtWidgets.QWidget()
         self.Audio_page.setObjectName("Audio_page")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.Audio_page)
@@ -419,22 +426,90 @@ class Ui_main(object):
         self.audio_label.setObjectName("audio_label")
         self.horizontalLayout_3.addWidget(self.audio_label)
         self.stackedWidget.addWidget(self.Audio_page)
+
+        # Soundpad Page
         self.Soundpad_page = QtWidgets.QWidget()
+        self.Soundpad_page.setMinimumSize(QtCore.QSize(900, 680))
+        self.Soundpad_page.setMaximumSize(QtCore.QSize(900, 680))
         self.Soundpad_page.setObjectName("Soundpad_page")
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.Soundpad_page)
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.Soundpad_label = QtWidgets.QLabel(self.Soundpad_page)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.Soundpad_page)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.frame = QtWidgets.QFrame(self.Soundpad_page)
+        self.frame.setMinimumSize(QtCore.QSize(900, 720))
+        self.frame.setMaximumSize(QtCore.QSize(900, 720))
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+
+        # frame layout
+        self.frame.setObjectName("frame")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.frame)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+
+        # Soundpad Title
+        self.SP_title = QtWidgets.QFrame(self.frame)
+        self.SP_title.setMinimumSize(QtCore.QSize(900, 120))
+        self.SP_title.setMaximumSize(QtCore.QSize(900, 120))
+        self.SP_title.setStyleSheet("QFrame{\n"
+                                    "    background-color: rgba(0, 0, 0, 0);\n"
+                                    "}")
+        self.SP_title.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.SP_title.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.SP_title.setObjectName("SP_title")
+
+        # Soundpad Title Layout
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.Mic_title)
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_4.setSpacing(0)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.SP_title_label = QtWidgets.QLabel(self.SP_title)
+        self.SP_title_label.setMinimumSize(QtCore.QSize(900, 120))
+        self.SP_title_label.setMaximumSize(QtCore.QSize(900, 120))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(36)
+        font.setPointSize(40)
         font.setBold(True)
         font.setWeight(75)
-        self.Soundpad_label.setFont(font)
-        self.Soundpad_label.setStyleSheet("color: #66DAED")
-        self.Soundpad_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.Soundpad_label.setObjectName("Soundpad_label")
-        self.horizontalLayout_4.addWidget(self.Soundpad_label)
+        self.SP_title_label.setFont(font)
+        self.SP_title_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.SP_title_label.setObjectName("SP_title_label")
+        self.verticalLayout_4.addWidget(self.SP_title_label)
+        self.verticalLayout_2.addWidget(self.SP_title)
+
+        # Soundpad Layout
+        self.verticalLayout_2.addWidget(self.frame)
+        self.SP_table = QtWidgets.QFrame(self.frame)
+        self.SP_table.setGeometry(QtCore.QRect(0, 130, 900, 560))
+        self.SP_table.setMaximumSize(QtCore.QSize(900, 680))
+        self.SP_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.SP_table.setObjectName("SP_table")
+        self.verticalLayout.addWidget(self.frame)
+
+        # Table
+        self.SP_tabel_widget = QtWidgets.QWidget(self.SP_table)
+        self.SP_tabel_widget.setGeometry(QtCore.QRect(0, 0, 900, 560))
+        self.SP_tabel_widget.setMinimumSize(QtCore.QSize(900, 560))
+        self.SP_tabel_widget.setMaximumSize(QtCore.QSize(900, 560))
+        self.filenames = []
+        # self.player = QMediaPlayer()
+        # self.SP_tabel_widget = QTableWidget()
+        self.SP_tabel_widget.setColumnCount(3)
+        self.SP_tabel_widget.setHorizontalHeaderLabels(
+            ["Filename", "Duration", "Action"])
+        self.SP_tabel_widget.horizontalHeader().setStretchLastSection(True)
+        # self.SP_tabel_widget.cellClicked.connect(self.create_button_widget)
+
+        # self.scroll_area = QScrollArea()
+        self.scroll_area.setWidget(self.SP_tabel_widget)
+        self.scroll_area.setWidgetResizable(True)
+
         self.stackedWidget.addWidget(self.Soundpad_page)
+
+        # Voice Changer Page
         self.Voicechanger_page = QtWidgets.QWidget()
         self.Voicechanger_page.setObjectName("Voicechanger_page")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.Voicechanger_page)
@@ -464,15 +539,15 @@ class Ui_main(object):
         self.Audio_button.setText(_translate("ui_main", "Audio"))
         self.Soundpad_button.setText(_translate("ui_main", "Soundpad"))
         self.Voicechanger_button.setText(_translate("ui_main", "VoiceChanger"))
-        self.label_2.setText(_translate("ui_main", "Microphone"))
+        self.Mic_title_label.setText(_translate("ui_main", "Microphone"))
         self.Noise_button.setText(_translate("ui_main", "\n"
                                              "detecting the sound coming into the headset, and generating signals \n"
                                              "that are  out-of-phase with the  offending signals, canceling them out."))
-        self.label_3.setText(_translate("ui_main", "Noise Suppression"))
+        self.Noise_label.setText(_translate("ui_main", "Noise Suppression"))
         self.label.setText(_translate("ui_main", "Graph"))
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
         self.audio_label.setText(_translate("ui_main", "Audio"))
-        self.Soundpad_label.setText(_translate("ui_main", "Soundpad"))
+        self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
 
     def Noise_button_clicked(self):

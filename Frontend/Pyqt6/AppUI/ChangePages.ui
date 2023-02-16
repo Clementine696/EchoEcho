@@ -557,13 +557,13 @@ QPushButton:hover{
              <property name="minimumSize">
               <size>
                <width>900</width>
-               <height>190</height>
+               <height>200</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>900</width>
-               <height>190</height>
+               <height>200</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -583,25 +583,25 @@ QPushButton:hover{
                 <x>60</x>
                 <y>10</y>
                 <width>780</width>
-                <height>170</height>
+                <height>180</height>
                </rect>
               </property>
               <property name="minimumSize">
                <size>
                 <width>780</width>
-                <height>170</height>
+                <height>180</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>780</width>
-                <height>170</height>
+                <height>180</height>
                </size>
               </property>
               <property name="font">
                <font>
                 <family>Segoe UI</family>
-                <pointsize>16</pointsize>
+                <pointsize>14</pointsize>
                </font>
               </property>
               <property name="styleSheet">
@@ -630,12 +630,12 @@ detecting the sound coming into the headset, and generating signals
 that are  out-of-phase with the  offending signals, canceling them out.</string>
               </property>
              </widget>
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="Noise_label">
               <property name="geometry">
                <rect>
-                <x>330</x>
-                <y>20</y>
-                <width>270</width>
+                <x>280</x>
+                <y>16</y>
+                <width>340</width>
                 <height>60</height>
                </rect>
               </property>

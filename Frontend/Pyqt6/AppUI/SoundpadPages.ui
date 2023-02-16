@@ -100,19 +100,31 @@ background-color: rgb(36, 77, 84);
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="SP_title_label">
           <property name="geometry">
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>901</width>
-            <height>100</height>
+            <width>900</width>
+            <height>120</height>
            </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>900</width>
+            <height>120</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>900</width>
+            <height>120</height>
+           </size>
           </property>
           <property name="font">
            <font>
             <family>Segoe UI</family>
-            <pointsize>56</pointsize>
+            <pointsize>40</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -135,15 +147,21 @@ background-color: rgb(36, 77, 84);
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>130</y>
+        <y>120</y>
         <width>900</width>
-        <height>550</height>
+        <height>560</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>900</width>
+        <height>560</height>
+       </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>900</width>
-        <height>680</height>
+        <height>560</height>
        </size>
       </property>
       <property name="frameShape">
@@ -152,53 +170,6 @@ background-color: rgb(36, 77, 84);
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QTableWidget" name="tableWidget">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>-1</y>
-         <width>900</width>
-         <height>550</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>900</width>
-         <height>550</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>900</width>
-         <height>680</height>
-        </size>
-       </property>
-       <column>
-        <property name="text">
-         <string>New Column</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>No. </string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Name</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Duration</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Settings</string>
-        </property>
-       </column>
-      </widget>
      </widget>
     </widget>
    </item>
