@@ -1,5 +1,11 @@
 pip install sounddevice
 pip install pyaudio
 
+from threading import Thread
+
+import keyboard
+import numpy as np
+import noisereduce as nr
+
 pip install comtypes
 pip install pycaw

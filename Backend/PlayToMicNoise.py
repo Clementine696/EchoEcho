@@ -11,11 +11,11 @@ p = pyaudio.PyAudio()
 vb_index = p.get_default_output_device_info()['index']
 #Search for virtual microphone index
 
-device_list = sd.query_devices()
-for i in (device_list):
-    if "CABLE Input " in i['name']:
-        vb_index = i['index']
-        break
+# device_list = sd.query_devices()
+# for i in (device_list):
+#     if "CABLE Input " in i['name']:
+#         vb_index = i['index']
+#         break
 
 # if()...
 
@@ -64,7 +64,7 @@ def threaded_function2():
         #     reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
         #     suppressed_audio_data = reduced_noise.tobytes()
 
-        audio_frame = np.frombuffer(input_data, dtype=np.int16)
+        audio_frame = np.frombuffer(audio_data, dtype=np.int16)
         reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
         suppressed_audio_data = reduced_noise.tobytes()
 
@@ -96,7 +96,7 @@ threadB.start()
 threadB.join()
 
 
-output_stream.start_stream()
+# output_stream.start_stream()
 # while output_stream.is_active():
 #     # data = wf.readframes(1024)
 #     # output_stream.write(data)

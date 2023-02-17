@@ -1,7 +1,8 @@
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
-
+import main as Main
+import keyboard
 
 class Ui_main(object):
     def setupUi(self, ui_main):

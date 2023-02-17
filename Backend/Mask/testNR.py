@@ -18,16 +18,19 @@ output_stream = p.open(format=pyaudio.paInt16,
                        output=True)
 
 while True:
-    # Read input microphone data
+    # # Read input microphone data
+    # input_data = input_stream.read(1024)
+    # # Perform noise reduction
+    # audio_frame = np.frombuffer(input_data, dtype=np.int16)
+    # reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
+    # audio_data = reduced_noise.tobytes()
+    # # Write the audio data to the output microphone stream
+    # output_stream.write(audio_data)
+    # # write the audio data into microphone stream
+    # # output_stream.write(input_data)
     input_data = input_stream.read(1024)
-    # Perform noise reduction
-    audio_frame = np.frombuffer(input_data, dtype=np.int16)
-    reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
-    audio_data = reduced_noise.tobytes()
-    # Write the audio data to the output microphone stream
-    output_stream.write(audio_data)
-    # write the audio data into microphone stream
-    # output_stream.write(input_data)
+    output_stream.write(input_data)
+
     
 input_stream.stop_stream()
 input_stream.close()
