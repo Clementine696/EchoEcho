@@ -69,6 +69,8 @@ class SoundSystem():
                             frames_per_buffer=1024)
         except:
             print("Cannot detect microphone")
+            return False
+
 
         # open a stream for playing audio
         try:
@@ -80,6 +82,7 @@ class SoundSystem():
                             frames_per_buffer=1024)
         except:
             print("Cannot detect default output")
+            return False
 
         # open a stream for virtual microphone
         try:
@@ -97,6 +100,7 @@ class SoundSystem():
                             output_device_index=vb_index)
         except:
             print("Cannot detect virtual microphone")
+            return False
 
     def find_vb(self):
         device_list = sd.query_devices()
@@ -122,7 +126,7 @@ class SoundSystem():
                 print('Normal voice')
                 output_sound = audio_data
                 
-            self.virtual_microphone_stream.write(output_sound)   
+            self.virtual_microphone_stream.write(output_sound)
 
             if(Test_mic_state):
                 print('TesttttttttttttMic')
@@ -139,6 +143,7 @@ class SoundSystem():
         self.virtual_microphone_stream.close()
         self.p.terminate()
 
+    
     # def test_mic_thread(self):
     #     print("Test mic start running")
     #     while Test_mic_state:
@@ -192,20 +197,17 @@ class MainWindow(QMainWindow):
             self.sound_system = SoundSystem()
             print('init successes')
             self.createSound_system = 1
-
             self.audio_stream = Thread(target = self.sound_system.audio_stream_thread)
             self.audio_stream.daemon = True
             self.audio_stream.start()
         except:
             print("init in main error")
+            print('Please download VB cable or enable VB cable from the setting')
 
 
-        while(self.createSound_system == False):
-            #nav to Error handler page
-            print('error')
-
-        
-
+        # while(self.createSound_system == False):
+        #     #nav to Error handler page
+        #     print('error')
 
         # while(self.create == 0):
         #     global Pushed_reinit
