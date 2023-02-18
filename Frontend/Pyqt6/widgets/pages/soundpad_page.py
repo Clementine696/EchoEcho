@@ -1,12 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import (
-    QApplication, QWidget, QPushButton, QDesktopWidget, QFileDialog,
-    QTableWidget, QTableWidgetItem, QLabel, QMainWindow, QFormLayout,
-    QGroupBox, QScrollArea, QVBoxLayout, QHBoxLayout, QTableWidgetItem,
-)
-import sys
 
-class Ui_Soundpad_F(object):
+class Ui_Soundpad(object):
     def setupUi(self, Soundpad_F):
         Soundpad_F.setObjectName("Soundpad_F")
         Soundpad_F.resize(900, 680)
@@ -80,10 +74,6 @@ class Ui_Soundpad_F(object):
         self.SP_tabel_widget.horizontalHeader().setStretchLastSection(True)
         # self.SP_tabel_widget.cellClicked.connect(self.create_button_widget)
 
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidget(self.SP_tabel_widget)
-        self.scroll_area.setWidgetResizable(True)
-
         self.retranslateUi(Soundpad_F)
         QtCore.QMetaObject.connectSlotsByName(Soundpad_F)
 
@@ -91,10 +81,3 @@ class Ui_Soundpad_F(object):
         _translate = QtCore.QCoreApplication.translate
         Soundpad_F.setWindowTitle(_translate("Soundpad_F", "Form"))
         self.SP_title_label.setText(_translate("Soundpad_F", "Soundpad"))
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    nextGui = Ui_Soundpad_F()
-    nextGui.show()
-    sys.exit(app.exec_())

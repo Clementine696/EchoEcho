@@ -4,13 +4,14 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 
 # IMPORT GUI FILE
 from ui_main import *
-from soundpad_page import *
 
+def Noise_button_clicked():
+    print("Noise button clicked in main")
 
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
-        self.ui = Ui_main()
+        self.ui = Ui_mainInterface()
         self.ui.setupUi(self)
 
         #Page links33
@@ -31,6 +32,7 @@ class MainWindow(QMainWindow):
         self.ui.Voicechanger_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Voicechanger_page))
 
+        self.ui.Noise_button.clicked.connect(Noise_button_clicked)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
