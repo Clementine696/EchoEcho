@@ -1,17 +1,11 @@
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
-from PyQt5.QtWidgets import (
-    QApplication, QWidget, QPushButton, QDesktopWidget, QFileDialog,
-    QTableWidget, QTableWidgetItem, QLabel, QMainWindow, QFormLayout,
-    QGroupBox, QScrollArea, QVBoxLayout, QHBoxLayout, QTableWidgetItem,
-)
 
 # IMPORT GUI FILE
-# from ..widgets.pages import Ui_Microphone_page, Ui_Audio_page, Ui_Soundpad_page, Ui_Voicechanger_page
+from main import *
+# from pages.soundpad_page import *
 
-
-class Ui_main(object):
+class Ui_mainInterface(object):
     def setupUi(self, ui_main):
         # Application size
         ui_main.setObjectName("ui_main")
@@ -318,6 +312,8 @@ class Ui_main(object):
                                         "    border-color :  rgb(1, 209, 158) ;\n"
                                         "    color: rgb(204, 204, 204);\n"
                                         "}\n"
+                                        "QPushButton:pressed{\n"
+                                        
                                         "")
         self.Noise_button.setObjectName("Noise_button")
 
@@ -400,7 +396,6 @@ class Ui_main(object):
 
         # Test Mic Button Function
         self.Testmic_button.clicked.connect(self.TestMic_button_clicked)
-        self.Noise_button.clicked.connect(self.Noise_button_clicked)
 
         self.verticalLayout_5.addWidget(self.Testmic_button)
         self.verticalLayout_2.addWidget(self.TestMic)
@@ -497,15 +492,15 @@ class Ui_main(object):
         self.filenames = []
         # self.player = QMediaPlayer()
         # self.SP_tabel_widget = QTableWidget()
-        self.SP_tabel_widget.setColumnCount(3)
-        self.SP_tabel_widget.setHorizontalHeaderLabels(
-            ["Filename", "Duration", "Action"])
-        self.SP_tabel_widget.horizontalHeader().setStretchLastSection(True)
+        # self.SP_tabel_widget.setColumnCount(3)
+        # self.SP_tabel_widget.setHorizontalHeaderLabels(
+        #     ["Filename", "Duration", "Action"])
+        # self.SP_tabel_widget.horizontalHeader().setStretchLastSection(True)
         # self.SP_tabel_widget.cellClicked.connect(self.create_button_widget)
 
         # self.scroll_area = QScrollArea()
-        self.scroll_area.setWidget(self.SP_tabel_widget)
-        self.scroll_area.setWidgetResizable(True)
+        # self.scroll_area.setWidget(self.SP_tabel_widget)
+        # self.scroll_area.setWidgetResizable(True)
 
         self.stackedWidget.addWidget(self.Soundpad_page)
 
