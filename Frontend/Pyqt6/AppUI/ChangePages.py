@@ -267,13 +267,18 @@ class Ui_ui_main(object):
 "    text-align : center;\n"
 "}\n"
 "QPushButton:hover{\n"
-"    background-color: rgb(53, 112, 122);\n"
-"\n"
+"    background-color: rgb(53, 112, 122);    \n"
 "    border-width : 0.5px;\n"
 "    border-color :  rgb(1, 209, 158) ;\n"
 "    color: rgb(204, 204, 204);\n"
 "}\n"
-"")
+"QPushButton:pressed{\n"
+"    background-color: #244D54;\n"
+"    border-style : outset;\n"
+"    border-width : 2px;\n"
+"    border-color : #00D19D;\n"
+"    color: #FFFFFF;\n"
+"}")
         self.Noise_button.setObjectName("Noise_button")
         self.Noise_label = QtWidgets.QLabel(self.Noise)
         self.Noise_label.setGeometry(QtCore.QRect(280, 16, 340, 60))
@@ -342,6 +347,14 @@ class Ui_ui_main(object):
 "QPushButton:hover{\n"
 "    border-width : 0.5px;\n"
 "    border-color :  rgb(1, 209, 158) ;\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"    background-color: #244D54;\n"
+"    border-style : inset;\n"
+"    border-width : 2px;\n"
+"    border-color : #00D19D;\n"
+"    color: #FFFFFF;\n"
 "}")
         self.Testmic_button.setObjectName("Testmic_button")
         self.verticalLayout_5.addWidget(self.Testmic_button)
@@ -369,18 +382,229 @@ class Ui_ui_main(object):
         self.Soundpad_page = QtWidgets.QWidget()
         self.Soundpad_page.setObjectName("Soundpad_page")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.Soundpad_page)
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.Soundpad_label = QtWidgets.QLabel(self.Soundpad_page)
+        self.SP_body = QtWidgets.QFrame(self.Soundpad_page)
+        self.SP_body.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.SP_body.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.SP_body.setObjectName("SP_body")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.SP_body)
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_6.setSpacing(0)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.SP_title = QtWidgets.QFrame(self.SP_body)
+        self.SP_title.setMinimumSize(QtCore.QSize(900, 120))
+        self.SP_title.setMaximumSize(QtCore.QSize(900, 120))
+        self.SP_title.setStyleSheet("QFrame{\n"
+"    background-color: rgba(0, 0, 0, 0);\n"
+"}")
+        self.SP_title.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.SP_title.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.SP_title.setObjectName("SP_title")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.SP_title)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.SP_title_label = QtWidgets.QLabel(self.SP_title)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(36)
+        font.setPointSize(40)
         font.setBold(True)
         font.setWeight(75)
-        self.Soundpad_label.setFont(font)
-        self.Soundpad_label.setStyleSheet("color: #66DAED")
-        self.Soundpad_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.Soundpad_label.setObjectName("Soundpad_label")
-        self.horizontalLayout_4.addWidget(self.Soundpad_label)
+        self.SP_title_label.setFont(font)
+        self.SP_title_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.SP_title_label.setObjectName("SP_title_label")
+        self.verticalLayout_7.addWidget(self.SP_title_label)
+        self.verticalLayout_6.addWidget(self.SP_title)
+        self.SP_item = QtWidgets.QFrame(self.SP_body)
+        self.SP_item.setStyleSheet("QFrame{\n"
+"    background-color: rgba(0, 0, 0, 0);\n"
+"}")
+        self.SP_item.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.SP_item.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.SP_item.setObjectName("SP_item")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.SP_item)
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_8.setSpacing(0)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.SP_header_table = QtWidgets.QFrame(self.SP_item)
+        self.SP_header_table.setMinimumSize(QtCore.QSize(900, 50))
+        self.SP_header_table.setMaximumSize(QtCore.QSize(900, 50))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.SP_header_table.setFont(font)
+        self.SP_header_table.setStyleSheet("QLabel\n"
+"{\n"
+"    color: #FFFFFF;\n"
+"}")
+        self.SP_header_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.SP_header_table.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.SP_header_table.setObjectName("SP_header_table")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.SP_header_table)
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.ID = QtWidgets.QFrame(self.SP_header_table)
+        self.ID.setMinimumSize(QtCore.QSize(0, 0))
+        self.ID.setMaximumSize(QtCore.QSize(80, 50))
+        font = QtGui.QFont()
+        font.setPointSize(6)
+        self.ID.setFont(font)
+        self.ID.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.ID.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.ID.setObjectName("ID")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.ID)
+        self.verticalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_10.setSpacing(0)
+        self.verticalLayout_10.setObjectName("verticalLayout_10")
+        self.ID_label = QtWidgets.QLabel(self.ID)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.ID_label.setFont(font)
+        self.ID_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.ID_label.setObjectName("ID_label")
+        self.verticalLayout_10.addWidget(self.ID_label)
+        self.horizontalLayout_6.addWidget(self.ID)
+        self.nameitem = QtWidgets.QFrame(self.SP_header_table)
+        self.nameitem.setMaximumSize(QtCore.QSize(400, 50))
+        self.nameitem.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.nameitem.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.nameitem.setObjectName("nameitem")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.nameitem)
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_11.setSpacing(0)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.name_label = QtWidgets.QLabel(self.nameitem)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.name_label.setFont(font)
+        self.name_label.setStyleSheet("QLabel\n"
+"{\n"
+"    padding-left: 20px;\n"
+"}")
+        self.name_label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.name_label.setObjectName("name_label")
+        self.verticalLayout_11.addWidget(self.name_label)
+        self.horizontalLayout_6.addWidget(self.nameitem)
+        self.duraitem = QtWidgets.QFrame(self.SP_header_table)
+        self.duraitem.setMaximumSize(QtCore.QSize(130, 50))
+        self.duraitem.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.duraitem.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.duraitem.setObjectName("duraitem")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.duraitem)
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_12.setSpacing(0)
+        self.verticalLayout_12.setObjectName("verticalLayout_12")
+        self.dura_rabel = QtWidgets.QLabel(self.duraitem)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.dura_rabel.setFont(font)
+        self.dura_rabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.dura_rabel.setObjectName("dura_rabel")
+        self.verticalLayout_12.addWidget(self.dura_rabel)
+        self.horizontalLayout_6.addWidget(self.duraitem)
+        self.hotkeysitem = QtWidgets.QFrame(self.SP_header_table)
+        self.hotkeysitem.setMaximumSize(QtCore.QSize(130, 50))
+        self.hotkeysitem.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.hotkeysitem.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.hotkeysitem.setObjectName("hotkeysitem")
+        self.verticalLayout_13 = QtWidgets.QVBoxLayout(self.hotkeysitem)
+        self.verticalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_13.setSpacing(0)
+        self.verticalLayout_13.setObjectName("verticalLayout_13")
+        self.hotkeys_label = QtWidgets.QLabel(self.hotkeysitem)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.hotkeys_label.setFont(font)
+        self.hotkeys_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.hotkeys_label.setObjectName("hotkeys_label")
+        self.verticalLayout_13.addWidget(self.hotkeys_label)
+        self.horizontalLayout_6.addWidget(self.hotkeysitem)
+        self.controlitem = QtWidgets.QFrame(self.SP_header_table)
+        self.controlitem.setMaximumSize(QtCore.QSize(200, 50))
+        self.controlitem.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.controlitem.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.controlitem.setObjectName("controlitem")
+        self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.controlitem)
+        self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_14.setSpacing(0)
+        self.verticalLayout_14.setObjectName("verticalLayout_14")
+        self.control_item = QtWidgets.QLabel(self.controlitem)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.control_item.setFont(font)
+        self.control_item.setAlignment(QtCore.Qt.AlignCenter)
+        self.control_item.setObjectName("control_item")
+        self.verticalLayout_14.addWidget(self.control_item)
+        self.horizontalLayout_6.addWidget(self.controlitem)
+        self.verticalLayout_8.addWidget(self.SP_header_table)
+        self.SP_table = QtWidgets.QFrame(self.SP_item)
+        self.SP_table.setMinimumSize(QtCore.QSize(900, 420))
+        self.SP_table.setMaximumSize(QtCore.QSize(900, 420))
+        self.SP_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.SP_table.setObjectName("SP_table")
+        self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.SP_table)
+        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_9.setSpacing(0)
+        self.verticalLayout_9.setObjectName("verticalLayout_9")
+        self.SP_scrollArea = QtWidgets.QScrollArea(self.SP_table)
+        self.SP_scrollArea.setWidgetResizable(True)
+        self.SP_scrollArea.setObjectName("SP_scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 900, 420))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.SP_scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.verticalLayout_9.addWidget(self.SP_scrollArea)
+        self.verticalLayout_8.addWidget(self.SP_table)
+        self.SP_bottom_area = QtWidgets.QFrame(self.SP_item)
+        self.SP_bottom_area.setMinimumSize(QtCore.QSize(900, 130))
+        self.SP_bottom_area.setMaximumSize(QtCore.QSize(900, 130))
+        self.SP_bottom_area.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.SP_bottom_area.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.SP_bottom_area.setObjectName("SP_bottom_area")
+        self.SP_add_button = QtWidgets.QPushButton(self.SP_bottom_area)
+        self.SP_add_button.setGeometry(QtCore.QRect(760, 5, 100, 100))
+        self.SP_add_button.setStyleSheet("QPushButton {\n"
+"    background: #56B7C7;\n"
+"    border-radius: 50px;\n"
+"    }\n"
+"\n"
+"QPushButton:hover {\n"
+"    background: #66DAED;\n"
+"    padding: 5px;\n"
+"    }\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background: #56B7C7;\n"
+"    padding: 5px;\n"
+"    }")
+        self.SP_add_button.setText("")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/icons/plus.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.SP_add_button.setIcon(icon4)
+        self.SP_add_button.setIconSize(QtCore.QSize(34, 34))
+        self.SP_add_button.setObjectName("SP_add_button")
+        self.verticalLayout_8.addWidget(self.SP_bottom_area)
+        self.verticalLayout_6.addWidget(self.SP_item)
+        self.horizontalLayout_4.addWidget(self.SP_body)
         self.stackedWidget.addWidget(self.Soundpad_page)
         self.Voicechanger_page = QtWidgets.QWidget()
         self.Voicechanger_page.setObjectName("Voicechanger_page")
@@ -401,7 +625,7 @@ class Ui_ui_main(object):
         self.horizontalLayout.addWidget(self.stackedWidget)
 
         self.retranslateUi(ui_main)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
     def retranslateUi(self, ui_main):
@@ -419,6 +643,11 @@ class Ui_ui_main(object):
         self.label.setText(_translate("ui_main", "Graph"))
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
         self.audio_label.setText(_translate("ui_main", "Audio"))
-        self.Soundpad_label.setText(_translate("ui_main", "Soundpad"))
+        self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
+        self.ID_label.setText(_translate("ui_main", "NO."))
+        self.name_label.setText(_translate("ui_main", "Name"))
+        self.dura_rabel.setText(_translate("ui_main", "Duration"))
+        self.hotkeys_label.setText(_translate("ui_main", "Hotkeys"))
+        self.control_item.setText(_translate("ui_main", "Status"))
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
 import icons_rc
