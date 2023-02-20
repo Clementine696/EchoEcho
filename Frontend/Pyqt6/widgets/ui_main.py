@@ -1,9 +1,23 @@
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide6 import QtMultimedia
+from PyQt5 import uic
+from PyQt5.QtMultimedia import QAudioDeviceInfo,QAudio
+from PyQt5.QtCore import Qt
+# import pyautogui
+from ctypes import cast, POINTER
+from comtypes import CLSCTX_ALL
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+import pygame
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 
 
+
+input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
+output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
+
 class Ui_main(object):
+    test_mic = 0
     def setupUi(self, ui_main):
         # Application size
         ui_main.setObjectName("ui_main")
@@ -80,6 +94,7 @@ class Ui_main(object):
                                        "    text-align: left;\n"
                                        "    padding-left: 20 px;\n"
                                        "}")
+
         self.Menu_button.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Menu_button.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Menu_button.setObjectName("Menu_button")
@@ -174,14 +189,15 @@ class Ui_main(object):
         self.verticalLayout.addWidget(self.Voicechanger_button)
         self.Device_settings = QtWidgets.QFrame(self.Left_side)
 
-        # Device settings
-        self.Device_settings.setGeometry(QtCore.QRect(0, 329, 381, 371))
+        
+        #Device settings
+        self.Device_settings.setGeometry(QtCore.QRect(0, 330, 372, 391))
+
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.Device_settings.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.Device_settings.sizePolicy().hasHeightForWidth())
         self.Device_settings.setSizePolicy(sizePolicy)
         self.Device_settings.setMinimumSize(QtCore.QSize(360, 330))
         self.Device_settings.setMaximumSize(QtCore.QSize(1000, 1000))
@@ -189,7 +205,164 @@ class Ui_main(object):
         self.Device_settings.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Device_settings.setObjectName("Device_settings")
 
-        # right side
+#Setting Zone
+###################################################################################
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.Device_settings)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.dropdownslider1 = QtWidgets.QFrame(self.Device_settings)
+        self.dropdownslider1.setMinimumSize(QtCore.QSize(370, 0))
+        self.dropdownslider1.setStyleSheet("")
+        self.dropdownslider1.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.dropdownslider1.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.dropdownslider1.setObjectName("dropdownslider1")
+        self.comboBox_2 = QtWidgets.QComboBox(self.dropdownslider1)
+        self.comboBox_2.setGeometry(QtCore.QRect(80, 50, 273, 44))
+        self.comboBox_2.setMinimumSize(QtCore.QSize(273, 44))
+        self.comboBox_2.setMaximumSize(QtCore.QSize(273, 44))
+        self.comboBox_2.setStyleSheet("QComboBox{\n"
+                                        "background-color: rgb(26, 39, 41);\n"
+                                        "border-radius: 8px;\n"
+                                        "border: 5px solid rgb(26, 39, 41);\n"
+                                        "color: white;\n"
+                                        "font-size: 13px;\n"
+                                    "}\n"
+                                    "QComboBox:editable {\n"
+                                        "background-color: #324B4F;\n"
+                                    "}\n"
+                                    "QComboBox QAbstractItemView {\n"
+                                        "border: 1px solid #d9d9d9;\n"
+                                        "selection-background-color: #686868;\n"
+                                        "border-bottom-right-radius: 8px;\n"
+                                        "border-bottom-left-radius: 8px;\n"
+                                        "background-color: #d9d9d9;\n"
+                                        "color: #686868;\n"
+                                        "font-size: 13px;\n"
+                                    "}\n"
+                                    "")
+        self.comboBox_2.setObjectName("comboBox_2")
+        self.micmute = QtWidgets.QPushButton(self.dropdownslider1)
+        self.micmute.setGeometry(QtCore.QRect(20, 50, 45, 45))
+        self.micmute.setMinimumSize(QtCore.QSize(45, 45))
+        self.micmute.setMaximumSize(QtCore.QSize(45, 45))
+        self.micmute.setText("")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic.svg"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.micmute.setIcon(icon4)
+        self.micmute.setIconSize(QtCore.QSize(40, 40))
+        self.micmute.setObjectName("micmute")
+        self.horizontalSlider_2 = QtWidgets.QSlider(self.dropdownslider1)
+        self.horizontalSlider_2.setGeometry(QtCore.QRect(30, 110, 326, 20))
+        self.horizontalSlider_2.setStyleSheet("QSlider::handle:horizontal {\n"
+                                                    "border-radius: 6px;\n"
+                                                    "background-color: #00d19d;;\n"
+                                                "}")
+        self.horizontalSlider_2.setMaximum(100)
+        self.horizontalSlider_2.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider_2.setObjectName("horizontalSlider_2")
+        self.verticalLayout_2.addWidget(self.dropdownslider1)
+        self.dropdownslider2 = QtWidgets.QFrame(self.Device_settings)
+        self.dropdownslider2.setMinimumSize(QtCore.QSize(370, 0))
+        self.dropdownslider2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.dropdownslider2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.dropdownslider2.setObjectName("dropdownslider2")
+        self.comboBox = QtWidgets.QComboBox(self.dropdownslider2)
+        self.comboBox.setGeometry(QtCore.QRect(80, 40, 273, 44))
+        self.comboBox.setMinimumSize(QtCore.QSize(273, 44))
+        self.comboBox.setMaximumSize(QtCore.QSize(273, 44))
+        self.comboBox.setStyleSheet("QComboBox{\n"
+                                        "background-color: rgb(26, 39, 41);\n"
+                                        "border-radius: 8px;\n"
+                                        "border: 5px solid rgb(26, 39, 41);\n"
+                                        "color: white;\n"
+                                        "font-size: 13px;\n"
+                                    "}\n"
+                                    "QComboBox:editable {\n"
+                                        "background-color: #324B4F;\n"
+                                    "}\n"
+                                    "QComboBox QAbstractItemView {\n"
+                                        "border: 1px solid #d9d9d9;\n"
+                                        "selection-background-color: #686868;\n"
+                                        "border-bottom-right-radius: 8px;\n"
+                                        "border-bottom-left-radius: 8px;\n"
+                                        "background-color: #d9d9d9;\n"
+                                        "color: #686868;\n"
+                                        "font-size: 13px;\n"
+                                    "}\n"
+                                    "")
+        self.comboBox.setObjectName("comboBox")
+
+        self.devicesInput_list = []
+        for device in input_audio_deviceInfos:
+            if device.deviceName() not in self.devicesInput_list:
+                self.devicesInput_list.append(device.deviceName())
+            # elif device in self.devicesInput_list: 
+            #     continue
+
+        #print(self.devicesInput_list)
+        self.comboBox_2.addItems(self.devicesInput_list)
+        self.comboBox_2.currentIndexChanged['QString'].connect(self.updateInput_now)
+        self.comboBox_2.setCurrentIndex(0)
+        
+
+        self.devicesOutput_list = []
+        for device in output_audio_deviceInfos:
+            if device.deviceName() not in self.devicesOutput_list:
+                self.devicesOutput_list.append(device.deviceName())
+    
+        self.comboBox.addItems(self.devicesOutput_list)
+        self.comboBox.currentIndexChanged['QString'].connect(self.updateOutput_now)
+        self.comboBox.setCurrentIndex(0)
+
+
+        self.speakermute = QtWidgets.QPushButton(self.dropdownslider2)
+        self.speakermute.setGeometry(QtCore.QRect(20, 40, 45, 45))
+        self.speakermute.setMinimumSize(QtCore.QSize(45, 45))
+        self.speakermute.setMaximumSize(QtCore.QSize(45, 45))
+        self.speakermute.setText("")
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.speakermute.setIcon(icon5)
+        self.speakermute.setIconSize(QtCore.QSize(40, 40))
+        self.speakermute.setObjectName("speakermute")
+        self.speakermute.clicked.connect(self.volume_mute)
+        self.horizontalSlider = QtWidgets.QSlider(self.dropdownslider2)
+        self.horizontalSlider.setGeometry(QtCore.QRect(30, 100, 326, 20))
+        self.horizontalSlider.setStyleSheet("\n"
+"QSlider::handle:horizontal {\n"
+"border-radius: 6px;\n"
+"background-color: #00d19d;\n"
+"}")
+        self.horizontalSlider.setMaximum(100)
+        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider.setObjectName("horizontalSlider")
+        # self.horizontalSlider.connect(self.volume)
+        self.verticalLayout_2.addWidget(self.dropdownslider2)
+        self.frame = QtWidgets.QFrame(self.Device_settings)
+        self.frame.setMinimumSize(QtCore.QSize(370, 0))
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.settingButton = QtWidgets.QPushButton(self.frame)
+        self.settingButton.setGeometry(QtCore.QRect(30, 50, 320, 70))
+        self.settingButton.setMinimumSize(QtCore.QSize(320, 70))
+        self.settingButton.setMaximumSize(QtCore.QSize(320, 70))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(32)
+        self.settingButton.setFont(font)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/settings.svg"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.settingButton.setIcon(icon6)
+        self.settingButton.setIconSize(QtCore.QSize(32, 32))
+        self.settingButton.setObjectName("settingButton")
+        self.verticalLayout_2.addWidget(self.frame)
+
+        #right side
         self.Right_side = QtWidgets.QFrame(ui_main)
         self.Right_side.setGeometry(QtCore.QRect(378, -1, 900, 721))
         sizePolicy = QtWidgets.QSizePolicy(
@@ -453,6 +626,52 @@ class Ui_main(object):
         self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
+    def updateInput_now(self,value):
+        print(value)
+        self.device = self.devicesInput_list.index(value)
+        print('Device:',self.devicesInput_list.index(value))
+
+    def updateOutput_now(self,value):
+        print(value)
+        self.device1 = self.devicesOutput_list.index(value)
+        print('Speaker:',self.devicesOutput_list.index(value))
+
+    # def on_click(self):       
+    #     if(Ui_main.test_mic==0):
+    #         print("Mic Start")
+    #         Ui_main.test_mic=1
+    #         pyautogui.press("volumemute")
+    #     else:
+    #         print("Mic Stop")
+    #         Ui_main.test_mic=0
+    #         pyautogui.press("volumemute")
+
+    def volume_mute(self):
+        devices = AudioUtilities.GetSpeakers()
+        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        volume = cast(interface, POINTER(IAudioEndpointVolume))
+        # current = volume.GetMasterVolumeLevel()
+        if(Ui_main.test_mic==0):
+            print("Mic Start")
+            Ui_main.test_mic=1
+            volume.SetMute(1, None)
+        else:
+            print("Mic Stop")
+            Ui_main.test_mic=0
+            volume.SetMute(0,None)
+
+    def volume(self):
+        pygame.mixer.music.set_volume(self.horizontalSlider.get())
+
+    # def mute_volume():
+    #     sessions = pycaw.AudioUtilities.GetAllSessions()
+    #     for session in sessions:
+    #         volume = session.SimpleVolume
+    #         if session.Process and session.Process.name() == "explorer.exe":
+    #             volume.SetMute(1, None)
+    #             break
+
+
     def retranslateUi(self, ui_main):
         _translate = QtCore.QCoreApplication.translate
         ui_main.setWindowTitle(_translate("ui_main", "Form"))
@@ -460,6 +679,8 @@ class Ui_main(object):
         self.Audio_button.setText(_translate("ui_main", "Audio"))
         self.Soundpad_button.setText(_translate("ui_main", "Soundpad"))
         self.Voicechanger_button.setText(_translate("ui_main", "VoiceChanger"))
+        self.settingButton.setText(_translate("ui_main", "Setting"))
+        self.mic_label.setText(_translate("ui_main", "Microphone"))
         self.label_2.setText(_translate("ui_main", "Microphone"))
         self.Noise_button.setText(_translate("ui_main", "\n"
                                              "detecting the sound coming into the headset, and generating signals \n"
@@ -476,3 +697,4 @@ class Ui_main(object):
 
     def TestMic_button_clicked(self):
         print("Test mic button clicked")
+
