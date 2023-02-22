@@ -397,7 +397,7 @@ class Ui_mainInterface(object):
                                           "    background-color: #244D54;\n"
                                           "    border-style : outset;\n"
                                           "    border-width : 0.5px;\n"
-                                          "    border-radius: 40px;\n"
+                                          "    border-radius: 25px;\n"
                                           "    border-color : black;\n"
                                           "\n"
                                           "    color: rgb(104, 104, 104);\n"
@@ -652,11 +652,11 @@ class Ui_mainInterface(object):
         self.SP_table_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_table_frame.setFrameShadow(QtWidgets.QFrame.Raised)
 
-        self.ui.tableWidget.setRowCount(3)
-        self.ui.tableWidget.setColumnCount(5)
+        # self.ui.tableWidget.setRowCount(3)
+        # self.ui.tableWidget.setColumnCount(5)
 
-        self.ui.tableWidget.setColumnWidth(0, 300)
-        self.ui.tableWidget.setColumnWidth(1, 50)
+        # self.ui.tableWidget.setColumnWidth(0, 300)
+        # self.ui.tableWidget.setColumnWidth(1, 50)
 
 
         self.SP_table_frame.setObjectName("SP_table_frame")
