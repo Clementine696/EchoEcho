@@ -8,7 +8,6 @@ from PyQt5.QtCore import Qt
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-import pygame
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 
 
@@ -253,13 +252,21 @@ class Ui_main(object):
         self.micmute.setIcon(icon4)
         self.micmute.setIconSize(QtCore.QSize(40, 40))
         self.micmute.setObjectName("micmute")
+        #เรียกใช้ฟังก์ชั่น mute mic
+        self.micmute.clicked.connect(self.mic_mute)
         self.horizontalSlider_2 = QtWidgets.QSlider(self.dropdownslider1)
         self.horizontalSlider_2.setGeometry(QtCore.QRect(30, 110, 326, 20))
         self.horizontalSlider_2.setStyleSheet("QSlider::handle:horizontal {\n"
                                                     "border-radius: 6px;\n"
                                                     "background-color: #00d19d;;\n"
                                                 "}")
-        self.horizontalSlider_2.setMaximum(100)
+        
+        #กำหนดค่า max min ค่ากลาง ของ Boost mic
+        self.horizontalSlider_2.setMaximum(5)
+        self.horizontalSlider_2.setMinimum(-5)
+        self.horizontalSlider_2.setValue(0)
+        self.horizontalSlider_2.setPageStep(1)
+        self.horizontalSlider_2.valueChanged.connect(self.updateboostmicl)
         self.horizontalSlider_2.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider_2.setObjectName("horizontalSlider_2")
         self.verticalLayout_2.addWidget(self.dropdownslider1)
@@ -294,19 +301,17 @@ class Ui_main(object):
                                     "")
         self.comboBox.setObjectName("comboBox")
 
+        #โชว์ข้อมูล Input ใน dropdown
         self.devicesInput_list = []
         for device in input_audio_deviceInfos:
             if device.deviceName() not in self.devicesInput_list:
                 self.devicesInput_list.append(device.deviceName())
-            # elif device in self.devicesInput_list: 
-            #     continue
 
-        #print(self.devicesInput_list)
         self.comboBox_2.addItems(self.devicesInput_list)
         self.comboBox_2.currentIndexChanged['QString'].connect(self.updateInput_now)
         self.comboBox_2.setCurrentIndex(0)
         
-
+        #โชว์ข้อมูล Output ใน dropdown
         self.devicesOutput_list = []
         for device in output_audio_deviceInfos:
             if device.deviceName() not in self.devicesOutput_list:
@@ -328,18 +333,27 @@ class Ui_main(object):
         self.speakermute.setIcon(icon5)
         self.speakermute.setIconSize(QtCore.QSize(40, 40))
         self.speakermute.setObjectName("speakermute")
+        #เรียกใช้ ฟังก์ชั่น mute volume
         self.speakermute.clicked.connect(self.volume_mute)
         self.horizontalSlider = QtWidgets.QSlider(self.dropdownslider2)
         self.horizontalSlider.setGeometry(QtCore.QRect(30, 100, 326, 20))
-        self.horizontalSlider.setStyleSheet("\n"
-"QSlider::handle:horizontal {\n"
-"border-radius: 6px;\n"
-"background-color: #00d19d;\n"
-"}")
+        self.horizontalSlider.setStyleSheet("QSlider::handle:horizontal {\n"
+                                                "border-radius: 6px;\n"
+                                                "background-color: #00d19d;;\n"
+                                                "}")
+        #set ให้ค่า current เท่ากับ value
+        devices = AudioUtilities.GetSpeakers()
+        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        volume = cast(interface, POINTER(IAudioEndpointVolume))
+        current = volume.GetMasterVolumeLevelScalar()
+        current_percent = current * 100
         self.horizontalSlider.setMaximum(100)
+
+        #set ให้โชว์ค่า value ตรง Slider bar 
+        self.horizontalSlider.setValue(int(current_percent))
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
-        # self.horizontalSlider.connect(self.volume)
+        self.horizontalSlider.valueChanged.connect(self.updatevolume)
         self.verticalLayout_2.addWidget(self.dropdownslider2)
         self.frame = QtWidgets.QFrame(self.Device_settings)
         self.frame.setMinimumSize(QtCore.QSize(370, 0))
@@ -636,40 +650,51 @@ class Ui_main(object):
         self.device1 = self.devicesOutput_list.index(value)
         print('Speaker:',self.devicesOutput_list.index(value))
 
-    # def on_click(self):       
-    #     if(Ui_main.test_mic==0):
-    #         print("Mic Start")
-    #         Ui_main.test_mic=1
-    #         pyautogui.press("volumemute")
-    #     else:
-    #         print("Mic Stop")
-    #         Ui_main.test_mic=0
-    #         pyautogui.press("volumemute")
 
     def volume_mute(self):
         devices = AudioUtilities.GetSpeakers()
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = cast(interface, POINTER(IAudioEndpointVolume))
-        # current = volume.GetMasterVolumeLevel()
         if(Ui_main.test_mic==0):
-            print("Mic Start")
+            print("Volume Mute")
             Ui_main.test_mic=1
             volume.SetMute(1, None)
+            icon_volume_mute = QtGui.QIcon()
+            icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-x.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.speakermute.setIcon(icon_volume_mute)
         else:
-            print("Mic Stop")
+            print("Volume UnMute")
             Ui_main.test_mic=0
             volume.SetMute(0,None)
+            icon_volume_unmute = QtGui.QIcon()
+            icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.speakermute.setIcon(icon_volume_unmute)
 
-    def volume(self):
-        pygame.mixer.music.set_volume(self.horizontalSlider.get())
 
-    # def mute_volume():
-    #     sessions = pycaw.AudioUtilities.GetAllSessions()
-    #     for session in sessions:
-    #         volume = session.SimpleVolume
-    #         if session.Process and session.Process.name() == "explorer.exe":
-    #             volume.SetMute(1, None)
-    #             break
+    def mic_mute(self):
+        if(Ui_main.test_mic==0):
+            print("Mic Mute")
+            Ui_main.test_mic=1
+            icon_mic_mute = QtGui.QIcon()
+            icon_mic_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic-off.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.micmute.setIcon(icon_mic_mute)
+        else:
+            print("Mic UnMute")
+            Ui_main.test_mic=0
+            icon_mic_unmute = QtGui.QIcon()
+            icon_mic_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.micmute.setIcon(icon_mic_unmute)
+
+
+    def updatevolume(self, value):
+        devices = AudioUtilities.GetSpeakers()
+        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        volume = cast(interface, POINTER(IAudioEndpointVolume))
+        volume.SetMasterVolumeLevelScalar(value / 100, None)
+
+
+    def updateboostmicl(self, value):
+        print(value)
 
 
     def retranslateUi(self, ui_main):
@@ -680,7 +705,6 @@ class Ui_main(object):
         self.Soundpad_button.setText(_translate("ui_main", "Soundpad"))
         self.Voicechanger_button.setText(_translate("ui_main", "VoiceChanger"))
         self.settingButton.setText(_translate("ui_main", "Setting"))
-        self.mic_label.setText(_translate("ui_main", "Microphone"))
         self.label_2.setText(_translate("ui_main", "Microphone"))
         self.Noise_button.setText(_translate("ui_main", "\n"
                                              "detecting the sound coming into the headset, and generating signals \n"
