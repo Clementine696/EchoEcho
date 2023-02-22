@@ -110,10 +110,10 @@ class Ui_mainInterface(object):
                                              "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
                                              "}")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic.svg"),
+        icon.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic8.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Microphone_button.setIcon(icon)
-        self.Microphone_button.setIconSize(QtCore.QSize(32, 32))
+        self.Microphone_button.setIconSize(QtCore.QSize(40, 40))
         self.Microphone_button.setObjectName("Microphone_button")
         self.verticalLayout.addWidget(self.Microphone_button)
         self.Audio_button = QtWidgets.QPushButton(self.Menu_button)
@@ -140,7 +140,7 @@ class Ui_mainInterface(object):
         icon1.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Audio_button.setIcon(icon1)
-        self.Audio_button.setIconSize(QtCore.QSize(32, 32))
+        self.Audio_button.setIconSize(QtCore.QSize(40, 40))
         self.Audio_button.setObjectName("Audio_button")
         self.verticalLayout.addWidget(self.Audio_button)
         self.Soundpad_button = QtWidgets.QPushButton(self.Menu_button)
@@ -160,10 +160,10 @@ class Ui_mainInterface(object):
                                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
                                            "}")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/play-circle.svg"),
+        icon2.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/play-circle8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Soundpad_button.setIcon(icon2)
-        self.Soundpad_button.setIconSize(QtCore.QSize(32, 32))
+        self.Soundpad_button.setIconSize(QtCore.QSize(40, 40))
         self.Soundpad_button.setObjectName("Soundpad_button")
         self.verticalLayout.addWidget(self.Soundpad_button)
         self.Voicechanger_button = QtWidgets.QPushButton(self.Menu_button)
@@ -183,10 +183,10 @@ class Ui_mainInterface(object):
                                                "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
                                                "}")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/codesandbox.svg"),
+        icon3.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/code-sandbox8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Voicechanger_button.setIcon(icon3)
-        self.Voicechanger_button.setIconSize(QtCore.QSize(32, 32))
+        self.Voicechanger_button.setIconSize(QtCore.QSize(40, 40))
         self.Voicechanger_button.setObjectName("Voicechanger_button")
         self.verticalLayout.addWidget(self.Voicechanger_button)
         self.Device_settings = QtWidgets.QFrame(self.Left_side)
