@@ -14,18 +14,38 @@ import noisereduce as nr
 # IMPORT GUI FILE
 from ui_main import *
 
+input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
+output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
+
+
+devicesInput_list = []
+for device in input_audio_deviceInfos:
+    if device.deviceName() not in devicesInput_list and "Virtual Cable" not in device.deviceName(): 
+        devicesInput_list.append(device.deviceName())
+
+devicesOutput_list = []
+for device in output_audio_deviceInfos:
+    if device.deviceName() not in devicesOutput_list and "Virtual Cable" not in device.deviceName():
+        devicesOutput_list.append(device.deviceName())
+
 Noise_reduce_state = False
 Test_mic_state = False
 Pushed_reinit = 0
+
+def print_device(value):
+    print('Speaker:',devicesOutput_list.index(value))
+
 
 def Toggle_NoiseReduce():
     global Noise_reduce_state
     if(Noise_reduce_state==False):
         Noise_reduce_state = True
         print("State = ",Noise_reduce_state)
+        #ทำstate ปุ่ม
     else:
         Noise_reduce_state = False
         print("State = ",Noise_reduce_state)
+
 
 def Toggle_TestMic():
     global Test_mic_state
@@ -47,7 +67,6 @@ class SoundSystem():
     def __init__(self):
     
         # self.output_sound = ''
-
         if(self.find_vb()):
             print("Found VB")
         else:
@@ -55,9 +74,12 @@ class SoundSystem():
             # print("init error")
             return False
 
-
         #init sound system
         self.p = pyaudio.PyAudio()
+
+        #get device info
+
+
 
         # open a stream from microphone
         try:
@@ -107,6 +129,7 @@ class SoundSystem():
         for i in (device_list):
             if "CABLE Input " in i['name']:
                 return True
+        print("not found VB")
         return False
 
     def audio_stream_thread(self):
@@ -192,14 +215,16 @@ class MainWindow(QMainWindow):
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)
         self.ui.Testmic_button.clicked.connect(Toggle_TestMic)
 
+        self.ui.comboBox.currentIndexChanged['QString'].connect(print_device)
+
         self.createSound_system = False
         try:
             self.sound_system = SoundSystem()
             print('init successes')
             self.createSound_system = 1
-            self.audio_stream = Thread(target = self.sound_system.audio_stream_thread)
-            self.audio_stream.daemon = True
-            self.audio_stream.start()
+            # self.audio_stream = Thread(target = self.sound_system.audio_stream_thread)
+            # self.audio_stream.daemon = True
+            # self.audio_stream.start()
         except:
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')

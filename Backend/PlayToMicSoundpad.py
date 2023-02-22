@@ -24,7 +24,7 @@ input_stream = p.open(format=pyaudio.paInt16,
 
 # open a stream for playing audio
 output_stream = p.open(format=pyaudio.paInt16,
-                channels=2,
+                channels=1,
                 rate=44100,
                 output=True,
                 frames_per_buffer=1024,

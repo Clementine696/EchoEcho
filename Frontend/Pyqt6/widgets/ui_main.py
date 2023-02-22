@@ -13,9 +13,11 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 import main as Main
 import keyboard
 
-
+#####
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
 output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
+
+
 
 class Ui_main(object):
     test_mic = 0
@@ -295,9 +297,10 @@ class Ui_main(object):
                                     "")
         self.comboBox.setObjectName("comboBox")
 
+        #เอา Virtual Cable ออกจาก List
         self.devicesInput_list = []
         for device in input_audio_deviceInfos:
-            if device.deviceName() not in self.devicesInput_list:
+            if device.deviceName() not in self.devicesInput_list and "Virtual Cable" not in device.deviceName(): 
                 self.devicesInput_list.append(device.deviceName())
             # elif device in self.devicesInput_list: 
             #     continue
@@ -310,14 +313,14 @@ class Ui_main(object):
 
         self.devicesOutput_list = []
         for device in output_audio_deviceInfos:
-            if device.deviceName() not in self.devicesOutput_list:
+            if device.deviceName() not in self.devicesOutput_list and "Virtual Cable" not in device.deviceName():
                 self.devicesOutput_list.append(device.deviceName())
     
         self.comboBox.addItems(self.devicesOutput_list)
         self.comboBox.currentIndexChanged['QString'].connect(self.updateOutput_now)
         self.comboBox.setCurrentIndex(0)
 
-
+        ##################
         self.speakermute = QtWidgets.QPushButton(self.dropdownslider2)
         self.speakermute.setGeometry(QtCore.QRect(20, 40, 45, 45))
         self.speakermute.setMinimumSize(QtCore.QSize(45, 45))
@@ -626,15 +629,16 @@ class Ui_main(object):
         self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
+
     def updateInput_now(self,value):
         print(value)
         self.device = self.devicesInput_list.index(value)
-        print('Device:',self.devicesInput_list.index(value))
+        # print('Device:',self.devicesInput_list.index(value))
 
     def updateOutput_now(self,value):
         print(value)
         self.device1 = self.devicesOutput_list.index(value)
-        print('Speaker:',self.devicesOutput_list.index(value))
+        # print('Speaker:',self.devicesOutput_list.index(value))
 
     # def on_click(self):       
     #     if(Ui_main.test_mic==0):
@@ -680,7 +684,6 @@ class Ui_main(object):
         self.Soundpad_button.setText(_translate("ui_main", "Soundpad"))
         self.Voicechanger_button.setText(_translate("ui_main", "VoiceChanger"))
         self.settingButton.setText(_translate("ui_main", "Setting"))
-        self.mic_label.setText(_translate("ui_main", "Microphone"))
         self.label_2.setText(_translate("ui_main", "Microphone"))
         self.Noise_button.setText(_translate("ui_main", "\n"
                                              "detecting the sound coming into the headset, and generating signals \n"
@@ -697,4 +700,3 @@ class Ui_main(object):
 
     def TestMic_button_clicked(self):
         print("Test mic button clicked")
-
