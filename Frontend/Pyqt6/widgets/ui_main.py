@@ -652,6 +652,7 @@ class Ui_main(object):
         print(value)
         self.device1 = self.devicesOutput_list.index(value)
         # print('Speaker:',self.devicesOutput_list.index(value))
+        
 
 
     def volume_mute(self):
@@ -694,6 +695,16 @@ class Ui_main(object):
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = cast(interface, POINTER(IAudioEndpointVolume))
         volume.SetMasterVolumeLevelScalar(value / 100, None)
+        if value == 0:
+            icon_volume_mute = QtGui.QIcon()
+            icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-x.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.speakermute.setIcon(icon_volume_mute)
+            volume.SetMute(1, None)
+        else:
+            icon_volume_unmute = QtGui.QIcon()
+            icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.speakermute.setIcon(icon_volume_unmute)
+            volume.SetMute(0,None)
 
 
     def updateboostmicl(self, value):
