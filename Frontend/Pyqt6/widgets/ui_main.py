@@ -1,6 +1,6 @@
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy
 from PyQt5.QtCore import Qt
 
 # IMPORT GUI FILE
@@ -548,7 +548,8 @@ class Ui_mainInterface(object):
             ['No.', 'Name', 'Duration', 'Hotkeys', '', '', ''])
         self.tableWidget.verticalHeader().hide()
 
-        self.tableWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)         
+        # self.tableWidget.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        # self.tableWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)         
         # self.tableWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.tableWidget.autofit = False
         self.tableWidget.setColumnWidth(0, 60)
@@ -735,14 +736,20 @@ class Ui_mainInterface(object):
     def TestMic_button_clicked(self):
         print("Test mic button clicked")
 
+    
+    ## Soundpad Page Function
+    # add item
     def SP_add_item(self):
         print("SP add item")
 
+    # play item
     def SP_play_item(self, row):
         print("SP play item", row)
 
+    # listen item
     def SP_lis_item(self, row):
         print("SP listen item", row)
 
+    # delete item
     def SP_del_item(self, row):
         print("SP delete item", row)
