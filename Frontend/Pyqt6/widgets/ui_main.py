@@ -1,6 +1,6 @@
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView
 from PyQt5.QtCore import Qt
 
 # IMPORT GUI FILE
@@ -545,20 +545,37 @@ class Ui_mainInterface(object):
         self.tableWidget.setRowCount(3)
         self.tableWidget.setColumnCount(7)
         self.tableWidget.setHorizontalHeaderLabels(
-            ['No.', 'Name', 'Duration', 'Hotkeys', '', '', ''])
+            ['No.', 'Name', 'Duration', 'Hotkeys', '', 'Status', ''])
         self.tableWidget.verticalHeader().hide()
+        # self.tableWidget.setStyleSheet("QHeaderView {\n"
+        #                                "color: #56B7C7;\n"
+        #                             #    "text-style; bold\n"
+        #                             #    "text-shadow: 2px 2px;\n"
+        #                             #    "border: 0px solid  # 567dbc;\n"
+        #                             #    "border-left: 0px;\n"
+        #                             #    "border-right: 0px;\n"
+        #                             #    "background:  # f9f9f9;\n"
+        #                                "}"
+        #                                )
+        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView { font-size: 10pt;"
+                                                          "font-weight: bold;"
+                                                          "color: #56B7C7;"
+                                                          "background-color: transparent;"
+                                                          "border: 0px;"
+                                                          "}")
 
-        # self.tableWidget.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        # self.tableWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)         
-        # self.tableWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.tableWidget.horizontalHeader().setDisabled(True)
+        self.tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
+
         self.tableWidget.autofit = False
         self.tableWidget.setColumnWidth(0, 60)
         self.tableWidget.setColumnWidth(1, 400)
         self.tableWidget.setColumnWidth(2, 130)
         self.tableWidget.setColumnWidth(3, 110)
-        self.tableWidget.setColumnWidth(4, 70)
-        self.tableWidget.setColumnWidth(5, 70)
-        self.tableWidget.setColumnWidth(6, 70)
+        self.tableWidget.setColumnWidth(4, 60)
+        self.tableWidget.setColumnWidth(5, 60)
+        self.tableWidget.setColumnWidth(6, 60)
 
         for index in range(self.tableWidget.rowCount()):
 
@@ -583,36 +600,6 @@ class Ui_mainInterface(object):
             self.btn_delete.clicked.connect(
                 lambda: self.SP_del_item(self.tableWidget.currentRow()))
 
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setVerticalHeaderItem(0, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setVerticalHeaderItem(1, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setVerticalHeaderItem(2, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setVerticalHeaderItem(3, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setVerticalHeaderItem(4, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setVerticalHeaderItem(5, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setVerticalHeaderItem(6, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setVerticalHeaderItem(7, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setVerticalHeaderItem(8, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setHorizontalHeaderItem(0, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setHorizontalHeaderItem(1, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setHorizontalHeaderItem(2, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setHorizontalHeaderItem(3, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setHorizontalHeaderItem(4, item)
-        # item = QtWidgets.QTableWidgetItem()
-        # self.tableWidget.setItem(0, 0, item)
         self.verticalLayout_15.addWidget(self.tableWidget)
         self.SP_scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout_9.addWidget(self.SP_scrollArea)
@@ -697,37 +684,6 @@ class Ui_mainInterface(object):
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
 
-        # item = self.tableWidget.verticalHeaderItem(0)
-        # item.setText(_translate("ui_main", "1"))
-        # item = self.tableWidget.verticalHeaderItem(1)
-        # item.setText(_translate("ui_main", "2"))
-        # item = self.tableWidget.verticalHeaderItem(2)
-        # item.setText(_translate("ui_main", "3"))
-        # item = self.tableWidget.verticalHeaderItem(3)
-        # item.setText(_translate("ui_main", "4"))
-        # item = self.tableWidget.verticalHeaderItem(4)
-        # item.setText(_translate("ui_main", "5"))
-        # item = self.tableWidget.verticalHeaderItem(5)
-        # item.setText(_translate("ui_main", "6"))
-        # item = self.tableWidget.verticalHeaderItem(6)
-        # item.setText(_translate("ui_main", "7"))
-        # item = self.tableWidget.verticalHeaderItem(7)
-        # item.setText(_translate("ui_main", "8"))
-        # item = self.tableWidget.verticalHeaderItem(8)
-        # item.setText(_translate("ui_main", "10"))
-        # item = self.tableWidget.horizontalHeaderItem(0)
-        # item.setText(_translate("ui_main", "No."))
-        # item = self.tableWidget.horizontalHeaderItem(1)
-        # item.setText(_translate("ui_main", "Name"))
-        # item = self.tableWidget.horizontalHeaderItem(2)
-        # item.setText(_translate("ui_main", "Duration"))
-        # item = self.tableWidget.horizontalHeaderItem(3)
-        # item.setText(_translate("ui_main", "Hotkeys"))
-        # item = self.tableWidget.horizontalHeaderItem(4)
-        # item.setText(_translate("ui_main", "Status"))
-        # __sortingEnabled = self.tableWidget.isSortingEnabled()
-        # self.tableWidget.setSortingEnabled(False)
-        # self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
 
     def Noise_button_clicked(self):
@@ -736,9 +692,9 @@ class Ui_mainInterface(object):
     def TestMic_button_clicked(self):
         print("Test mic button clicked")
 
-    
-    ## Soundpad Page Function
+    # Soundpad Page Function
     # add item
+
     def SP_add_item(self):
         print("SP add item")
 

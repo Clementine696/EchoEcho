@@ -1051,6 +1051,16 @@ QPushButton:pressed{
                          <height>470</height>
                         </size>
                        </property>
+                       <property name="font">
+                        <font>
+                         <pointsize>8</pointsize>
+                         <weight>75</weight>
+                         <italic>false</italic>
+                         <bold>true</bold>
+                         <underline>false</underline>
+                         <strikeout>false</strikeout>
+                        </font>
+                       </property>
                        <property name="styleSheet">
                         <string notr="true"/>
                        </property>
@@ -1237,8 +1247,6 @@ QPushButton:pressed {
    </layout>
   </widget>
  </widget>
- <resources>
-  <include location="../icons/icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
