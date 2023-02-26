@@ -694,11 +694,8 @@ class Ui_main(object):
         devices = AudioUtilities.GetSpeakers()
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = cast(interface, POINTER(IAudioEndpointVolume))
-        try:
-            volume.SetMasterVolumeLevelScalar(value / 100, None)
-        except:
-            print('err')
-        
+        volume.SetMasterVolumeLevelScalar(value / 100, None)
+
         if value == 0:
             icon_volume_mute = QtGui.QIcon()
             icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-x.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
