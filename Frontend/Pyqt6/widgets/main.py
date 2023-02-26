@@ -14,27 +14,25 @@ import noisereduce as nr
 # IMPORT GUI FILE
 from ui_main import *
 
-input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
-output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
+# setup device
+# input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
+# output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
 
+# devicesInput_list = []
+# for device in input_audio_deviceInfos:
+#     if device.deviceName() not in devicesInput_list and "Virtual Cable" not in device.deviceName(): 
+#         devicesInput_list.append(device.deviceName())
 
-devicesInput_list = []
-for device in input_audio_deviceInfos:
-    if device.deviceName() not in devicesInput_list and "Virtual Cable" not in device.deviceName(): 
-        devicesInput_list.append(device.deviceName())
-
-devicesOutput_list = []
-for device in output_audio_deviceInfos:
-    if device.deviceName() not in devicesOutput_list and "Virtual Cable" not in device.deviceName():
-        devicesOutput_list.append(device.deviceName())
+# devicesOutput_list = []
+# for device in output_audio_deviceInfos:
+#     if device.deviceName() not in devicesOutput_list and "Virtual Cable" not in device.deviceName():
+#         devicesOutput_list.append(device.deviceName())
 
 Noise_reduce_state = False
 Test_mic_state = False
 Pushed_reinit = 0
 
-def print_device(value):
-    print('Speaker:',devicesOutput_list.index(value))
-
+#update device in main
 
 def Toggle_NoiseReduce():
     global Noise_reduce_state
@@ -78,15 +76,13 @@ class SoundSystem():
         self.p = pyaudio.PyAudio()
 
         #get device info
-
-
-
         # open a stream from microphone
         try:
             self.input_stream = self.p.open(format=pyaudio.paInt16,
                             channels=1,
                             rate=44100,
                             input=True,
+                            # input_device_index = 3,
                             #   input_device_index=input_device_index,
                             frames_per_buffer=1024)
         except:
@@ -132,6 +128,30 @@ class SoundSystem():
         print("not found VB")
         return False
 
+    def update_input(self, index):
+        try:
+            self.input_stream = self.p.open(format=pyaudio.paInt16,
+                                channels=1,
+                                rate=44100,
+                                input=True,
+                                input_device_index = index,
+                                frames_per_buffer=1024)
+            print('update input complete')
+        except:
+            print('update input err')
+
+    def update_output(self, index):
+        try:
+            self.default_output_stream = self.p.open(format=pyaudio.paInt16,
+                            channels=1,
+                            rate=44100,
+                            output=True,
+                            output_device_index = index,
+                            frames_per_buffer=1024)
+            print('update output complete')
+        except:
+            print('update input err')
+
     def audio_stream_thread(self):
         audio_data = self.input_stream.read(1024)
         print("Audio stream start running")
@@ -166,23 +186,23 @@ class SoundSystem():
         self.virtual_microphone_stream.close()
         self.p.terminate()
 
+    def print_audio_device(self, value):
+        print('Speaker in main:',value)
+        device_list = sd.query_devices()
+        for i in (device_list):
+            if value[0:30] in i['name'] and i['hostapi'] == 0:
+                print(i['index'])
+                self.update_output(i['index'])
+                break
     
-    # def test_mic_thread(self):
-    #     print("Test mic start running")
-    #     while Test_mic_state:
-    #         print('TesttttttttttttMic')
-            
-    #         self.default_output_stream.write(self.output_sound)
-    #         #emergency close thread
-    #         if(keyboard.is_pressed('z')):
-    #             break
-    #     print("Test mic stop running")
-        #close program
-        # self.input_stream.stop_stream()
-        # self.input_stream.close()
-        # self.virtual_microphone_stream.stop_stream()
-        # self.virtual_microphone_stream.close()
-        # self.p.terminate()
+    def print_microphone_device(self, value):
+        print('Microphone in main:',value)
+        device_list = sd.query_devices()
+        for i in (device_list):
+            if value[0:30] in i['name'] and i['hostapi'] == 0:
+                print(i['index'])
+                self.update_input(i['index'])
+                break
 
 ###
 
@@ -195,7 +215,7 @@ class MainWindow(QMainWindow):
 
         # Page links
         ########################################################################################
-        # Page Micrphone
+        # Page Microphone
         self.ui.Microphone_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Microphone_page))
 
@@ -214,17 +234,22 @@ class MainWindow(QMainWindow):
         #link button
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)
         self.ui.Testmic_button.clicked.connect(Toggle_TestMic)
-
-        self.ui.comboBox.currentIndexChanged['QString'].connect(print_device)
-
+        
         self.createSound_system = False
         try:
             self.sound_system = SoundSystem()
             print('init successes')
             self.createSound_system = 1
-            # self.audio_stream = Thread(target = self.sound_system.audio_stream_thread)
-            # self.audio_stream.daemon = True
-            # self.audio_stream.start()
+
+            self.audio_stream = Thread(target = self.sound_system.audio_stream_thread)
+            self.audio_stream.daemon = True
+            self.audio_stream.start()
+
+            #audio
+            self.ui.comboBox.currentIndexChanged['QString'].connect(self.sound_system.print_audio_device)
+            #microphone
+            self.ui.comboBox_2.currentIndexChanged['QString'].connect(self.sound_system.print_microphone_device)
+
         except:
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')
