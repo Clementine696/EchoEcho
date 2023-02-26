@@ -9,9 +9,10 @@ from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
+import main as Main
+import keyboard
 
-
-
+#####
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
 output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
 
@@ -301,10 +302,12 @@ class Ui_main(object):
                                     "")
         self.comboBox.setObjectName("comboBox")
 
+        #เอา Virtual Cable ออกจาก List
         #โชว์ข้อมูล Input ใน dropdown
+        
         self.devicesInput_list = []
         for device in input_audio_deviceInfos:
-            if device.deviceName() not in self.devicesInput_list:
+            if device.deviceName() not in self.devicesInput_list and "Virtual Cable" not in device.deviceName(): 
                 self.devicesInput_list.append(device.deviceName())
 
         self.comboBox_2.addItems(self.devicesInput_list)
@@ -314,14 +317,14 @@ class Ui_main(object):
         #โชว์ข้อมูล Output ใน dropdown
         self.devicesOutput_list = []
         for device in output_audio_deviceInfos:
-            if device.deviceName() not in self.devicesOutput_list:
+            if device.deviceName() not in self.devicesOutput_list and "Virtual Cable" not in device.deviceName():
                 self.devicesOutput_list.append(device.deviceName())
     
         self.comboBox.addItems(self.devicesOutput_list)
         self.comboBox.currentIndexChanged['QString'].connect(self.updateOutput_now)
         self.comboBox.setCurrentIndex(0)
 
-
+        ##################
         self.speakermute = QtWidgets.QPushButton(self.dropdownslider2)
         self.speakermute.setGeometry(QtCore.QRect(20, 40, 45, 45))
         self.speakermute.setMinimumSize(QtCore.QSize(45, 45))
@@ -577,7 +580,6 @@ class Ui_main(object):
 
         # Test Mic Button Function
         self.Testmic_button.clicked.connect(self.TestMic_button_clicked)
-        self.Noise_button.clicked.connect(self.Noise_button_clicked)
 
         self.verticalLayout_5.addWidget(self.Testmic_button)
         self.verticalLayout_2.addWidget(self.TestMic)
@@ -640,15 +642,17 @@ class Ui_main(object):
         self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
+
     def updateInput_now(self,value):
         print(value)
         self.device = self.devicesInput_list.index(value)
-        print('Device:',self.devicesInput_list.index(value))
+        # print('Device:',self.devicesInput_list.index(value))
 
     def updateOutput_now(self,value):
         print(value)
         self.device1 = self.devicesOutput_list.index(value)
-        print('Speaker:',self.devicesOutput_list.index(value))
+        # print('Speaker:',self.devicesOutput_list.index(value))
+        
 
 
     def volume_mute(self):
@@ -692,6 +696,17 @@ class Ui_main(object):
         volume = cast(interface, POINTER(IAudioEndpointVolume))
         volume.SetMasterVolumeLevelScalar(value / 100, None)
 
+        if value == 0:
+            icon_volume_mute = QtGui.QIcon()
+            icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-x.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.speakermute.setIcon(icon_volume_mute)
+            volume.SetMute(1, None)
+        else:
+            icon_volume_unmute = QtGui.QIcon()
+            icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.speakermute.setIcon(icon_volume_unmute)
+            volume.SetMute(0,None)
+
 
     def updateboostmicl(self, value):
         print(value)
@@ -721,4 +736,3 @@ class Ui_main(object):
 
     def TestMic_button_clicked(self):
         print("Test mic button clicked")
-
