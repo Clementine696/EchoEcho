@@ -1,7 +1,13 @@
+import os
+import pickle
+
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QFileDialog
+from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
 # IMPORT GUI FILE
 from main import *
@@ -451,6 +457,9 @@ class Ui_mainInterface(object):
         self.stackedWidget.addWidget(self.Audio_page)
 
         # Soundpad Page
+        self.filenames = []
+        self.player = QMediaPlayer()
+
         self.Soundpad_page = QtWidgets.QWidget()
         self.Soundpad_page.setObjectName("Soundpad_page")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.Soundpad_page)
@@ -696,16 +705,83 @@ class Ui_mainInterface(object):
     # add item
 
     def SP_add_item(self):
+    def SP_add_item(self, file_path):
         print("SP add item")
+        options = QFileDialog.Options()
+        # ui_main = Ui_mainInterface()
+        folder = r""
+        # เห็นเฉพาะ .wav, .mp3
+        fname = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        # if fname:
+        #     print("add file :", fname)
+        #     row = self.tableWidget.rowCount()
+        #     self.tableWidget.insertRow(row)
+        #     self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
+        #     # self.table.setItem(row, 1, QTableWidgetItem(""))
+        #     # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
+        #     media_content = QMediaContent(QUrl.fromLocalFile(fname))
+        #     self.player.setMedia(media_content)
+        #     self.player.setNotifyInterval(1000)
+        #     self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
+        #     self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))          
+        #     self.tableWidget.setCellWidget(row, 4, self.SP_lis_item("Play", fname))
+        #     remove_button = QPushButton("Remove")
+        #     remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
+        #     self.tableWidget.setCellWidget(row, 5, remove_button)
+        #     self.filenames.append(fname)
+        #     self.save_file()
 
     # play item
     def SP_play_item(self, row):
         print("SP play item", row)
 
-    # listen item
-    def SP_lis_item(self, row):
-        print("SP listen item", row)
+    # listen item button
+    def SP_lis_item(self, text, filename):
+        button = QPushButton(text)
+        button.clicked.connect(lambda: self.play_media(filename, self.tableWidget.currentRow()))
+        return button
+    
+    def play_media(self, filename, row):
+        fname = filename
+        # convert string to QUrl object using the QUrl constructor
+        file = QUrl.fromLocalFile(fname)
+        media = QMediaContent(file)
+        self.player.setMedia(media)
+        # play the media
+        self.player.play()
+        self.player.mediaStatusChanged.connect(lambda status: self.get_duration(status, filename, row))
+    
+    def get_duration(self, media_status, fname, row):
+        if media_status == QMediaPlayer.LoadedMedia:
+            duration = self.player.duration() / 1000.0
+            self.tableWidget.setItem(row, 2, QTableWidgetItem("{:.2f} s".format(duration)))
+    
+    # delete item button
+    def SP_del_item(self, row, fname):
+        button = QPushButton("Remove")
+        button.clicked.connect(lambda: self.remove_file(row, fname))
+        return button
+    
+    def remove_file(self, row, fname):
+        # Remove the selected row from the table
+        if fname in self.filenames:
+            self.filenames.remove(fname)
+        self.tableWidget.removeRow(row)
+        # os.remove()
 
-    # delete item
-    def SP_del_item(self, row):
-        print("SP delete item", row)
+        # self.filenames.remove(fname)
+        # self.table.removeRow(row)
+
+        # Save the updated list of filenames
+        self.save_file()
+
+        # Stop the player if it was playing the removed file
+        if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
+            self.player.stop()
+
+        print("File removed successfully.")
+
+    def save_file(self):
+        # save file in pickle
+        with open("soundpad.pickle", "wb") as file:
+            pickle.dump(self.filenames, file)
