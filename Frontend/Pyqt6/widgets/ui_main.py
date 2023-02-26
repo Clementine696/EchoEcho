@@ -600,7 +600,7 @@ class Ui_mainInterface(object):
             self.btn_listen.setText('Listen')
             self.tableWidget.setCellWidget(index, 5, self.btn_listen)
             self.btn_listen.clicked.connect(
-                lambda: self.SP_lis_item(self.tableWidget.currentRow()))
+                lambda: self.SP_listen_item(self.tableWidget.currentRow()))
 
             # delete button
             self.btn_delete = QPushButton(self.tableWidget)
@@ -704,7 +704,6 @@ class Ui_mainInterface(object):
     # Soundpad Page Function
     # add item
 
-    def SP_add_item(self):
     def SP_add_item(self, file_path):
         print("SP add item")
         options = QFileDialog.Options()
@@ -736,7 +735,7 @@ class Ui_mainInterface(object):
         print("SP play item", row)
 
     # listen item button
-    def SP_lis_item(self, text, filename):
+    def SP_listen_item(self, text, filename):
         button = QPushButton(text)
         button.clicked.connect(lambda: self.play_media(filename, self.tableWidget.currentRow()))
         return button
