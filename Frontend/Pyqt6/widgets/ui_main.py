@@ -23,7 +23,10 @@ input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
 output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
 
 class Ui_mainInterface(object):
-    test_mic = 0
+    noise_reduce = 0
+    test_microphone = 0
+    microphone_mute = 0
+    audio_mute = 0
     def setupUi(self, ui_main):
         # Application size
         ui_main.setObjectName("ui_main")
@@ -880,16 +883,16 @@ class Ui_mainInterface(object):
         devices = AudioUtilities.GetSpeakers()
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = cast(interface, POINTER(IAudioEndpointVolume))
-        if(Ui_mainInterface.test_mic==0):
+        if(Ui_mainInterface.audio_mute==0):
             print("Volume Mute")
-            Ui_mainInterface.test_mic=1
+            Ui_mainInterface.audio_mute=1
             volume.SetMute(1, None)
             icon_volume_mute = QtGui.QIcon()
             icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-x.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_mute)
         else:
             print("Volume UnMute")
-            Ui_mainInterface.test_mic=0
+            Ui_mainInterface.audio_mute=0
             volume.SetMute(0,None)
             icon_volume_unmute = QtGui.QIcon()
             icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -897,15 +900,15 @@ class Ui_mainInterface(object):
 
 
     def mic_mute(self):
-        if(Ui_mainInterface.test_mic==0):
+        if(Ui_mainInterface.microphone_mute==0):
             print("Mic Mute")
-            Ui_mainInterface.test_mic=1
+            Ui_mainInterface.microphone_mute=1
             icon_mic_mute = QtGui.QIcon()
             icon_mic_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic-off.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.micmute.setIcon(icon_mic_mute)
         else:
             print("Mic UnMute")
-            Ui_mainInterface.test_mic=0
+            Ui_mainInterface.microphone_mute=0
             icon_mic_unmute = QtGui.QIcon()
             icon_mic_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.micmute.setIcon(icon_mic_unmute)
@@ -955,11 +958,21 @@ class Ui_mainInterface(object):
 
     def Noise_button_clicked(self):
         # print("Noise button clicked")
-        pass
+        if(Ui_mainInterface.noise_reduce == 0):
+            Ui_mainInterface.noise_reduce = 1
+            #ทำให้ปุ่มเปิด
+        else:
+            Ui_mainInterface.noise_reduce = 0
+            #ทำปุ่มปิด
 
     def TestMic_button_clicked(self):
         # print("Test mic button clicked")
-        pass
+        if(Ui_mainInterface.test_microphone == 0):
+            Ui_mainInterface.test_microphone = 1
+            #ทำให้ปุ่มเปิด
+        else:
+            Ui_mainInterface.test_microphone = 0
+            #ทำปุ่มปิด
 
     # Soundpad Page Function
     # add item
