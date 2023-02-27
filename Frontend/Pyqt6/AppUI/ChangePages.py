@@ -209,10 +209,12 @@ class Ui_ui_main(object):
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
+
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.frame)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
+
         self.Mic_title = QtWidgets.QFrame(self.frame)
         self.Mic_title.setMinimumSize(QtCore.QSize(900, 120))
         self.Mic_title.setMaximumSize(QtCore.QSize(900, 120))
@@ -307,11 +309,16 @@ class Ui_ui_main(object):
         self.Graph.setObjectName("Graph")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.Graph)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.label = QtWidgets.QLabel(self.Graph)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.verticalLayout_3.addWidget(self.label)
+
+        self.widget = QtWidgets.QWidget(self.Graph)
+        self.widget.setStyleSheet("QWidget {\n"
+"    background-color: rgb(170, 0, 127);\n"
+"}")
+        self.widget.setObjectName("widget")
+
+        self.verticalLayout_3.addWidget(self.widget)
         self.verticalLayout_2.addWidget(self.Graph)
+
         self.TestMic = QtWidgets.QFrame(self.frame)
         self.TestMic.setMinimumSize(QtCore.QSize(900, 120))
         self.TestMic.setMaximumSize(QtCore.QSize(900, 120))
@@ -463,6 +470,14 @@ class Ui_ui_main(object):
         self.tableWidget = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
         self.tableWidget.setMinimumSize(QtCore.QSize(900, 470))
         self.tableWidget.setMaximumSize(QtCore.QSize(900, 470))
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setUnderline(False)
+        font.setWeight(75)
+        font.setStrikeOut(False)
+        self.tableWidget.setFont(font)
         self.tableWidget.setStyleSheet("")
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(5)
@@ -552,7 +567,7 @@ class Ui_ui_main(object):
         self.horizontalLayout.addWidget(self.stackedWidget)
 
         self.retranslateUi(ui_main)
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
     def retranslateUi(self, ui_main):
@@ -567,7 +582,6 @@ class Ui_ui_main(object):
 "detecting the sound coming into the headset, and generating signals \n"
 "that are  out-of-phase with the  offending signals, canceling them out."))
         self.Noise_label.setText(_translate("ui_main", "Noise Suppression"))
-        self.label.setText(_translate("ui_main", "Graph"))
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
@@ -603,4 +617,3 @@ class Ui_ui_main(object):
         self.tableWidget.setSortingEnabled(False)
         self.tableWidget.setSortingEnabled(__sortingEnabled)
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
-import icons_rc
