@@ -1,4 +1,5 @@
 import sys
+import os
 from PySide6 import *
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
@@ -13,20 +14,6 @@ import noisereduce as nr
 
 # IMPORT GUI FILE
 from ui_main import *
-
-# setup device
-# input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
-# output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
-
-# devicesInput_list = []
-# for device in input_audio_deviceInfos:
-#     if device.deviceName() not in devicesInput_list and "Virtual Cable" not in device.deviceName(): 
-#         devicesInput_list.append(device.deviceName())
-
-# devicesOutput_list = []
-# for device in output_audio_deviceInfos:
-#     if device.deviceName() not in devicesOutput_list and "Virtual Cable" not in device.deviceName():
-#         devicesOutput_list.append(device.deviceName())
 
 Noise_reduce_state = False
 Test_mic_state = False
@@ -203,17 +190,16 @@ class SoundSystem():
                 print(i['index'])
                 self.update_input(i['index'])
                 break
-
 ###
 
 class MainWindow(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
-        self.ui = Ui_main()
+        self.ui = Ui_mainInterface()
         self.ui.setupUi(self)
 
-        # Page links
+        #Page links33
         ########################################################################################
         # Page Microphone
         self.ui.Microphone_button.clicked.connect(
@@ -269,7 +255,6 @@ class MainWindow(QMainWindow):
         #             create = 1
         #         except:
         #             print("init in main error")
-        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
