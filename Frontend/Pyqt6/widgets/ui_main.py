@@ -459,6 +459,8 @@ class Ui_mainInterface(object):
         # Soundpad Page
         self.filenames = []
         self.player = QMediaPlayer()
+        self.ui = object()
+        
 
         self.Soundpad_page = QtWidgets.QWidget()
         self.Soundpad_page.setObjectName("Soundpad_page")
@@ -704,13 +706,13 @@ class Ui_mainInterface(object):
     # Soundpad Page Function
     # add item
 
-    def SP_add_item(self, file_path):
+    def SP_add_item(self):
         print("SP add item")
         options = QFileDialog.Options()
         # ui_main = Ui_mainInterface()
         folder = r""
         # เห็นเฉพาะ .wav, .mp3
-        fname = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
         # if fname:
         #     print("add file :", fname)
         #     row = self.tableWidget.rowCount()
