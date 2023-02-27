@@ -411,7 +411,7 @@ QPushButton:hover{
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="Microphone_page">
        <property name="minimumSize">
@@ -687,12 +687,11 @@ that are  out-of-phase with the  offending signals, canceling them out.</string>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
               <item>
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>Graph</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+               <widget class="QWidget" name="widget" native="true">
+                <property name="styleSheet">
+                 <string notr="true">QWidget {
+	background-color: rgb(170, 0, 127);
+}</string>
                 </property>
                </widget>
               </item>
