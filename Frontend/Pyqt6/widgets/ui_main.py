@@ -647,7 +647,7 @@ class Ui_mainInterface(object):
         # Soundpad Page
         self.filenames = []
         self.player = QMediaPlayer()
-        self.ui = object()
+        self.ui_main = ui_main
         
 
         self.Soundpad_page = QtWidgets.QWidget()
@@ -980,28 +980,27 @@ class Ui_mainInterface(object):
     def SP_add_item(self):
         print("SP add item")
         options = QFileDialog.Options()
-        # ui_main = Ui_mainInterface()
         folder = r""
         # เห็นเฉพาะ .wav, .mp3
-        fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
-        # if fname:
-        #     print("add file :", fname)
-        #     row = self.tableWidget.rowCount()
-        #     self.tableWidget.insertRow(row)
-        #     self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
-        #     # self.table.setItem(row, 1, QTableWidgetItem(""))
-        #     # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
-        #     media_content = QMediaContent(QUrl.fromLocalFile(fname))
-        #     self.player.setMedia(media_content)
-        #     self.player.setNotifyInterval(1000)
-        #     self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
-        #     self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))          
-        #     self.tableWidget.setCellWidget(row, 4, self.SP_lis_item("Play", fname))
-        #     remove_button = QPushButton("Remove")
-        #     remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
-        #     self.tableWidget.setCellWidget(row, 5, remove_button)
-        #     self.filenames.append(fname)
-        #     self.save_file()
+        fname, _ = QFileDialog.getOpenFileName(self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        if fname:
+            print("add file :", fname)
+            row = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(row)
+            self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
+            # self.table.setItem(row, 1, QTableWidgetItem(""))
+            # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
+            media_content = QMediaContent(QUrl.fromLocalFile(fname))
+            self.player.setMedia(media_content)
+            self.player.setNotifyInterval(1000)
+            self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
+            self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))          
+            self.tableWidget.setCellWidget(row, 5, self.SP_listen_item("Listen", fname))
+            remove_button = QPushButton("Remove")
+            remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
+            self.tableWidget.setCellWidget(row, 6, remove_button)
+            self.filenames.append(fname)
+            self.save_file()
 
     # play item
     def SP_play_item(self, row):
