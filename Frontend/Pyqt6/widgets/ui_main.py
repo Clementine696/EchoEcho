@@ -953,10 +953,12 @@ class Ui_mainInterface(object):
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
 
     def Noise_button_clicked(self):
-        print("Noise button clicked")
+        # print("Noise button clicked")
+        pass
 
     def TestMic_button_clicked(self):
-        print("Test mic button clicked")
+        # print("Test mic button clicked")
+        pass
 
     # Soundpad Page Function
     # add item

@@ -25,21 +25,20 @@ def Toggle_NoiseReduce():
     global Noise_reduce_state
     if(Noise_reduce_state==False):
         Noise_reduce_state = True
-        print("State = ",Noise_reduce_state)
-        #ทำstate ปุ่ม
+        print("Noise reduce state = ",Noise_reduce_state)
     else:
         Noise_reduce_state = False
-        print("State = ",Noise_reduce_state)
+        print("Noise reduce state = ",Noise_reduce_state)
 
 
 def Toggle_TestMic():
     global Test_mic_state
-    if(Test_mic_state==0):
-        Test_mic_state = 1
-        print("State = ",Test_mic_state)
+    if(Test_mic_state==False):
+        Test_mic_state = True
+        print("Microphone test state = ",Test_mic_state)
     else:
-        Test_mic_state = 0
-        print("State = ",Test_mic_state)
+        Test_mic_state = False
+        print("Microphone test state = ",Test_mic_state)
 
 def Re_Init_SoundSystem():
     global Pushed_reinit
@@ -148,23 +147,23 @@ class SoundSystem():
 
             #Noise suppression
             if(Noise_reduce_state):
-                print('Noise suppressed')
+                # print('Noise suppressed')
                 audio_frame = np.frombuffer(audio_data, dtype=np.int16)
                 reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
                 output_sound = reduced_noise.tobytes()
             else:
-                print('Normal voice')
+                # print('Normal voice')
                 output_sound = audio_data
                 
             self.virtual_microphone_stream.write(output_sound)
 
             if(Test_mic_state):
-                print('TesttttttttttttMic')
+                # print('TesttttttttttttMic')
                 self.default_output_stream.write(output_sound)
 
             #emergency close thread
-            if(keyboard.is_pressed('z')):
-                break
+            # if(keyboard.is_pressed('z')):
+            #     break
 
         #close program
         self.input_stream.stop_stream()
