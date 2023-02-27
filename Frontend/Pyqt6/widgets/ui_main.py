@@ -219,6 +219,7 @@ class Ui_mainInterface(object):
         icon3.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/code-sandbox8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
+        # Voicechanger button clicked
         self.Voicechanger_button.clicked.connect(self.VC_Side_menu_clicked)
 
         self.Voicechanger_button.setIcon(icon3)
@@ -963,17 +964,7 @@ class Ui_mainInterface(object):
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
 
-        self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
-
-    # self.Microphone_button.setStyleSheet("QPushButton{\n"
-    #                                      "    background-color: rgba(0, 0, 0, 0)\n"
-    #                                      "}\n"
-        #  "QPushButton:hover{\n"
-        #  "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-        #  "}"
-    #                                      "QPushButton:clicked{\n"
-    #                                      "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-    #                                      "}")
+        self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))                      
 
     # Side menu button clicked
     ##############################
