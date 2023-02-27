@@ -16,11 +16,11 @@ for i in (device_list):
 
 #open a stream for microphone 
 input_stream = p.open(format=pyaudio.paInt16,
-                      channels=1,
-                      rate=44100,
-                      input=True,
+                    channels=1,
+                    rate=44100,
+                    input=True,
                     #   input_device_index=input_device_index,
-                      frames_per_buffer=1024)
+                    frames_per_buffer=1024)
 
 # open a stream for playing audio
 output_stream = p.open(format=pyaudio.paInt16,
@@ -46,7 +46,7 @@ def threaded_function():
         data = wf.readframes(1024)
         output_stream.write(data)
         if(keyboard.is_pressed('x')):
-          break
+            break
 
 def threaded_function2():
     audio_data = input_stream.read(1024)
@@ -54,7 +54,7 @@ def threaded_function2():
         audio_data = input_stream.read(1024)
         output_stream.write(audio_data)
         if(keyboard.is_pressed('z')):
-          break
+            break
     # while(keyboard.is_pressed('x')==0):
     #     break
 
@@ -62,10 +62,12 @@ def threaded_function2():
 
 
 threadA = Thread(target = threaded_function)
-threadA.start()
-threadA.join()
-
 # threadB = Thread(target = threaded_function2)
+
+threadA.start()
+# threadA.join()
+
+
 # threadB.start()
 # threadB.join()
 
