@@ -741,7 +741,7 @@ class Ui_mainInterface(object):
         # self.tableWidget.setColumnCount(5)
         # self.tableWidget.setRowCount(9)
 
-        self.tableWidget.setRowCount(3)
+        # self.tableWidget.setRowCount(3)
         self.tableWidget.setColumnCount(7)
         self.tableWidget.setHorizontalHeaderLabels(
             ['No.', 'Name', 'Duration', 'Hotkeys', '', 'Status', ''])
@@ -776,28 +776,54 @@ class Ui_mainInterface(object):
         self.tableWidget.setColumnWidth(5, 60)
         self.tableWidget.setColumnWidth(6, 60)
 
-        for index in range(self.tableWidget.rowCount()):
+        try:
+            with open("soundpad.pickle", "rb") as file:
+                self.filenames = pickle.load(file)
+                for fname in self.filenames:
+                    row = self.tableWidget.rowCount()
+                    self.tableWidget.insertRow(row)
+                    self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
+                    media_content = QMediaContent(QUrl.fromLocalFile(fname))
+                    self.player.setMedia(media_content)
+                    self.player.setNotifyInterval(1000)
+                    self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
+                    self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))   
+                    # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
+                    self.tableWidget.setCellWidget(row, 4, self.SP_play_item("Play"))    
+                    self.tableWidget.setCellWidget(row, 5, self.SP_listen_item("Listen", fname))
+                    # remove_button = QPushButton("Remove")
+                    # remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
+                    # self.table.setCellWidget(row, 3, remove_button)
+                    remove_button = QPushButton("Delete")
+                    self.tableWidget.setCellWidget(row, 6, remove_button)
+                    remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+                print("audio load successfully")
 
-            # play button
-            self.btn_play = QPushButton(self.tableWidget)
-            self.btn_play.setText('Play')
-            self.tableWidget.setCellWidget(index, 4, self.btn_play)
-            self.btn_play.clicked.connect(
-                lambda: self.SP_play_item(self.tableWidget.currentRow()))
+        except Exception as e:
+            print("Error loading audio files:",e)
 
-            # listen button
-            self.btn_listen = QPushButton(self.tableWidget)
-            self.btn_listen.setText('Listen')
-            self.tableWidget.setCellWidget(index, 5, self.btn_listen)
-            self.btn_listen.clicked.connect(
-                lambda: self.SP_listen_item(self.tableWidget.currentRow()))
+        # for index in range(self.tableWidget.rowCount()):
 
-            # delete button
-            self.btn_delete = QPushButton(self.tableWidget)
-            self.btn_delete.setText('delete')
-            self.tableWidget.setCellWidget(index, 6, self.btn_delete)
-            self.btn_delete.clicked.connect(
-                lambda: self.SP_del_item(self.tableWidget.currentRow()))
+        #     # play button
+        #     self.btn_play = QPushButton(self.tableWidget)
+        #     self.btn_play.setText('Play')
+        #     self.tableWidget.setCellWidget(index, 4, self.btn_play)
+        #     self.btn_play.clicked.connect(
+        #         lambda: self.SP_play_item(self.tableWidget.currentRow()))
+
+        #     # listen button
+        #     self.btn_listen = QPushButton(self.tableWidget)
+        #     self.btn_listen.setText('Listen')
+        #     self.tableWidget.setCellWidget(index, 5, self.btn_listen)
+        #     self.btn_listen.clicked.connect(
+        #         lambda: self.SP_listen_item(self.tableWidget.currentRow()))
+
+        #     # delete button
+        #     self.btn_delete = QPushButton(self.tableWidget)
+        #     self.btn_delete.setText('delete')
+        #     self.tableWidget.setCellWidget(index, 6, self.btn_delete)
+        #     self.btn_delete.clicked.connect(
+        #         lambda: self.remove_file(self.tableWidget.currentRow()))
 
         self.verticalLayout_15.addWidget(self.tableWidget)
         self.SP_scrollArea.setWidget(self.scrollAreaWidgetContents)
@@ -994,9 +1020,10 @@ class Ui_mainInterface(object):
             self.player.setMedia(media_content)
             self.player.setNotifyInterval(1000)
             self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
-            self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))          
+            self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))    
+            self.tableWidget.setCellWidget(row, 4, self.SP_play_item("Play"))      
             self.tableWidget.setCellWidget(row, 5, self.SP_listen_item("Listen", fname))
-            remove_button = QPushButton("Remove")
+            remove_button = QPushButton("Delete")
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
             self.tableWidget.setCellWidget(row, 6, remove_button)
             self.filenames.append(fname)
@@ -1020,7 +1047,7 @@ class Ui_mainInterface(object):
         self.player.setMedia(media)
         # play the media
         self.player.play()
-        self.player.mediaStatusChanged.connect(lambda status: self.get_duration(status, filename, row))
+        # self.player.mediaStatusChanged.connect(lambda status: self.get_duration(status, filename, row))
     
     def get_duration(self, media_status, fname, row):
         if media_status == QMediaPlayer.LoadedMedia:
@@ -1029,7 +1056,7 @@ class Ui_mainInterface(object):
     
     # delete item button
     def SP_del_item(self, row, fname):
-        button = QPushButton("Remove")
+        button = QPushButton("Delete")
         button.clicked.connect(lambda: self.remove_file(row, fname))
         return button
     
@@ -1056,4 +1083,3 @@ class Ui_mainInterface(object):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(self.filenames, file)
-
