@@ -29,6 +29,9 @@ class Ui_mainInterface(object):
     test_microphone = 0
     microphone_mute = 0
     audio_mute = 0
+    Mic_Side_menu = 0
+    SP_Side_menu = 0
+    VC_Side_menu = 0
 
     def setupUi(self, ui_main):
         # Application size
@@ -134,6 +137,10 @@ class Ui_mainInterface(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic8.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        # Microphone button clicked
+        self.Microphone_button.clicked.connect(self.Mic_Side_menu_clicked)
+
         self.Microphone_button.setIcon(icon)
         self.Microphone_button.setIconSize(QtCore.QSize(40, 40))
         self.Microphone_button.setObjectName("Microphone_button")
@@ -184,6 +191,10 @@ class Ui_mainInterface(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/play-circle8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        # Soundpad button clicked
+        self.Soundpad_button.clicked.connect(self.SP_Side_menu_clicked)
+
         self.Soundpad_button.setIcon(icon2)
         self.Soundpad_button.setIconSize(QtCore.QSize(40, 40))
         self.Soundpad_button.setObjectName("Soundpad_button")
@@ -207,6 +218,10 @@ class Ui_mainInterface(object):
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/code-sandbox8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        # Voicechanger button clicked
+        self.Voicechanger_button.clicked.connect(self.VC_Side_menu_clicked)
+
         self.Voicechanger_button.setIcon(icon3)
         self.Voicechanger_button.setIconSize(QtCore.QSize(40, 40))
         self.Voicechanger_button.setObjectName("Voicechanger_button")
@@ -949,11 +964,85 @@ class Ui_mainInterface(object):
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
 
-        self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
+        self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))                      
 
+    # Side menu button clicked
+    ##############################
+    def Mic_Side_menu_clicked(self):
+        # Mic clciked
+        ##############################
+        if (Ui_mainInterface.Mic_Side_menu == 0):
+            print("MIC clicked")
+            Ui_mainInterface.Mic_Side_menu = 1
+            Ui_mainInterface.SP_Side_menu = 0
+            Ui_mainInterface.VC_Side_menu = 0
+            self.Microphone_button.setStyleSheet("QPushButton {\n"
+                                                 "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                 "}")
+            self.Soundpad_button.setStyleSheet("QPushButton{\n"
+                                               "    background-color: rgba(0, 0, 0, 0)\n"
+                                               "}\n"
+                                               "QPushButton:hover{\n"
+                                               "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                               "}")
+            self.Voicechanger_button.setStyleSheet("QPushButton{\n"
+                                                   "    background-color: rgba(0, 0, 0, 0)\n"
+                                                   "}\n"
+                                                   "QPushButton:hover{\n"
+                                                   "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                   "}")
+
+    def SP_Side_menu_clicked(self):
+        # SP clicked
+        ##############################
+        if (Ui_mainInterface.SP_Side_menu == 0):
+            print("SP clicked")
+            Ui_mainInterface.SP_Side_menu = 1
+            Ui_mainInterface.Mic_Side_menu = 0
+            Ui_mainInterface.VC_Side_menu = 0
+            self.Soundpad_button.setStyleSheet("QPushButton {\n"
+                                               "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                               "}")
+            self.Microphone_button.setStyleSheet("QPushButton{\n"
+                                                 "    background-color: rgba(0, 0, 0, 0)\n"
+                                                 "}\n"
+                                                 "QPushButton:hover{\n"
+                                                 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                 "}")
+            self.Voicechanger_button.setStyleSheet("QPushButton{\n"
+                                                   "    background-color: rgba(0, 0, 0, 0)\n"
+                                                   "}\n"
+                                                   "QPushButton:hover{\n"
+                                                   "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                   "}")
+
+    def VC_Side_menu_clicked(self):
+        # VC clicked
+        ##############################
+        if (Ui_mainInterface.VC_Side_menu == 0 or Ui_mainInterface.Mic_Side_menu == 1 or Ui_mainInterface.SP_Side_menu == 1):
+            print("VC clicked")
+            Ui_mainInterface.VC_Side_menu = 1
+            Ui_mainInterface.Mic_Side_menu = 0
+            Ui_mainInterface.SP_Side_menu = 0
+            self.Voicechanger_button.setStyleSheet("QPushButton {\n"
+                                                   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                   "}")
+            self.Microphone_button.setStyleSheet("QPushButton{\n"
+                                                 "    background-color: rgba(0, 0, 0, 0)\n"
+                                                 "}\n"
+                                                 "QPushButton:hover{\n"
+                                                 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                 "}")
+            self.Soundpad_button.setStyleSheet("QPushButton{\n"
+                                               "    background-color: rgba(0, 0, 0, 0)\n"
+                                               "}\n"
+                                               "QPushButton:hover{\n"
+                                               "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                               "}")
 
     # ปุ่มเปิดปิด Noise Suppression and test microphone
     #############################################
+
     def Noise_button_clicked(self):
         # print("Noise button clicked")
         if (Ui_mainInterface.noise_reduce == 0):
