@@ -995,7 +995,7 @@ class Ui_mainInterface(object):
     def SP_Side_menu_clicked(self):
         # SP clicked
         ##############################
-        if (Ui_mainInterface.SP_Side_menu == 0):
+        # if (Ui_mainInterface.SP_Side_menu == 0):
             print("SP clicked")
             Ui_mainInterface.SP_Side_menu = 1
             Ui_mainInterface.Mic_Side_menu = 0

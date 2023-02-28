@@ -11,6 +11,8 @@ import time
 import keyboard
 import numpy as np
 import noisereduce as nr
+from math import sqrt
+from pydub import AudioSegment,generators
 
 # IMPORT GUI FILE
 from ui_main import *
@@ -145,12 +147,27 @@ class SoundSystem():
             # print('mic stream thread running')
             audio_data = self.input_stream.read(1024)
 
+            #Boostmic
+            volumeFactor = 0.5
+            self.multiplier = pow(2, (sqrt(sqrt(sqrt(volumeFactor))) * 192 - 192)/6)
+
             #Noise suppression
             if(Noise_reduce_state):
                 # print('Noise suppressed')
-                audio_frame = np.frombuffer(audio_data, dtype=np.int16)
-                reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
-                output_sound = reduced_noise.tobytes()
+                # audio_frame = np.frombuffer(audio_data, dtype=np.int16)
+                # reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
+                # output_sound = reduced_noise.tobytes()
+
+                # Boostmic
+                self.numpy_data = np.fromstring(audio_data, dtype=np.int16)
+                np.multiply(self.numpy_data, self.multiplier, out=self.numpy_data, casting="unsafe")
+                output_sound = self.numpy_data.tostring()
+
+                #Mutemic
+                # sine_segment = generators.Sine().to_audio_segment()
+                # sine_segment = sine_segment-200
+                # sine_data = sine_segment.raw_data
+                # output_sound = sine_data
             else:
                 # print('Normal voice')
                 output_sound = audio_data
