@@ -167,7 +167,7 @@ class SoundSystem():
 
             #Noise suppression
             if(Noise_reduce_state):
-                print('Noise suppressed')
+                # print('Noise suppressed')
                 audio_frame = np.frombuffer(audio_data, dtype=np.int16)
                 reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
                 output_sound = reduced_noise.tobytes()
