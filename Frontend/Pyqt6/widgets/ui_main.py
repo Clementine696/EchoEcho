@@ -1149,12 +1149,12 @@ class Ui_mainInterface(object):
             self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))  
 
             play_button = QPushButton("Play")
-            play_button.clicked.connect(lambda _, row=row, fname=fname: self.play_media(row, fname))  
-            self.tableWidget.setCellWidget(row, 4, play_button)  
+            play_button.clicked.connect(lambda _, row=row, fname=fname: self.play_mic(row, fname))  
+            self.tableWidget.setCellWidget(row, 4, play_button)
 
-            play_button = QPushButton("Listen")
-            play_button.clicked.connect(lambda _, row=row, fname=fname: self.play_media(row, fname))  
-            self.tableWidget.setCellWidget(row, 5, play_button)  
+            listen_button = QPushButton("Listen")
+            listen_button.clicked.connect(lambda _, row=row, fname=fname: self.play_media(row, fname))  
+            self.tableWidget.setCellWidget(row, 5, listen_button)  
 
             remove_button = QPushButton("Delete")
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
@@ -1175,11 +1175,11 @@ class Ui_mainInterface(object):
     def play_media(self, row, filename):
         fname = filename
         # convert string to QUrl object using the QUrl constructor
-        file = QUrl.fromLocalFile(fname)
-        media = QMediaContent(file)
-        self.player.setMedia(media)
-        # play the media
-        self.player.play()
+        # file = QUrl.fromLocalFile(fname)
+        # media = QMediaContent(file)
+        # self.player.setMedia(media)
+        # # play the media
+        # self.player.play()
 
     def get_duration(self, media_status, fname, row):
         if media_status == QMediaPlayer.LoadedMedia:
