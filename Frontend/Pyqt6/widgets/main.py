@@ -204,9 +204,9 @@ class MainWindow(QMainWindow):
         self.ui.Microphone_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Microphone_page))
 
-        # Page Audio
-        self.ui.Audio_button.clicked.connect(
-            lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Audio_page))
+        # # Page Audio
+        # self.ui.Audio_button.clicked.connect(
+        #     lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Audio_page))
 
         # Page Soundpad
         self.ui.Soundpad_button.clicked.connect(
@@ -215,6 +215,10 @@ class MainWindow(QMainWindow):
         # Page Voice Changer
         self.ui.Voicechanger_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Voicechanger_page))
+        
+        # # page setting
+        # self.ui.Setting_button.clicked.connect(
+        #     lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Setting_page))
 
         #link button
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)
