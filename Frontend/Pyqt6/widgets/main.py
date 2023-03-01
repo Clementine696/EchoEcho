@@ -11,12 +11,16 @@ import time
 import keyboard
 import numpy as np
 import noisereduce as nr
+from math import sqrt
+from pydub import AudioSegment,generators
 
 # IMPORT GUI FILE
 from ui_main import *
 
 Noise_reduce_state = False
 Test_mic_state = False
+Mute_mic_state = False
+Boost_mic_volumeFactor = 1
 Pushed_reinit = 0
 
 #update device in main
@@ -30,7 +34,6 @@ def Toggle_NoiseReduce():
         Noise_reduce_state = False
         print("Noise reduce state = ",Noise_reduce_state)
 
-
 def Toggle_TestMic():
     global Test_mic_state
     if(Test_mic_state==False):
@@ -39,6 +42,20 @@ def Toggle_TestMic():
     else:
         Test_mic_state = False
         print("Microphone test state = ",Test_mic_state)
+
+def Toggle_MuteMic():
+    global Mute_mic_state
+    if(Mute_mic_state==False):
+        Mute_mic_state = True
+        print("Microphone mute state = ",Mute_mic_state)
+    else:
+        Mute_mic_state = False
+        print("Microphone mute state = ",Mute_mic_state)
+
+def Boost_Mic(value):
+    global Boost_mic_volumeFactor
+    print('Yeehaa', value/10)
+    Boost_mic_volumeFactor = value/10
 
 def Re_Init_SoundSystem():
     global Pushed_reinit
@@ -145,6 +162,9 @@ class SoundSystem():
             # print('mic stream thread running')
             audio_data = self.input_stream.read(1024)
 
+            #Boostmic
+            self.multiplier = pow(2, (sqrt(sqrt(sqrt(Boost_mic_volumeFactor))) * 192 - 192)/6)
+
             #Noise suppression
             if(Noise_reduce_state):
                 # print('Noise suppressed')
@@ -154,7 +174,18 @@ class SoundSystem():
             else:
                 # print('Normal voice')
                 output_sound = audio_data
-                
+
+            if(Mute_mic_state):
+                sine_segment = generators.Sine(1000).to_audio_segment()
+                sine_segment = sine_segment-200
+                sine_data = sine_segment.raw_data
+                output_sound = sine_data
+            else:
+                # Boostmic
+                self.numpy_data = np.fromstring(audio_data, dtype=np.int16)
+                np.multiply(self.numpy_data, self.multiplier, out=self.numpy_data, casting="unsafe")
+                output_sound = self.numpy_data.tostring()
+
             self.virtual_microphone_stream.write(output_sound)
 
             if(Test_mic_state):
@@ -204,9 +235,9 @@ class MainWindow(QMainWindow):
         self.ui.Microphone_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Microphone_page))
 
-        # Page Audio
-        self.ui.Audio_button.clicked.connect(
-            lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Audio_page))
+        # # Page Audio
+        # self.ui.Audio_button.clicked.connect(
+        #     lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Audio_page))
 
         # Page Soundpad
         self.ui.Soundpad_button.clicked.connect(
@@ -215,6 +246,10 @@ class MainWindow(QMainWindow):
         # Page Voice Changer
         self.ui.Voicechanger_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Voicechanger_page))
+        
+        # # page setting
+        # self.ui.Setting_button.clicked.connect(
+        #     lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Setting_page))
 
         #link button
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)
@@ -230,11 +265,14 @@ class MainWindow(QMainWindow):
             self.audio_stream.daemon = True
             self.audio_stream.start()
 
-            #audio
+            #audio device select
             self.ui.comboBox.currentIndexChanged['QString'].connect(self.sound_system.print_audio_device)
-            #microphone
+            #microphone device select
             self.ui.comboBox_2.currentIndexChanged['QString'].connect(self.sound_system.print_microphone_device)
-
+            #microphone mute
+            self.ui.micmute.clicked.connect(Toggle_MuteMic)
+            #boostmic
+            self.ui.horizontalSlider_2.valueChanged.connect(Boost_Mic)
         except:
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')

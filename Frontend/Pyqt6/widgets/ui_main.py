@@ -20,13 +20,19 @@ import main as Main
 import keyboard
 
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
-output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
+output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(
+    QAudio.AudioOutput)
+
 
 class Ui_mainInterface(object):
     noise_reduce = 0
     test_microphone = 0
     microphone_mute = 0
     audio_mute = 0
+    Mic_Side_menu = 0
+    SP_Side_menu = 0
+    VC_Side_menu = 0
+
     def setupUi(self, ui_main):
         # Application size
         ui_main.setObjectName("ui_main")
@@ -125,46 +131,21 @@ class Ui_mainInterface(object):
                                              "QPushButton:hover{\n"
                                              "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
                                              "}"
-                                             "QPushButton:clicked{\n"
-                                             "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-                                             "}")
+                                             )
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic8.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        # Microphone button clicked
+        self.Microphone_button.clicked.connect(self.Mic_Side_menu_clicked)
+
         self.Microphone_button.setIcon(icon)
         self.Microphone_button.setIconSize(QtCore.QSize(40, 40))
         self.Microphone_button.setObjectName("Microphone_button")
         self.verticalLayout.addWidget(self.Microphone_button)
-        self.Audio_button = QtWidgets.QPushButton(self.Menu_button)
-        self.Audio_button.setEnabled(True)
-
-        # Audio button
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(28)
-        font.setItalic(False)
-        font.setStrikeOut(False)
-        font.setStyleStrategy(QtGui.QFont.PreferDefault)
-        self.Audio_button.setFont(font)
-        self.Audio_button.setStyleSheet("QPushButton{\n"
-                                        "    background-color: rgba(0, 0, 0, 0)\n"
-                                        "}\n"
-                                        "QPushButton:hover{\n"
-                                        "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-                                        "}"
-                                        "QPushButton:pressed{\n"
-                                        "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-                                        "}")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Audio_button.setIcon(icon1)
-        self.Audio_button.setIconSize(QtCore.QSize(40, 40))
-        self.Audio_button.setObjectName("Audio_button")
-        self.verticalLayout.addWidget(self.Audio_button)
-        self.Soundpad_button = QtWidgets.QPushButton(self.Menu_button)
 
         # Soundpad button
+        self.Soundpad_button = QtWidgets.QPushButton(self.Menu_button)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(28)
@@ -175,12 +156,14 @@ class Ui_mainInterface(object):
                                            "QPushButton:hover{\n"
                                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
                                            "}"
-                                           "QPushButton:pressed{\n"
-                                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-                                           "}")
+                                           )
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/play-circle8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        # Soundpad button clicked
+        self.Soundpad_button.clicked.connect(self.SP_Side_menu_clicked)
+
         self.Soundpad_button.setIcon(icon2)
         self.Soundpad_button.setIconSize(QtCore.QSize(40, 40))
         self.Soundpad_button.setObjectName("Soundpad_button")
@@ -198,27 +181,29 @@ class Ui_mainInterface(object):
                                                "QPushButton:hover{\n"
                                                "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
                                                "}"
-                                               "QPushButton:pressed{\n"
-                                               "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-                                               "}")
+                                               )
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/code-sandbox8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        # Voicechanger button clicked
+        self.Voicechanger_button.clicked.connect(self.VC_Side_menu_clicked)
+
         self.Voicechanger_button.setIcon(icon3)
         self.Voicechanger_button.setIconSize(QtCore.QSize(40, 40))
         self.Voicechanger_button.setObjectName("Voicechanger_button")
         self.verticalLayout.addWidget(self.Voicechanger_button)
         self.Device_settings = QtWidgets.QFrame(self.Left_side)
 
-        
-        #Device settings
+        # Device settings
         self.Device_settings.setGeometry(QtCore.QRect(0, 330, 372, 391))
 
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Device_settings.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.Device_settings.sizePolicy().hasHeightForWidth())
         self.Device_settings.setSizePolicy(sizePolicy)
         self.Device_settings.setMinimumSize(QtCore.QSize(360, 330))
         self.Device_settings.setMaximumSize(QtCore.QSize(1000, 1000))
@@ -226,7 +211,7 @@ class Ui_mainInterface(object):
         self.Device_settings.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Device_settings.setObjectName("Device_settings")
 
-#Setting Zone
+# Setting Zone
 ###################################################################################
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.Device_settings)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -243,25 +228,25 @@ class Ui_mainInterface(object):
         self.comboBox_2.setMinimumSize(QtCore.QSize(273, 44))
         self.comboBox_2.setMaximumSize(QtCore.QSize(273, 44))
         self.comboBox_2.setStyleSheet("QComboBox{\n"
-                                        "background-color: rgb(26, 39, 41);\n"
-                                        "border-radius: 8px;\n"
-                                        "border: 5px solid rgb(26, 39, 41);\n"
-                                        "color: white;\n"
-                                        "font-size: 13px;\n"
-                                    "}\n"
-                                    "QComboBox:editable {\n"
-                                        "background-color: #324B4F;\n"
-                                    "}\n"
-                                    "QComboBox QAbstractItemView {\n"
-                                        "border: 1px solid #d9d9d9;\n"
-                                        "selection-background-color: #686868;\n"
-                                        "border-bottom-right-radius: 8px;\n"
-                                        "border-bottom-left-radius: 8px;\n"
-                                        "background-color: #d9d9d9;\n"
-                                        "color: #686868;\n"
-                                        "font-size: 13px;\n"
-                                    "}\n"
-                                    "")
+                                      "background-color: rgb(26, 39, 41);\n"
+                                      "border-radius: 8px;\n"
+                                      "border: 5px solid rgb(26, 39, 41);\n"
+                                      "color: white;\n"
+                                      "font-size: 13px;\n"
+                                      "}\n"
+                                      "QComboBox:editable {\n"
+                                      "background-color: #324B4F;\n"
+                                      "}\n"
+                                      "QComboBox QAbstractItemView {\n"
+                                      "border: 1px solid #d9d9d9;\n"
+                                      "selection-background-color: #686868;\n"
+                                      "border-bottom-right-radius: 8px;\n"
+                                      "border-bottom-left-radius: 8px;\n"
+                                      "background-color: #d9d9d9;\n"
+                                      "color: #686868;\n"
+                                      "font-size: 13px;\n"
+                                      "}\n"
+                                      "")
         self.comboBox_2.setObjectName("comboBox_2")
         self.micmute = QtWidgets.QPushButton(self.dropdownslider1)
         self.micmute.setGeometry(QtCore.QRect(20, 50, 45, 45))
@@ -269,24 +254,26 @@ class Ui_mainInterface(object):
         self.micmute.setMaximumSize(QtCore.QSize(45, 45))
         self.micmute.setText("")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic.svg"),
+        icon4.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic-sai8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.micmute.setIcon(icon4)
         self.micmute.setIconSize(QtCore.QSize(40, 40))
         self.micmute.setObjectName("micmute")
-        #เรียกใช้ฟังก์ชั่น mute mic
+
+        # เรียกใช้ฟังก์ชั่น mute mic
         self.micmute.clicked.connect(self.mic_mute)
+
         self.horizontalSlider_2 = QtWidgets.QSlider(self.dropdownslider1)
         self.horizontalSlider_2.setGeometry(QtCore.QRect(30, 110, 326, 20))
         self.horizontalSlider_2.setStyleSheet("QSlider::handle:horizontal {\n"
-                                                    "border-radius: 6px;\n"
-                                                    "background-color: #00d19d;;\n"
-                                                "}")
-        
-        #กำหนดค่า max min ค่ากลาง ของ Boost mic
-        self.horizontalSlider_2.setMaximum(5)
-        self.horizontalSlider_2.setMinimum(-5)
-        self.horizontalSlider_2.setValue(0)
+                                              "border-radius: 6px;\n"
+                                              "background-color: #00d19d;;\n"
+                                              "}")
+
+        # กำหนดค่า max min ค่ากลาง ของ Boost mic
+        self.horizontalSlider_2.setMaximum(20)
+        self.horizontalSlider_2.setMinimum(5)
+        self.horizontalSlider_2.setValue(10)
         self.horizontalSlider_2.setPageStep(1)
         self.horizontalSlider_2.valueChanged.connect(self.updateboostmicl)
         self.horizontalSlider_2.setOrientation(QtCore.Qt.Horizontal)
@@ -302,47 +289,49 @@ class Ui_mainInterface(object):
         self.comboBox.setMinimumSize(QtCore.QSize(273, 44))
         self.comboBox.setMaximumSize(QtCore.QSize(273, 44))
         self.comboBox.setStyleSheet("QComboBox{\n"
-                                        "background-color: rgb(26, 39, 41);\n"
-                                        "border-radius: 8px;\n"
-                                        "border: 5px solid rgb(26, 39, 41);\n"
-                                        "color: white;\n"
-                                        "font-size: 13px;\n"
+                                    "background-color: rgb(26, 39, 41);\n"
+                                    "border-radius: 8px;\n"
+                                    "border: 5px solid rgb(26, 39, 41);\n"
+                                    "color: white;\n"
+                                    "font-size: 13px;\n"
                                     "}\n"
                                     "QComboBox:editable {\n"
-                                        "background-color: #324B4F;\n"
+                                    "background-color: #324B4F;\n"
                                     "}\n"
                                     "QComboBox QAbstractItemView {\n"
-                                        "border: 1px solid #d9d9d9;\n"
-                                        "selection-background-color: #686868;\n"
-                                        "border-bottom-right-radius: 8px;\n"
-                                        "border-bottom-left-radius: 8px;\n"
-                                        "background-color: #d9d9d9;\n"
-                                        "color: #686868;\n"
-                                        "font-size: 13px;\n"
+                                    "border: 1px solid #d9d9d9;\n"
+                                    "selection-background-color: #686868;\n"
+                                    "border-bottom-right-radius: 8px;\n"
+                                    "border-bottom-left-radius: 8px;\n"
+                                    "background-color: #d9d9d9;\n"
+                                    "color: #686868;\n"
+                                    "font-size: 13px;\n"
                                     "}\n"
                                     "")
         self.comboBox.setObjectName("comboBox")
 
-        #เอา Virtual Cable ออกจาก List
-        #โชว์ข้อมูล Input ใน dropdown
-        
+        # เอา Virtual Cable ออกจาก List
+        # โชว์ข้อมูล Input ใน dropdown
+
         self.devicesInput_list = []
         for device in input_audio_deviceInfos:
-            if device.deviceName() not in self.devicesInput_list and "Virtual Cable" not in device.deviceName(): 
+            if device.deviceName() not in self.devicesInput_list and "Virtual Cable" not in device.deviceName():
                 self.devicesInput_list.append(device.deviceName())
 
         self.comboBox_2.addItems(self.devicesInput_list)
-        self.comboBox_2.currentIndexChanged['QString'].connect(self.updateInput_now)
+        self.comboBox_2.currentIndexChanged['QString'].connect(
+            self.updateInput_now)
         self.comboBox_2.setCurrentIndex(0)
-        
-        #โชว์ข้อมูล Output ใน dropdown
+
+        # โชว์ข้อมูล Output ใน dropdown
         self.devicesOutput_list = []
         for device in output_audio_deviceInfos:
             if device.deviceName() not in self.devicesOutput_list and "Virtual Cable" not in device.deviceName():
                 self.devicesOutput_list.append(device.deviceName())
-    
+
         self.comboBox.addItems(self.devicesOutput_list)
-        self.comboBox.currentIndexChanged['QString'].connect(self.updateOutput_now)
+        self.comboBox.currentIndexChanged['QString'].connect(
+            self.updateOutput_now)
         self.comboBox.setCurrentIndex(0)
 
         ##################
@@ -352,28 +341,30 @@ class Ui_mainInterface(object):
         self.speakermute.setMaximumSize(QtCore.QSize(45, 45))
         self.speakermute.setText("")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),
+        icon5.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/unmutespeaker-sai8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.speakermute.setIcon(icon5)
         self.speakermute.setIconSize(QtCore.QSize(40, 40))
         self.speakermute.setObjectName("speakermute")
-        #เรียกใช้ ฟังก์ชั่น mute volume
+        # เรียกใช้ ฟังก์ชั่น mute volume
         self.speakermute.clicked.connect(self.volume_mute)
+
         self.horizontalSlider = QtWidgets.QSlider(self.dropdownslider2)
         self.horizontalSlider.setGeometry(QtCore.QRect(30, 100, 326, 20))
         self.horizontalSlider.setStyleSheet("QSlider::handle:horizontal {\n"
-                                                "border-radius: 6px;\n"
-                                                "background-color: #00d19d;;\n"
-                                                "}")
-        #set ให้ค่า current เท่ากับ value
+                                            "border-radius: 6px;\n"
+                                            "background-color: #00d19d;;\n"
+                                            "}")
+        # set ให้ค่า current เท่ากับ value
         devices = AudioUtilities.GetSpeakers()
-        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        interface = devices.Activate(
+            IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = cast(interface, POINTER(IAudioEndpointVolume))
         current = volume.GetMasterVolumeLevelScalar()
         current_percent = current * 100
         self.horizontalSlider.setMaximum(100)
 
-        #set ให้โชว์ค่า value ตรง Slider bar 
+        # set ให้โชว์ค่า value ตรง Slider bar
         self.horizontalSlider.setValue(int(current_percent))
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
@@ -384,23 +375,32 @@ class Ui_mainInterface(object):
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
-        self.settingButton = QtWidgets.QPushButton(self.frame)
-        self.settingButton.setGeometry(QtCore.QRect(30, 50, 320, 70))
-        self.settingButton.setMinimumSize(QtCore.QSize(320, 70))
-        self.settingButton.setMaximumSize(QtCore.QSize(320, 70))
+
+        self.setting_Button = QtWidgets.QPushButton(self.frame)
+        self.setting_Button.setGeometry(QtCore.QRect(30, 50, 320, 70))
+        self.setting_Button.setMinimumSize(QtCore.QSize(320, 70))
+        self.setting_Button.setMaximumSize(QtCore.QSize(320, 70))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(32)
-        self.settingButton.setFont(font)
+        self.setting_Button.setFont(font)
+        self.setting_Button.setStyleSheet("QPushButton \n"
+                                          "{\n"
+                                          " color: #FFFFFF;\n"
+                                          "}")
+        
+        # # เรียกใช้ ฟังก์ชั่น open_setting
+        # self.setting_Button.clicked.connect(self.open_setting)
+
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/settings.svg"),
+        icon6.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/setting8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.settingButton.setIcon(icon6)
-        self.settingButton.setIconSize(QtCore.QSize(32, 32))
-        self.settingButton.setObjectName("settingButton")
+        self.setting_Button.setIcon(icon6)
+        self.setting_Button.setIconSize(QtCore.QSize(40, 40))
+        self.setting_Button.setObjectName("setting_Button")
         self.verticalLayout_2.addWidget(self.frame)
 
-        #right side
+        # right side
         self.Right_side = QtWidgets.QFrame(ui_main)
         self.Right_side.setGeometry(QtCore.QRect(378, -1, 900, 721))
         sizePolicy = QtWidgets.QSizePolicy(
@@ -515,21 +515,14 @@ class Ui_mainInterface(object):
                                         "    border-radius: 40px;\n"
                                         "    border-color : black;\n"
                                         "\n"
-                                        "    color: rgb(104, 104, 104);\n"
+                                        "    color: #686868;\n"
                                         "    text-align : center;\n"
                                         "}\n"
                                         "QPushButton:hover{\n"
                                         "    background-color: rgb(53, 112, 122);    \n"
                                         "    border-width : 0.5px;\n"
                                         "    border-color :  rgb(1, 209, 158) ;\n"
-                                        "    color: rgb(204, 204, 204);\n"
-                                        "}\n"
-                                        "QPushButton:pressed{\n"
-                                        "    background-color: #244D54;\n"
-                                        "    border-style : inset;\n"
-                                        "    border-width : 2px;\n"
-                                        "    border-color : #00D19D;\n"
-                                        "    color: #FFFFFF;\n"
+                                        "    color: #B0B0B0;\n"
                                         "}")
         self.Noise_button.setObjectName("Noise_button")
 
@@ -550,6 +543,7 @@ class Ui_mainInterface(object):
         self.Noise_label.setAlignment(QtCore.Qt.AlignCenter)
         self.Noise_label.setObjectName("Noise_label")
         self.verticalLayout_2.addWidget(self.Noise)
+
         self.Graph = QtWidgets.QFrame(self.frame)
         self.Graph.setStyleSheet("QFrame{\n"
                                  "    background-color: rgba(0, 0, 0, 0);\n"
@@ -559,6 +553,7 @@ class Ui_mainInterface(object):
         self.Graph.setObjectName("Graph")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.Graph)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
+
         self.label = QtWidgets.QLabel(self.Graph)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
@@ -598,22 +593,16 @@ class Ui_mainInterface(object):
                                           "    border-radius: 25px;\n"
                                           "    border-color : black;\n"
                                           "\n"
-                                          "    color: rgb(104, 104, 104);\n"
+                                          "    color: #686868;\n"
                                           "    text-align : center;\n"
                                           "}\n"
                                           "QPushButton:hover{\n"
-                                          "    background-color: rgb(53, 112, 122);    \n"
+                                          "    background-color: #35707A;    \n"
                                           "    border-width : 0.5px;\n"
                                           "    border-color :  rgb(1, 209, 158) ;\n"
                                           "    color: rgb(204, 204, 204);\n"
                                           "}\n"
-                                          "QPushButton:pressed{\n"
-                                          "    background-color: #244D54;\n"
-                                          "    border-style : inset;\n"
-                                          "    border-width : 2px;\n"
-                                          "    border-color : #00D19D;\n"
-                                          "    color: #FFFFFF;\n"
-                                          "}")
+                                          )
         self.Testmic_button.setObjectName("Testmic_button")
 
         # Test Mic Button Function
@@ -648,7 +637,6 @@ class Ui_mainInterface(object):
         self.filenames = []
         self.player = QMediaPlayer()
         self.ui_main = ui_main
-        
 
         self.Soundpad_page = QtWidgets.QWidget()
         self.Soundpad_page.setObjectName("Soundpad_page")
@@ -892,113 +880,249 @@ class Ui_mainInterface(object):
         self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
-
-    def updateInput_now(self,value):
+    def updateInput_now(self, value):
         print(value)
         self.device = self.devicesInput_list.index(value)
         # print('Device:',self.devicesInput_list.index(value))
 
-    def updateOutput_now(self,value):
+    def updateOutput_now(self, value):
         print(value)
         self.device1 = self.devicesOutput_list.index(value)
         # print('Speaker:',self.devicesOutput_list.index(value))
-        
-
 
     def volume_mute(self):
         devices = AudioUtilities.GetSpeakers()
-        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        interface = devices.Activate(
+            IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = cast(interface, POINTER(IAudioEndpointVolume))
-        if(Ui_mainInterface.audio_mute==0):
+        if (Ui_mainInterface.audio_mute == 0):
             print("Volume Mute")
-            Ui_mainInterface.audio_mute=1
+            Ui_mainInterface.audio_mute = 1
             volume.SetMute(1, None)
             icon_volume_mute = QtGui.QIcon()
-            icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-x.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_mute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/mutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_mute)
+            
         else:
             print("Volume UnMute")
-            Ui_mainInterface.audio_mute=0
-            volume.SetMute(0,None)
+            Ui_mainInterface.audio_mute = 0
+            volume.SetMute(0, None)
             icon_volume_unmute = QtGui.QIcon()
-            icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_unmute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/unmutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_unmute)
-
+            
 
     def mic_mute(self):
-        if(Ui_mainInterface.microphone_mute==0):
+        if (Ui_mainInterface.microphone_mute == 0):
             print("Mic Mute")
-            Ui_mainInterface.microphone_mute=1
+            Ui_mainInterface.microphone_mute = 1
             icon_mic_mute = QtGui.QIcon()
-            icon_mic_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic-off.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_mic_mute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/mutemic-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.micmute.setIcon(icon_mic_mute)
+            
         else:
             print("Mic UnMute")
-            Ui_mainInterface.microphone_mute=0
+            Ui_mainInterface.microphone_mute = 0
             icon_mic_unmute = QtGui.QIcon()
-            icon_mic_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mic.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_mic_unmute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/mic-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.micmute.setIcon(icon_mic_unmute)
-
+            
 
     def updatevolume(self, value):
         devices = AudioUtilities.GetSpeakers()
-        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        interface = devices.Activate(
+            IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = cast(interface, POINTER(IAudioEndpointVolume))
         volume.SetMasterVolumeLevelScalar(value / 100, None)
 
         if value == 0:
             icon_volume_mute = QtGui.QIcon()
-            icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-x.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_mute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/mutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_mute)
             volume.SetMute(1, None)
         else:
             icon_volume_unmute = QtGui.QIcon()
-            icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/volume-2.svg"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_unmute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/unmutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_unmute)
-            volume.SetMute(0,None)
-
+            volume.SetMute(0, None)
 
     def updateboostmicl(self, value):
         print(value)
-
 
     def retranslateUi(self, ui_main):
         _translate = QtCore.QCoreApplication.translate
         ui_main.setWindowTitle(_translate("ui_main", "EchoEcho"))
         self.Microphone_button.setText(_translate("ui_main", "Microphone"))
-        self.Audio_button.setText(_translate("ui_main", "Audio"))
         self.Soundpad_button.setText(_translate("ui_main", "Soundpad"))
         self.Voicechanger_button.setText(_translate("ui_main", "VoiceChanger"))
         self.Mic_title_label.setText(_translate("ui_main", "Microphone"))
-        self.settingButton.setText(_translate("ui_main", "Setting"))
+        self.setting_Button.setText(_translate("ui_main", "Setting"))
         self.Noise_button.setText(_translate("ui_main", "\n"
                                              "detecting the sound coming into the headset, and generating signals \n"
                                              "that are  out-of-phase with the  offending signals, canceling them out."))
         self.Noise_label.setText(_translate("ui_main", "Noise Suppression"))
-        self.label.setText(_translate("ui_main", "Graph"))
+        self.label.setText(_translate("ui_main", "Graph_text"))
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
 
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
 
+    # Side menu button clicked
+    ##############################
+    def Mic_Side_menu_clicked(self):
+        # Mic clciked
+        ##############################
+        if (Ui_mainInterface.Mic_Side_menu == 0):
+            print("MIC clicked")
+            Ui_mainInterface.Mic_Side_menu = 1
+            Ui_mainInterface.SP_Side_menu = 0
+            Ui_mainInterface.VC_Side_menu = 0
+            self.Microphone_button.setStyleSheet("QPushButton {\n"
+                                                 "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                 "}")
+            self.Soundpad_button.setStyleSheet("QPushButton{\n"
+                                               "    background-color: rgba(0, 0, 0, 0)\n"
+                                               "}\n"
+                                               "QPushButton:hover{\n"
+                                               "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                               "}")
+            self.Voicechanger_button.setStyleSheet("QPushButton{\n"
+                                                   "    background-color: rgba(0, 0, 0, 0)\n"
+                                                   "}\n"
+                                                   "QPushButton:hover{\n"
+                                                   "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                   "}")
+
+    def SP_Side_menu_clicked(self):
+        # SP clicked
+        ##############################
+        if (Ui_mainInterface.SP_Side_menu == 0):
+            print("SP clicked")
+            Ui_mainInterface.SP_Side_menu = 1
+            Ui_mainInterface.Mic_Side_menu = 0
+            Ui_mainInterface.VC_Side_menu = 0
+            self.Soundpad_button.setStyleSheet("QPushButton {\n"
+                                               "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                               "}")
+            self.Microphone_button.setStyleSheet("QPushButton{\n"
+                                                 "    background-color: rgba(0, 0, 0, 0)\n"
+                                                 "}\n"
+                                                 "QPushButton:hover{\n"
+                                                 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                 "}")
+            self.Voicechanger_button.setStyleSheet("QPushButton{\n"
+                                                   "    background-color: rgba(0, 0, 0, 0)\n"
+                                                   "}\n"
+                                                   "QPushButton:hover{\n"
+                                                   "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                   "}")
+
+    def VC_Side_menu_clicked(self):
+        # VC clicked
+        ##############################
+        if (Ui_mainInterface.VC_Side_menu == 0 or Ui_mainInterface.Mic_Side_menu == 1 or Ui_mainInterface.SP_Side_menu == 1):
+            print("VC clicked")
+            Ui_mainInterface.VC_Side_menu = 1
+            Ui_mainInterface.Mic_Side_menu = 0
+            Ui_mainInterface.SP_Side_menu = 0
+            self.Voicechanger_button.setStyleSheet("QPushButton {\n"
+                                                   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                   "}")
+            self.Microphone_button.setStyleSheet("QPushButton{\n"
+                                                 "    background-color: rgba(0, 0, 0, 0)\n"
+                                                 "}\n"
+                                                 "QPushButton:hover{\n"
+                                                 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                                 "}")
+            self.Soundpad_button.setStyleSheet("QPushButton{\n"
+                                               "    background-color: rgba(0, 0, 0, 0)\n"
+                                               "}\n"
+                                               "QPushButton:hover{\n"
+                                               "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                               "}")
+
+    # ปุ่มเปิดปิด Noise Suppression and test microphone
+    #############################################
+
     def Noise_button_clicked(self):
         # print("Noise button clicked")
-        if(Ui_mainInterface.noise_reduce == 0):
+        if (Ui_mainInterface.noise_reduce == 0):
             Ui_mainInterface.noise_reduce = 1
-            #ทำให้ปุ่มเปิด
+            # ทำให้ปุ่มเปิด
+            self.Noise_button.setStyleSheet("QPushButton{\n"
+                                            "    border-radius: 40px;\n"
+                                            "    background-color: #244D54;\n"
+                                            "    border-style : inset;\n"
+                                            "    border-width : 2px;\n"
+                                            "\n"
+                                            "    border-color : #00D19D;\n"
+                                            "    color: #FFFFFF;\n"
+                                            "}"
+                                            )
         else:
             Ui_mainInterface.noise_reduce = 0
-            #ทำปุ่มปิด
+            # ทำปุ่มปิด
+            self.Noise_button.setStyleSheet("QPushButton{\n"
+                                            "    background-color: #244D54;\n"
+                                            "    border-style : outset;\n"
+                                            "    border-width : 0.5px;\n"
+                                            "    border-radius: 40px;\n"
+                                            "    border-color : black;\n"
+                                            "\n"
+                                            "    color: #686868;\n"
+                                            "    text-align : center;\n"
+                                            "}\n"
+                                            "QPushButton:hover{\n"
+                                            "    background-color: #35707A;    \n"
+                                            "    border-width : 0.5px;\n"
+                                            "    border-color :  rgb(1, 209, 158) ;\n"
+                                            "    color: #B0B0B0;\n"
+                                            "}"
+                                            )
+    #############################################
 
     def TestMic_button_clicked(self):
         # print("Test mic button clicked")
-        if(Ui_mainInterface.test_microphone == 0):
+        if (Ui_mainInterface.test_microphone == 0):
             Ui_mainInterface.test_microphone = 1
-            #ทำให้ปุ่มเปิด
+            # ทำให้ปุ่มเปิด
+            self.Testmic_button.setStyleSheet("QPushButton{\n"
+                                              "    border-radius: 25px;\n"
+                                              "    background-color: #244D54;\n"
+                                              "    border-style : inset;\n"
+                                              "    border-width : 2px;\n"
+                                              "    border-color : #00D19D;\n"
+                                              "    color: #FFFFFF;\n"
+                                              "}"
+                                              )
         else:
             Ui_mainInterface.test_microphone = 0
-            #ทำปุ่มปิด
+            # ทำปุ่มปิด
+            self.Testmic_button.setStyleSheet("QPushButton{\n"
+                                              "    background-color: #244D54;\n"
+                                              "    border-style : outset;\n"
+                                              "    border-width : 0.5px;\n"
+                                              "    border-radius: 25px;\n"
+                                              "    border-color : black;\n"
+                                              "\n"
+                                              "    color: #686868;\n"
+                                              "    text-align : center;\n"
+                                              "}\n"
+
+                                              "QPushButton:hover{\n"
+                                              "    background-color: #35707A;    \n"
+                                              "    border-width : 0.5px;\n"
+                                              "    border-color :  rgb(1, 209, 158) ;\n"
+                                              "    color: rgb(204, 204, 204);\n"
+                                              "}"
+                                              )
 
     # Soundpad Page Function
     # add item
@@ -1036,9 +1160,10 @@ class Ui_mainInterface(object):
     # listen item button
     def SP_listen_item(self, text, filename):
         button = QPushButton(text)
-        button.clicked.connect(lambda: self.play_media(filename, self.tableWidget.currentRow()))
+        button.clicked.connect(lambda: self.play_media(
+            filename, self.tableWidget.currentRow()))
         return button
-    
+
     def play_media(self, filename, row):
         fname = filename
         # convert string to QUrl object using the QUrl constructor
@@ -1048,18 +1173,19 @@ class Ui_mainInterface(object):
         # play the media
         self.player.play()
         # self.player.mediaStatusChanged.connect(lambda status: self.get_duration(status, filename, row))
-    
+
     def get_duration(self, media_status, fname, row):
         if media_status == QMediaPlayer.LoadedMedia:
             duration = self.player.duration() / 1000.0
-            self.tableWidget.setItem(row, 2, QTableWidgetItem("{:.2f} s".format(duration)))
-    
+            self.tableWidget.setItem(
+                row, 2, QTableWidgetItem("{:.2f} s".format(duration)))
+
     # delete item button
     def SP_del_item(self, row, fname):
         button = QPushButton("Delete")
         button.clicked.connect(lambda: self.remove_file(row, fname))
         return button
-    
+
     def remove_file(self, row, fname):
         # Remove the selected row from the table
         if fname in self.filenames:
@@ -1083,3 +1209,4 @@ class Ui_mainInterface(object):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(self.filenames, file)
+
