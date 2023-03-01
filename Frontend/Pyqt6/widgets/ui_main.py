@@ -302,9 +302,9 @@ class Ui_mainInterface(object):
                                               "}")
 
         # กำหนดค่า max min ค่ากลาง ของ Boost mic
-        self.horizontalSlider_2.setMaximum(5)
-        self.horizontalSlider_2.setMinimum(-5)
-        self.horizontalSlider_2.setValue(0)
+        self.horizontalSlider_2.setMaximum(20)
+        self.horizontalSlider_2.setMinimum(5)
+        self.horizontalSlider_2.setValue(10)
         self.horizontalSlider_2.setPageStep(1)
         self.horizontalSlider_2.valueChanged.connect(self.updateboostmicl)
         self.horizontalSlider_2.setOrientation(QtCore.Qt.Horizontal)
