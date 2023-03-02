@@ -363,12 +363,14 @@ class Ui_mainInterface(object):
         current = volume.GetMasterVolumeLevelScalar()
         current_percent = current * 100
         self.horizontalSlider.setMaximum(100)
+        self.horizontalSlider.setMinimum(0)
 
         # set ให้โชว์ค่า value ตรง Slider bar
         self.horizontalSlider.setValue(int(current_percent))
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
         self.horizontalSlider.valueChanged.connect(self.updatevolume)
+        self.volume = self.get_volume()
         self.verticalLayout_2.addWidget(self.dropdownslider2)
         self.frame = QtWidgets.QFrame(self.Device_settings)
         self.frame.setMinimumSize(QtCore.QSize(370, 0))
@@ -932,25 +934,25 @@ class Ui_mainInterface(object):
             self.micmute.setIcon(icon_mic_unmute)
             
 
-    def updatevolume(self, value):
+    def get_volume(self):
         devices = AudioUtilities.GetSpeakers()
-        interface = devices.Activate(
-            IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-        volume = cast(interface, POINTER(IAudioEndpointVolume))
-        volume.SetMasterVolumeLevelScalar(value / 100, None)
-
+        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        return cast(interface, POINTER(IAudioEndpointVolume))
+    
+    def updatevolume(self,value):
+        self.volume.SetMasterVolumeLevelScalar(self.horizontalSlider.value() / 100, None)
         if value == 0:
+            Ui_mainInterface.audio_mute = 1
             icon_volume_mute = QtGui.QIcon()
-            icon_volume_mute.addPixmap(QtGui.QPixmap(
-                "Frontend/Pyqt6/icons/mutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mutespeaker-sai8.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_mute)
-            volume.SetMute(1, None)
+            self.volume.SetMute(1, None)
         else:
+            Ui_mainInterface.audio_mute = 0
             icon_volume_unmute = QtGui.QIcon()
-            icon_volume_unmute.addPixmap(QtGui.QPixmap(
-                "Frontend/Pyqt6/icons/unmutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/unmutespeaker-sai8.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_unmute)
-            volume.SetMute(0, None)
+            self.volume.SetMute(0,None)
 
     def updateboostmicl(self, value):
         print(value)
