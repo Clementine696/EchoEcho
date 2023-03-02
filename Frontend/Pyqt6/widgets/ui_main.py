@@ -933,6 +933,19 @@ class Ui_mainInterface(object):
                 "Frontend/Pyqt6/icons/mic-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.micmute.setIcon(icon_mic_unmute)
             
+    def updateboostmicl(self, value):
+        if value == 0:
+            Ui_mainInterface.microphone_mute = 1
+            icon_mic_mute = QtGui.QIcon()
+            icon_mic_mute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/mutemic-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.micmute.setIcon(icon_mic_mute)
+        else:
+            Ui_mainInterface.microphone_mute = 0
+            icon_mic_unmute = QtGui.QIcon()
+            icon_mic_unmute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/mic-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.micmute.setIcon(icon_mic_unmute)
 
     def get_volume(self):
         devices = AudioUtilities.GetSpeakers()
@@ -953,10 +966,6 @@ class Ui_mainInterface(object):
             icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/unmutespeaker-sai8.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_unmute)
             self.volume.SetMute(0,None)
-
-    def updateboostmicl(self, value):
-        # print(value)
-        pass
 
     def retranslateUi(self, ui_main):
         _translate = QtCore.QCoreApplication.translate

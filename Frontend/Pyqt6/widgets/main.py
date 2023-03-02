@@ -54,12 +54,10 @@ def Toggle_MuteMic():
 
 def Boost_Mic(value):
     global Boost_mic_volumeFactor
-    if(value >= 10):
-        Boost_mic_volumeFactor = value/10
-        print('Mic factor : ', value/10)
-    elif(value < 10):
-        Boost_mic_volumeFactor = (value)*0.04 + 0.5
-        print('Mic factor : ', (value)*0.04 + 0.5)
+    if(value == 0):
+        value = 1
+    Boost_mic_volumeFactor = value/10
+    print('Mic factor : ', value/10)
     # Boost_mic_volumeFactor = value/10
 
 def Re_Init_SoundSystem():
