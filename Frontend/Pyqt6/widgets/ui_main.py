@@ -404,7 +404,7 @@ class Ui_mainInterface(object):
 
         # right side
         self.Right_side = QtWidgets.QFrame(ui_main)
-        self.Right_side.setGeometry(QtCore.QRect(378, -1, 900, 721))
+        self.Right_side.setGeometry(QtCore.QRect(380, 0, 900, 720))
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
@@ -503,7 +503,7 @@ class Ui_mainInterface(object):
 
         # noise button
         self.Noise_button = QtWidgets.QPushButton(self.Noise)
-        self.Noise_button.setGeometry(QtCore.QRect(60, 10, 780, 180))
+        self.Noise_button.setGeometry(QtCore.QRect(50, 10, 780, 180))
         self.Noise_button.setMinimumSize(QtCore.QSize(780, 180))
         self.Noise_button.setMaximumSize(QtCore.QSize(780, 180))
         font = QtGui.QFont()
@@ -569,8 +569,7 @@ class Ui_mainInterface(object):
         self.TestMic.setStyleSheet("QFrame{\n"
                                    "    background-color: rgba(0, 0, 0, 0);\n"
                                    "\n"
-                                   "    padding-left: 60px;\n"
-                                   "    padding-right: 60px;\n"
+                                   "    padding-left: 38px;\n"
                                    "    padding-top: 0px;\n"
                                    "    padding-bottom: 20px;\n"
                                    "}")
