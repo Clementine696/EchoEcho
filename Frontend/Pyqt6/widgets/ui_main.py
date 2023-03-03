@@ -10,7 +10,7 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QA
 # IMPORT GUI FILE
 from main import *
 # from pages.soundpad_page import *
-from PySide6 import QtMultimedia
+# from PySide6 import QtMultimedia
 from PyQt5 import uic
 # import pyautogui
 from ctypes import cast, POINTER
@@ -19,6 +19,8 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import main as Main
 import keyboard
 
+#import graph file
+from newgraph import MicrophoneAudioWaveform
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
 output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(
     QAudio.AudioOutput)
@@ -555,6 +557,7 @@ class Ui_mainInterface(object):
         self.Graph.setObjectName("Graph")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.Graph)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.graph = MicrophoneAudioWaveform()
 
         self.label = QtWidgets.QLabel(self.Graph)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
