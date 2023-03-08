@@ -18,7 +18,14 @@ from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import main as Main
 import keyboard
-
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import queue
+import sys
+from matplotlib.animation import FuncAnimation
+import matplotlib.pyplot as plt
+import numpy as np
+import sounddevice as sd
 #import graph file
 from newgraph import MicrophoneAudioWaveform
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
@@ -427,6 +434,8 @@ class Ui_mainInterface(object):
         self.Right_side.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Right_side.setObjectName("Right_side")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.Right_side)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
         # stacked widget
@@ -555,14 +564,55 @@ class Ui_mainInterface(object):
         self.Graph.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Graph.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Graph.setObjectName("Graph")
+        self.graphicswidget = QtWidgets.QWidget(self.Graph)
+        self.graphicswidget.setObjectName("graphicswidget")
+        self.graphicswidget.setStyleSheet("QWidget{\n"
+                                 "    background-color: white;\n"
+                                 "}")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.Graph)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.graph = MicrophoneAudioWaveform()
+        # self.graph = MicrophoneAudioWaveform()
 
-        self.label = QtWidgets.QLabel(self.Graph)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.verticalLayout_3.addWidget(self.label)
+
+
+        #######################################################################
+        self.figure = Figure()
+        self.canvas = FigureCanvas(self.figure)
+        self.ax = self.figure.add_subplot(111)
+        # self.ax.plot([1, 2, 3, 4], [1, 4, 9, 16])
+        self.ax.grid()
+        self.layout = QtWidgets.QVBoxLayout(self.graphicswidget)
+        self.layout.addWidget(self.canvas)
+        self.ax.set_xlim(0, 1024)
+        self.ax.set_ylim(-32768, 32768)
+        self.line, = self.ax.plot([], [])
+
+        # initialize pyaudio
+        self.p = pyaudio.PyAudio()
+
+        # define audio stream parameters
+        self.CHUNK = 1024 * 4   # number of audio frames per buffer
+        self.FORMAT = pyaudio.paInt16  # audio format
+        self.CHANNELS = 1  # mono audio
+        self.RATE = 44100  # audio sampling rate
+
+        # create audio stream
+        self.stream = self.p.open(format=self.FORMAT,
+                        channels=self.CHANNELS,
+                        rate=self.RATE,
+                        input=True,
+                        frames_per_buffer=self.CHUNK)
+
+        # set up a timer to regularly update the plot
+        self.timer = self.canvas.new_timer(interval=10)
+        self.timer.add_callback(self.update_plot)
+        self.timer.start()
+        #######################################################################
+
+        # self.label = QtWidgets.QLabel(self.Graph)
+        # self.label.setAlignment(QtCore.Qt.AlignCenter)
+        # self.label.setObjectName("label")
+        self.verticalLayout_3.addWidget(self.graphicswidget)
         self.verticalLayout_2.addWidget(self.Graph)
 
         # Test Mic layout
@@ -981,7 +1031,7 @@ class Ui_mainInterface(object):
                                              "detecting the sound coming into the headset, and generating signals \n"
                                              "that are  out-of-phase with the  offending signals, canceling them out."))
         self.Noise_label.setText(_translate("ui_main", "Noise Suppression"))
-        self.label.setText(_translate("ui_main", "Graph_text"))
+        # self.label.setText(_translate("ui_main", "Graph_text"))
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
@@ -1223,4 +1273,11 @@ class Ui_mainInterface(object):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(self.filenames, file)
+
+    def update_plot(self):
+        data = self.stream.read(self.CHUNK)
+        data_int = np.frombuffer(data, dtype=np.int16)
+        self.line.set_data(np.arange(len(data_int)), data_int)
+        self.canvas.draw()
+
 
