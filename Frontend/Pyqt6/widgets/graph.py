@@ -1,103 +1,84 @@
-# Quickly import essential libraries
-import queue
-import sys
-from matplotlib.animation import FuncAnimation
-import matplotlib.pyplot as plt
-import numpy as np
 import pyaudio
+import queue
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
-# Lets define audio variables
-# We will use the default PC or Laptop mic to input the sound
+# Audio parameters
+FORMAT = pyaudio.paFloat32
+CHANNELS = 1
+RATE = 44100
+CHUNK_SIZE = 1024
 
-device = 0 # id of the audio device by default
-window = 1000 # window for the data
-downsample = 1 # how much samples to drop
-channels = 1 # a list of audio channels
-interval = 30 # this is update interval in miliseconds for plot
+# Plot parameters
+WINDOW_SIZE = 1000  # ms
+DOWN_SAMPLE = 1
+CHANNELS_TO_PLOT = [0]
 
-# lets make a queue
+# Initialize queue for incoming audio data
 q = queue.Queue()
-# Please note that this sd.query_devices has an s in the end.
-p = pyaudio.PyAudio()
-device_info = p.get_device_info_by_index(device)
-samplerate = int(device_info['defaultSampleRate'])
-length = int(window * samplerate / (1000 * downsample))
 
-# lets print it 
-print("Sample Rate: ", samplerate)
+# Calculate number of samples to display in window
+window_samples = int(WINDOW_SIZE * RATE / 1000 / DOWN_SAMPLE)
 
-# Typical sample rate is 44100 so lets see.
+# Initialize plot data
+plot_data = np.zeros((window_samples, len(CHANNELS_TO_PLOT)))
 
-# Ok so lets move forward
-
-# Now we require a variable to hold the samples 
-
-plotdata = np.zeros((length, channels))
-# Lets look at the shape of this plotdata 
-print("plotdata shape: ", plotdata.shape)
-# So its vector of length 44100
-# Or we can also say that its a matrix of rows 44100 and cols 1
-
-# next is to make fig and axis of matplotlib plt
-fig, ax = plt.subplots(figsize=(5, 4))
-
-# lets set the title
+# Initialize plot
+fig, ax = plt.subplots(figsize=(8, 4))
 ax.set_title("PyShine")
-
-# Make a matplotlib.lines.Line2D plot item of color green
-# R,G,B = 0,1,0.29
-
-lines = ax.plot(plotdata, color=(0, 1, 0.29))
-
-# We will use an audio call back function to put the data in queue
+lines = ax.plot(plot_data, color=(0, 1, 0.29))
 
 def audio_callback(in_data, frame_count, time_info, status):
-    global q
-    q.put(np.frombuffer(in_data, dtype=np.int16)[::downsample])
-    return (in_data, pyaudio.paContinue)
+    """Called by pyaudio whenever new audio data is available"""
+    # Convert byte stream to numpy array
+    audio_data = np.frombuffer(in_data, dtype=np.float32)
 
-# now we will use an another function 
-# It will take frame of audio samples from the queue and update
-# to the lines
+    # Add new audio data to queue
+    q.put(audio_data)
+
+    return (None, pyaudio.paContinue)
 
 def update_plot(frame):
-    global plotdata
-    while True:
-        try:
-            data = q.get_nowait()
-        except queue.Empty:
-            break
+    """Called by FuncAnimation to update the plot"""
+    global plot_data
+
+    # Get all the available audio data from the queue
+    while not q.empty():
+        data = q.get()
+
+        # Downsample the data if needed
+        if DOWN_SAMPLE > 1:
+            data = data[::DOWN_SAMPLE]
+
+        # Update the plot data
         shift = len(data)
-        plotdata = np.roll(plotdata, -shift, axis=0)
-        # Elements that roll beyond the last position are 
-        # re-introduced 
-        plotdata[-shift:, :] = data.reshape((-1, 1))
+        plot_data = np.roll(plot_data, -shift, axis=0)
+        plot_data[-shift:, :] = data[:, np.newaxis]
+
+    # Update the plot lines with the new data
     for column, line in enumerate(lines):
-        line.set_ydata(plotdata[:, column])
+        line.set_ydata(plot_data[:, column])
+
     return lines
 
+# Initialize pyaudio and stream object
+pa = pyaudio.PyAudio()
+stream = pa.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True,
+                 frames_per_buffer=CHUNK_SIZE, stream_callback=audio_callback)
+
+# Initialize the plot
 ax.set_facecolor((0, 0, 0))
-# # Lets add the grid
 ax.set_yticks([0])
 ax.yaxis.grid(True)
 
-""" INPUT FROM MIC """
+# Start the animation
+ani = FuncAnimation(fig, update_plot, interval=30, blit=True)
 
-stream = p.open(
-    format=pyaudio.paFloat32,
-    channels=channels,
-    rate=samplerate,
-    input=True,
-    output=False,
-    frames_per_buffer=1024,
-    stream_callback=audio_callback
-)
-
-""" OUTPUT """		
-
-ani = FuncAnimation(fig, update_plot, interval=interval, blit=True)
+# Show the plot
 plt.show()
 
+# Cleanup
 stream.stop_stream()
 stream.close()
-p.terminate()
+pa.terminate()
