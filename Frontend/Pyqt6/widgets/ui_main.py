@@ -1160,11 +1160,7 @@ class Ui_mainInterface(object):
             self.tableWidget.setCellWidget(row, 4, play_button)
 
             listen_button = QPushButton("Listen")
-<<<<<<< Updated upstream
             listen_button.clicked.connect(lambda _, row=row, fname=fname: self.play_media(row, fname))  
-=======
-            play_button.clicked.connect(lambda _, row=row, fname=fname: self.play_media(row, fname))  
->>>>>>> Stashed changes
             self.tableWidget.setCellWidget(row, 5, listen_button)  
 
             remove_button = QPushButton("Delete")
@@ -1186,24 +1182,26 @@ class Ui_mainInterface(object):
     def play_media(self, row, filename):
         fname = filename
         # convert string to QUrl object using the QUrl constructor
-<<<<<<< Updated upstream
+
         # file = QUrl.fromLocalFile(fname)
         # media = QMediaContent(file)
         # self.player.setMedia(media)
         # # play the media
         # self.player.play()
-=======
+
         file = QUrl.fromLocalFile(fname)
         media = QMediaContent(file)
         self.player.setMedia(media)
 
-        if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
-            self.player.stop()
-        else:
-        # play the media
+        # if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
+        #     self.player.stop()
+        # else:
+        # # play the media
+        #     self.player.play()
+        if self.player.state() == QMediaPlayer.PausedState:
             self.player.play()
-
->>>>>>> Stashed changes
+        else:
+            self.player.pause()
 
     def get_duration(self, media_status, fname, row):
         if media_status == QMediaPlayer.LoadedMedia:
