@@ -36,7 +36,6 @@ class App(QWidget):
         self.width = 1280
         self.height = 720
         self.initUI()
-        # self.load_file()
 
     def initUI(self):
         self.setWindowTitle(self.title)
@@ -46,14 +45,9 @@ class App(QWidget):
         self.button.clicked.connect(lambda: self.add_file(""))
         self.progress_dialog = None
 
-        # self.remove_button = QPushButton("Remove", self)
-        # # self.remove_button.clicked.connect(self.remove_file)
-        # self.remove_button.clicked.connect(self.remove_file)
-
         layout = QVBoxLayout(self)
         layout.addWidget(self.button)
         layout.addWidget(self.scroll_area)
-        # layout.addWidget(self.remove_button)
 
         self.setLayout(layout)
 
@@ -67,16 +61,18 @@ class App(QWidget):
                 for fname in self.filenames:
                     row = self.table.rowCount()
                     self.table.insertRow(row)
+
                     self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
+                    
                     self.table.setItem(row, 1, QTableWidgetItem(""))
-                    # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
+                    
+                  
                     self.table.setCellWidget(row, 2, self.play_button("Play", fname))
-                    # remove_button = QPushButton("Remove")
-                    # remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
-                    # self.table.setCellWidget(row, 3, remove_button)
+
                     remove_button = self.remove_button(row, fname)
                     self.table.setCellWidget(row, 3, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+                
                 print("audio load successfully")
 
         except Exception as e:
@@ -85,51 +81,28 @@ class App(QWidget):
     def add_file(self, file_path):
         options = QFileDialog.Options()
         folder = r""
-        # เห็นทุกไฟล์    
-        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "All Files (*)", options=options)
-
         # เห็นเฉพาะ .wav, .mp3
         fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
-        # print("add file :", fname)
-
-        # row = self.table.rowCount()
-        # self.table.insertRow(row)
-        # self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
-        # self.table.setItem(row, 1, QTableWidgetItem(""))
-        # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
-        # self.table.setCellWidget(row, 2, self.play_button("Play", fname))
-        # remove_button = QPushButton("Remove")
-        # remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
-        # self.table.setCellWidget(row, 3, remove_button)
-        # self.filenames.append(fname)
-        # self.save_file()
 
         if fname:
             print("add file :", fname)
 
             row = self.table.rowCount()
             self.table.insertRow(row)
-            self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
-            # self.table.setItem(row, 1, QTableWidgetItem(""))
-            # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
             media_content = QMediaContent(QUrl.fromLocalFile(fname))
             self.player.setMedia(media_content)
-            self.player.setNotifyInterval(1000)
-            # self.get_duration(lambda: self.get_duration(fname, row))
-            # self.get_duration(fname, row)
-            # self.table.setItem(row, 1, QTableWidgetItem("Loading..."))  
-
+            self.player.setNotifyInterval(1000)  
             content = QMediaContent(QUrl.fromLocalFile(fname))
             player = QMediaPlayer()
             player.setMedia(content)
+            duration_label = QLabel(self)
+            duration_label.setAlignment(QtCore.Qt.AlignRight)
+            player.durationChanged.connect(lambda duration: self.update_duration(duration, duration_label))
+
+            self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
+
+            self.table.setCellWidget(row, 1, duration_label)
             
-            # player.durationChanged.connect(lambda duration: self.setDuration(row, duration))
-            # player.error.connect(lambda error: self.handleError(row, error))
-            # status = QTableWidgetItem("Loading...")
-            # self.table.setItem(row, 1, status)
-       
-            # self.table.setCellWidget(row, 2, self.play_button("Play", fname))
-            # self.table.setCellWidget(row, 2, self.play_button(fname, player))
             self.table.setCellWidget(row, 2, self.play_button("Play", fname))
 
             remove_button = QPushButton("Remove")
@@ -153,10 +126,6 @@ class App(QWidget):
         if fname in self.filenames:
             self.filenames.remove(fname)
         self.table.removeRow(row)
-        # os.remove() 
-
-        # self.filenames.remove(fname)
-        # self.table.removeRow(row)
 
         # Save the updated list of filenames
         self.save_file()
@@ -172,19 +141,6 @@ class App(QWidget):
         button.clicked.connect(lambda: self.play_media(button, fname))
         return button
 
-    # def play_media(self, filename, row):
-    #     fname = filename
-    #     # convert string to QUrl object using the QUrl constructor
-    #     file = QUrl.fromLocalFile(fname)
-    #     media = QMediaContent(file)
-    #     self.player.setMedia(media)
-    #     # play the media
-    #     # self.player.play()
-    #     if self.player.state() == QMediaPlayer.PausedState:
-    #         self.player.play()
-    #     else:
-    #         self.player.pause()
-
     def play_media(self, btn, fname):
         media_content = QMediaContent(QUrl.fromLocalFile(fname))
         if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
@@ -195,27 +151,21 @@ class App(QWidget):
             self.player.play()
             btn.setText("Stop")
 
-    # def get_duration(self, fname, row, status):
-    # #     # duration = self.player.duration() / 1000.0
-    # #     # self.table.setItem(row, 1, QTableWidgetItem("{:.2f} s".format(duration)))
-    # #     duration = self.player.duration()
-    # #     if duration >= 0:
-    # #         duration = str(datetime.timedelta(milliseconds=duration))
-    # #         self.table.setItem(row, 1, QTableWidgetItem(duration))
-    # #     else:
-    # #         QtCore.QTimer.singleShot(1000, lambda: self.get_duration(fname, row))
-    #      if status == QMediaPlayer.LoadedMedia:
-    #         duration = self.player.duration() // 1000
-    #         self.table.setItem(row, 1, QTableWidgetItem(str(datetime.timedelta(seconds=duration))))
-    #         self.progress_dialog.close()
+    def update_duration(self, duration, duration_label):
+    # Find the row corresponding to the given filename and update the duration item
+        # for row in range(self.table.rowCount()):
+        #     if self.table.item(row, 0).text() == os.path.basename(fname):
+        #         duration_td = datetime.timedelta(milliseconds=duration)
+        #         duration_str = duration_td.strftime("%M:%S")
+        #         duration_label = self.table.cellWidget(row, 1)
+        #         duration_label.setText(str(duration_td))
+        duration_td = datetime.timedelta(milliseconds=duration)
+        duration_str = str(duration_td)[2:]  # Remove the leading '0:'
+        duration_label.setText(duration_str)
 
-    # def setDuration(self, row, duration):
-    #     durationItem = QTableWidgetItem(f"{duration/1000:.2f} s")
-    #     self.setItem(row, 1, durationItem)
-        
-    # def handleError(self, row, error):
-    #     status = QTableWidgetItem("Error")
-    #     self.setItem(row, 2, status)
+    def format_time(self, ms):
+    # Convert milliseconds to minutes:seconds
+        return datetime.timedelta(milliseconds=ms)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
