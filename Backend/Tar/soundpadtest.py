@@ -195,6 +195,8 @@ class App(QWidget):
             self.player.play()
             btn.setText("Stop")
 
+        #Kod jeng loey nong Yah
+        
     # def get_duration(self, fname, row, status):
     # #     # duration = self.player.duration() / 1000.0
     # #     # self.table.setItem(row, 1, QTableWidgetItem("{:.2f} s".format(duration)))
