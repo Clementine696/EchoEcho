@@ -555,6 +555,7 @@ class Ui_ui_main(object):
         self.verticalLayout_6.addWidget(self.SP_item)
         self.horizontalLayout_4.addWidget(self.SP_body)
         self.stackedWidget.addWidget(self.Soundpad_page)
+
         self.Voicechanger_page = QtWidgets.QWidget()
         self.Voicechanger_page.setObjectName("Voicechanger_page")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.Voicechanger_page)
@@ -1138,6 +1139,7 @@ class Ui_ui_main(object):
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         self.tableWidget.setSortingEnabled(__sortingEnabled)
+
         self.VC_title_label_2.setText(_translate("ui_main", "Voice Changer"))
         self.VC_Eq_Head_2.setText(_translate("ui_main", "Voice configuration"))
         self.VC_name_item_2.setText(_translate("ui_main", "Alien"))
