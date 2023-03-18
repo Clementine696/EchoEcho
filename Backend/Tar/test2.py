@@ -3,6 +3,7 @@ import os
 import shutil
 import pickle
 import datetime
+import moviepy.editor as mp
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QDesktopWidget, QFileDialog,
     QTableWidget, QTableWidgetItem, QLabel, QMainWindow, QFormLayout,
@@ -12,6 +13,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtCore import QUrl
+from moviepy.editor import VideoFileClip
 
 class App(QWidget):
     def __init__(self):
@@ -44,6 +46,7 @@ class App(QWidget):
         self.button = QPushButton("Add", self)
         self.button.clicked.connect(lambda: self.add_file(""))
         self.progress_dialog = None
+        self.durations = {}
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.button)
@@ -64,8 +67,8 @@ class App(QWidget):
 
                     self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
                     
-                    self.table.setItem(row, 1, QTableWidgetItem(""))
-                    
+                    duration = self.durations.get(fname, "")
+                    self.table.setItem(row, 1, QTableWidgetItem(str(duration)))
                   
                     self.table.setCellWidget(row, 2, self.play_button("Play", fname))
 
@@ -91,25 +94,56 @@ class App(QWidget):
             self.table.insertRow(row)
             media_content = QMediaContent(QUrl.fromLocalFile(fname))
             self.player.setMedia(media_content)
-            self.player.setNotifyInterval(1000)  
-            content = QMediaContent(QUrl.fromLocalFile(fname))
-            player = QMediaPlayer()
-            player.setMedia(content)
-            duration_label = QLabel(self)
-            duration_label.setAlignment(QtCore.Qt.AlignRight)
-            player.durationChanged.connect(lambda duration: self.update_duration(duration, duration_label))
+            self.player.setNotifyInterval(1000)
 
             self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
-            self.table.setCellWidget(row, 1, duration_label)
-            
+            # duration_item = QTableWidgetItem("")
+            # self.table.setItem(row, 1, duration_item)
+            # self.player.durationChanged.connect(lambda duration: self.update_duration(duration, duration_item))
+            # media_content = QMediaContent(QUrl.fromLocalFile(fname))
+
+            # self.player.setMedia(media_content)
+            # self.player.durationChanged.connect(lambda duration: self.update_duration(row, duration))
+            # duration = self.get_duration(fname)
+            # self.table.setItem(row, 1, QTableWidgetItem(str(duration)))
+
+            # media_content = QMediaContent(QUrl.fromLocalFile(fname))
+            # self.player.setMedia(media_content)
+            # duration = self.get_duration(fname)
+            # self.table.setItem(row, 1, QTableWidgetItem(str(duration)))
+            # self.player.durationChanged.connect(lambda duration: self.update_duration(row, duration))
+
+            # duration = self.get_duration(fname)
+            # duration_item = QTableWidgetItem(str(duration))
+            # self.table.setItem(row, 1, duration_item)
+            # self.player.durationChanged.connect(lambda duration: self.update_table_duration(fname, duration))
+
+            duration = self.get_duration(fname)
+            duration_item = QTableWidgetItem(str(duration))
+            duration_item.setFlags(QtCore.Qt.ItemIsEnabled) # ล็อกค่าอยู่ใน cell ไม่ให้เปลี่ยนแปลงเมื่อกดปุ่ม
+            self.table.setItem(row, 1, duration_item)
+            self.player.durationChanged.connect(lambda duration: self.update_table_duration(fname, duration))
+
             self.table.setCellWidget(row, 2, self.play_button("Play", fname))
 
             remove_button = QPushButton("Remove")
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
             self.table.setCellWidget(row, 3, remove_button)
+
             self.filenames.append(fname)
+            self.durations[fname] = duration
+            
             self.save_file()
+
+    def get_duration(self, fname):
+        media_content = QMediaContent(QUrl.fromLocalFile(fname))
+        player = QMediaPlayer()
+        player.setMedia(media_content)
+        player.setNotifyInterval(1000)
+        duration = player.duration()
+        del player
+        return datetime.timedelta(milliseconds=duration)
 
     def save_file(self):
         # save file in pickle
@@ -151,21 +185,14 @@ class App(QWidget):
             self.player.play()
             btn.setText("Stop")
 
-    def update_duration(self, duration, duration_label):
-    # Find the row corresponding to the given filename and update the duration item
-        # for row in range(self.table.rowCount()):
-        #     if self.table.item(row, 0).text() == os.path.basename(fname):
-        #         duration_td = datetime.timedelta(milliseconds=duration)
-        #         duration_str = duration_td.strftime("%M:%S")
-        #         duration_label = self.table.cellWidget(row, 1)
-        #         duration_label.setText(str(duration_td))
-        duration_td = datetime.timedelta(milliseconds=duration)
-        duration_str = str(duration_td)[2:]  # Remove the leading '0:'
-        duration_label.setText(duration_str)
-
-    def format_time(self, ms):
-    # Convert milliseconds to minutes:seconds
-        return datetime.timedelta(milliseconds=ms)
+    def update_table_duration(self, fname, duration):
+        duration = int(duration / 1000)
+        duration_str = str(datetime.timedelta(seconds=duration))
+        for i in range(self.table.rowCount()):
+            if self.table.item(i, 0).text() == os.path.basename(fname):
+                self.table.item(i, 1).setText(duration_str)
+                self.durations[fname] = duration_str # บันทึกค่า duration ลง dictionary
+                break
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
