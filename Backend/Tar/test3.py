@@ -2,6 +2,7 @@ import sys
 import os
 import glob
 import time
+import pickle
 from PyQt5.QtCore import QUrl, Qt, QFile, QIODevice, QTextStream, QTimer
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QGridLayout, QFileDialog, QTableWidget, QTableWidgetItem, QHeaderView
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
@@ -40,6 +41,34 @@ class App(QMainWindow):
 
         self.setCentralWidget(self.central_widget)
 
+    def loadFiles(self):
+        try:
+            with open('soundpad.pickle', 'rb') as f:
+                data = pickle.load(f)
+                for file_name, duration in data:
+                    row_position = self.table.rowCount()
+                    self.table.insertRow(row_position)
+                    self.table.setItem(row_position, 0, QTableWidgetItem(os.path.basename(file_name)))
+                    self.table.setItem(row_position, 1, QTableWidgetItem(duration))
+
+                    player = QMediaPlayer()
+                    content = QMediaContent(QUrl.fromLocalFile(file_name))
+                    player.setMedia(content)
+
+                    play_button = QPushButton('Play')
+                    play_button.setObjectName(file_name)
+                    play_button.clicked.connect(lambda _, b=file_name, p=player: self.playAudio(b, p))
+                    self.table.setCellWidget(row_position, 2, play_button)
+
+                    delete_button = QPushButton('Delete')
+                    delete_button.clicked.connect(lambda state, row=row_position: self.deleteFile(row))
+                    self.table.setCellWidget(row_position, 3, delete_button)
+
+                print("audio load successfully")
+
+        except Exception as e:
+            print("Error loading audio files:",e)
+
     def addFile(self):
         file_dialog = QFileDialog()
         file_dialog.setNameFilter('Audio Files (*.wav *.mp3)')
@@ -71,41 +100,12 @@ class App(QMainWindow):
 
                     self.saveFiles()
 
-    def loadFiles(self):
-        try:
-            with open('soundpad.txt', 'r') as f:
-                lines = f.readlines()
-                for line in lines:
-                    file_name, duration = line.strip().split(',')
-                    row_position = self.table.rowCount()
-                    self.table.insertRow(row_position)
-                    self.table.setItem(row_position, 0, QTableWidgetItem(os.path.basename(file_name)))
-                    self.table.setItem(row_position, 1, QTableWidgetItem(duration))
-
-                    player = QMediaPlayer()
-                    content = QMediaContent(QUrl.fromLocalFile(file_name))
-                    player.setMedia(content)
-
-                    play_button = QPushButton('Play')
-                    play_button.setObjectName(file_name)
-                    play_button.clicked.connect(lambda _, b=file_name, p=player: self.playAudio(b, p))
-                    self.table.setCellWidget(row_position, 2, play_button)
-
-                    delete_button = QPushButton('Delete')
-                    delete_button.clicked.connect(lambda state, row=row_position: self.deleteFile(row))
-                    self.table.setCellWidget(row_position, 3, delete_button)
-
-                print("audio load successfully")
-
-        except Exception as e:
-            print("Error loading audio files:",e)
-
     def deleteFile(self, row):
         self.table.removeRow(row)
 
-        with open('soundpad.txt', 'r') as f:
+        with open('soundpad.pickle', 'rb') as f:
             lines = f.readlines()
-        with open('soundpad.txt', 'w') as f:
+        with open('soundpad.pickle', 'wb') as f:
             for i, line in enumerate(lines):
                 if i != row:
                     f.write(line)
@@ -128,11 +128,9 @@ class App(QMainWindow):
         return time.strftime('%H:%M:%S', time.gmtime(duration))
     
     def saveFiles(self):
-        with open('soundpad.txt', 'w') as f:
-            for row in range(self.table.rowCount()):
-                file_name = self.table.item(row, 0).text()
-                duration = self.table.item(row, 1).text()
-                f.write(f"{file_name},{duration}\n")
+        data = [(self.table.item(row, 0).text(), self.table.item(row, 1).text()) for row in range(self.table.rowCount())]
+        with open('soundpad.pickle', 'wb') as f:
+            pickle.dump(data, f)
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)
