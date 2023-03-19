@@ -14,7 +14,7 @@ class App(QMainWindow):
         super().__init__()
 
         self.initUI()
-
+        self.filenames = []
         self.loadFiles()
 
         app = QApplication.instance()
@@ -85,14 +85,16 @@ class App(QMainWindow):
                     self.table.setItem(row_position, 0, QTableWidgetItem(os.path.basename(file_name)))
                     self.table.setItem(row_position, 1, QTableWidgetItem(duration))
 
-                    player = QMediaPlayer()
-                    content = QMediaContent(QUrl.fromLocalFile(file_name))
-                    player.setMedia(content)
+                    # player = QMediaPlayer()
+                    # content = QMediaContent(QUrl.fromLocalFile(file_name))
+                    # player.setMedia(content)
 
-                    play_button = QPushButton('Play')
-                    play_button.setObjectName(file_name)
-                    play_button.clicked.connect(lambda _, b=file_name, p=player: self.playAudio(b, p))
-                    self.table.setCellWidget(row_position, 2, play_button)
+                    # play_button = QPushButton('Play')
+                    # play_button.setObjectName(file_name)
+                    # play_button.clicked.connect(lambda _, b=file_name, p=player: self.playAudio(b, p))
+                    # self.table.setCellWidget(row_position, 2, play_button)
+
+                    self.table.setCellWidget(row_position, 2, self.play_button("Play", file_name))
 
                     delete_button = QPushButton('Delete')
                     delete_button.clicked.connect(lambda state, row=row_position: self.deleteFile(row))
@@ -117,6 +119,21 @@ class App(QMainWindow):
         content = QMediaContent(QUrl.fromLocalFile(file_name))
         player.setMedia(content)
         player.play()
+
+    # def playAudio(self, btn, file_name):
+    #     media_content = QMediaContent(QUrl.fromLocalFile(file_name))
+    #     if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
+    #         self.player.stop()
+    #         btn.setText("Play")
+    #     else:
+    #         self.player.setMedia(media_content)
+    #         self.player.play()
+    #         btn.setText("Stop")
+
+    # def play_button(self, label, fname):
+    #     button = QPushButton(label)
+    #     button.clicked.connect(lambda: self.playAudio(button, fname))
+    #     return button
 
     def getDuration(self, file_name):
         if file_name.endswith('.mp3'):
