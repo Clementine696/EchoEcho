@@ -411,7 +411,7 @@ QPushButton:hover{
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Microphone_page">
        <property name="minimumSize">
@@ -822,24 +822,124 @@ QPushButton:pressed{
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="audio_label">
-          <property name="font">
-           <font>
-            <family>Segoe UI</family>
-            <pointsize>36</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
+         <widget class="QFrame" name="Alert_Frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
           </property>
-          <property name="styleSheet">
-           <string notr="true">color: #66DAED</string>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
           </property>
-          <property name="text">
-           <string>Audio</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_19">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QFrame" name="frame_4">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0);</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_10">
+              <item>
+               <widget class="QPushButton" name="pushButton_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>882</width>
+                  <height>342</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>882</width>
+                  <height>342</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>PushButton</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="Text_Frame">
+             <property name="font">
+              <font>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgba(0, 0, 0, 0);
+color:#ffffff
+</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_20">
+              <property name="leftMargin">
+               <number>50</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>50</number>
+              </property>
+              <property name="bottomMargin">
+               <number>85</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="whatsThis">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; color:#ffffff;&quot;&gt;No audio output device found&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; color:#ffffff;&quot;&gt;No audio output device found&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton">
+                <property name="font">
+                 <font>
+                  <pointsize>24</pointsize>
+                  <underline>true</underline>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="text">
+                 <string>Check your audio output device and try again</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -1256,11 +1356,31 @@ QPushButton:pressed {
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="page">
+       <widget class="QFrame" name="frame_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>400</y>
+          <width>171</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons/icon-alent.qrc"/>
+ </resources>
  <connections/>
 </ui>
