@@ -781,7 +781,7 @@ class Ui_mainInterface(object):
 
                     self.tableWidget.setCellWidget(row, 4, self.play_button("Play", fname))
 
-                    self.tableWidget.setCellWidget(row, 5, self.play_button("Listen", fname))
+                    self.tableWidget.setCellWidget(row, 5, self.listen_button("Listen", fname))
 
                     remove_button = self.remove_button(row, fname)
                     self.tableWidget.setCellWidget(row, 6, remove_button)
@@ -1148,7 +1148,7 @@ class Ui_mainInterface(object):
  
             self.tableWidget.setCellWidget(row, 4, self.play_button("Play", fname))
 
-            self.tableWidget.setCellWidget(row, 5, self.play_button("Listen", fname))
+            self.tableWidget.setCellWidget(row, 5, self.listen_button("Listen", fname))
 
             remove_button = self.remove_button(row, fname)
             self.tableWidget.setCellWidget(row, 6, remove_button)
@@ -1156,6 +1156,7 @@ class Ui_mainInterface(object):
             self.save_file()
 
     # play item
+    # ========================================================================================================================================
     def play_mic(self, row, filename):
         fname = filename
         # convert string to QUrl object using the QUrl constructor
@@ -1176,9 +1177,68 @@ class Ui_mainInterface(object):
             self.player.stop()
             btn.setText("Play")
         else:
+            if self.player.state() == QMediaPlayer.PlayingState:
+                curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
+                curr_btn = self.get_play(curr_fname)
+                if curr_btn is not None:
+                    curr_btn.setText("Play")
+                self.player.stop()
+
+            for row in range(self.tableWidget.rowCount()):
+                item = self.tableWidget.item(row, 1)
+                if item is not None and item.text() != os.path.basename(fname):
+                    play_btn = self.tableWidget.cellWidget(row, 4)
+                    if play_btn.text() == "Stop":
+                        self.player.stop()
+                        play_btn.setText("Play")
+
             self.player.setMedia(media_content)
             self.player.play()
             btn.setText("Stop")
+
+    def get_play(self, fname):
+        for row in range(self.tableWidget.rowCount()):
+            item = self.tableWidget.item(row, 0)
+            if item is not None and item.text() == os.path.basename(fname):
+                return self.tableWidget.cellWidget(row, 4)
+            
+    # ========================================================================================================================================
+            
+    def listen_button(self, label, fname):
+        button = QPushButton(label)
+        button.clicked.connect(lambda: self.listen_media(button, fname))
+        return button
+
+    def listen_media(self, btn, fname):
+        media_content = QMediaContent(QUrl.fromLocalFile(fname))
+        if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
+            self.player.stop()
+            btn.setText("Listen")
+        else:
+            if self.player.state() == QMediaPlayer.PlayingState:
+                curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
+                curr_btn = self.get_listen(curr_fname)
+                if curr_btn is not None:
+                    curr_btn.setText("Listen")
+                self.player.stop()
+
+            for row in range(self.tableWidget.rowCount()):
+                item = self.tableWidget.item(row, 1)
+                if item is not None and item.text() != os.path.basename(fname):
+                    play_btn = self.tableWidget.cellWidget(row, 5)
+                    if play_btn.text() == "Stop":
+                        self.player.stop()
+                        play_btn.setText("Listen")
+
+            self.player.setMedia(media_content)
+            self.player.play()
+            btn.setText("Stop")
+
+    def get_listen(self, fname):
+        for row in range(self.tableWidget.rowCount()):
+            item = self.tableWidget.item(row, 0)
+            if item is not None and item.text() == os.path.basename(fname):
+                return self.tableWidget.cellWidget(row, 5)
 
     def getDuration(self, fname):
         if fname.endswith('.mp3'):

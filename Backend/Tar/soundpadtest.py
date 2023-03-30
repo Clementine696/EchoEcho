@@ -134,17 +134,39 @@ class App(QWidget):
         button.clicked.connect(lambda: self.play_media(button, fname))
         return button
 
+    # def play_media(self, btn, fname):
+    #     media_content = QMediaContent(QUrl.fromLocalFile(fname))
+    #     if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
+    #         self.player.stop()
+    #         btn.setText("Play")
+    #     else:
+    #         self.player.setMedia(media_content)
+    #         self.player.play()
+    #         btn.setText("Stop")
+
+        #Kod jeng loey nong Yah
+
     def play_media(self, btn, fname):
         media_content = QMediaContent(QUrl.fromLocalFile(fname))
         if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
             self.player.stop()
             btn.setText("Play")
         else:
+        # Stop currently playing song before playing new song
+            if self.player.state() == QMediaPlayer.PlayingState:
+                curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
+                curr_btn = self.get_play_button_by_fname(curr_fname)
+                curr_btn.setText("Play")
+                self.player.stop()
+
             self.player.setMedia(media_content)
             self.player.play()
             btn.setText("Stop")
 
-        #Kod jeng loey nong Yah
+    def get_play_button_by_fname(self, fname):
+        for row in range(self.table.rowCount()):
+            if self.table.item(row, 0).text() == os.path.basename(fname):
+                return self.table.cellWidget(row, 2)
         
     def getDuration(self, fname):
         if fname.endswith('.mp3'):
