@@ -413,7 +413,7 @@ class Ui_ui_main(object):
         self.Text_Frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Text_Frame.setObjectName("Text_Frame")
         self.verticalLayout_20 = QtWidgets.QVBoxLayout(self.Text_Frame)
-        self.verticalLayout_20.setContentsMargins(50, 0, 50, 85)
+        self.verticalLayout_20.setContentsMargins(50, 75, 50, 125)
         self.verticalLayout_20.setObjectName("verticalLayout_20")
         self.label = QtWidgets.QLabel(self.Text_Frame)
         self.label.setObjectName("label")
