@@ -6,7 +6,7 @@ import time
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QDesktopWidget, QFileDialog,
     QTableWidget, QTableWidgetItem, QLabel, QMainWindow, QFormLayout,
-    QGroupBox, QScrollArea, QVBoxLayout, QHBoxLayout, QProgressDialog
+    QGroupBox, QScrollArea, QVBoxLayout, QHBoxLayout, QProgressDialog, QLineEdit, QShortcut
 )
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
@@ -21,10 +21,11 @@ class App(QWidget):
         super().__init__()
 
         self.filenames = []
+        self.hotkeys = {}
         self.player = QMediaPlayer()
         self.table = QTableWidget()
-        self.table.setColumnCount(4)
-        self.table.setHorizontalHeaderLabels(["Filename", "Duration", "Play", "Remove"])
+        self.table.setColumnCount(5)
+        self.table.setHorizontalHeaderLabels(["Filename", "Duration", "Play", "Remove", "SetHotkey"])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.cellClicked.connect(self.play_button)
 
@@ -76,6 +77,11 @@ class App(QWidget):
                     remove_button = self.remove_button(row, fname)
                     self.table.setCellWidget(row, 3, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+                
+                    hotkey_edit = QLineEdit()
+                    self.table.setCellWidget(row, 4, hotkey_edit)
+                    hotkey_edit.returnPressed.connect(lambda _, r=row, f=fname: self.set_hotkey(r, f, hotkey_edit.text()))
+                
                 print("audio load successfully")
 
         except Exception as e:
@@ -102,6 +108,9 @@ class App(QWidget):
             remove_button = QPushButton("Remove")
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
             self.table.setCellWidget(row, 3, remove_button)
+
+            self.table.setCellWidget(row, 4, self.set_hotkey(row, fname))
+
             self.filenames.append(fname)
             self.save_file()
 
@@ -176,6 +185,30 @@ class App(QWidget):
             audio = WAVE(fname)
             duration = audio.info.length
         return time.strftime('%H:%M:%S', time.gmtime(duration))
+    
+    def set_hotkey(self, row, fname, hotkey):
+    # add hotkey for the given file
+        if hotkey:
+        # remove any previous hotkey for the same file
+            for key, val in self.hotkeys.items():
+                if val == fname:
+                    del self.hotkeys[key]
+
+            self.hotkeys[hotkey] = fname
+
+        # register the hotkey with QShortcut
+            shortcut = QShortcut(QtGui.QKeySequence(hotkey), self)
+            shortcut.activated.connect(lambda _, fname=fname: self.play_media(None, fname))
+
+        else:
+        # remove any previous hotkey for the same file
+            for key, val in self.hotkeys.items():
+                if val == fname:
+                    del self.hotkeys[key]
+
+    # save the hotkeys
+        with open("hotkeys.pickle", "wb") as file:
+            pickle.dump(self.hotkeys, file)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
