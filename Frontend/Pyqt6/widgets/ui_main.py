@@ -564,11 +564,11 @@ class Ui_mainInterface(object):
         self.Graph.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Graph.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Graph.setObjectName("Graph")
-        self.graphicswidget = QtWidgets.QWidget(self.Graph)
-        self.graphicswidget.setObjectName("graphicswidget")
-        self.graphicswidget.setStyleSheet("QWidget{\n"
-                                 "    background-color: white;\n"
-                                 "}")
+        # self.graphicswidget = QtWidgets.QWidget(self.Graph)
+        # self.graphicswidget.setObjectName("graphicswidget")
+        # self.graphicswidget.setStyleSheet("QWidget{\n"
+        #                          "    background-color: white;\n"
+        #                          "}")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.Graph)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         # self.graph = MicrophoneAudioWaveform()
@@ -576,43 +576,75 @@ class Ui_mainInterface(object):
 
 
         #######################################################################
+        # Audio parameters
+        self.FORMAT = pyaudio.paFloat32
+        self.CHANNELS = 1
+        self.RATE = 44100
+        self.CHUNK_SIZE = 1024
+        
+        # Plot parameters
+        self.WINDOW_SIZE = 1000  # ms
+        self.DOWN_SAMPLE = 1
+        self.CHANNELS_TO_PLOT = [0]
+        
+        # Initialize queue for incoming audio data
+        self.q = queue.Queue()
+
+        # Calculate number of samples to display in window
+        self.window_samples = int(self.WINDOW_SIZE * self.RATE / 1000 / self.DOWN_SAMPLE)
+
+        # Initialize plot data
+        self.plot_data = np.zeros((self.window_samples, len(self.CHANNELS_TO_PLOT)))
+        
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
+        
         # self.ax.plot([1, 2, 3, 4], [1, 4, 9, 16])
-        self.ax.grid()
-        self.layout = QtWidgets.QVBoxLayout(self.graphicswidget)
-        self.layout.addWidget(self.canvas)
-        self.ax.set_xlim(0, 1024)
-        self.ax.set_ylim(-32768, 32768)
-        self.line, = self.ax.plot([], [])
+        # self.ax.grid()
+        # self.layout = QtWidgets.QVBoxLayout(self.graphicswidget)
+        # self.layout.addWidget(self.canvas)
+        self.lines = self.ax.plot(self.plot_data, color=(0, 1, 0.29))
+        self.pa = pyaudio.PyAudio()
+        self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
+                 frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.audio_callback)
+        self.ax.set_facecolor((0, 0, 0))
+        self.ax.set_yticks([0])
+        self.ax.yaxis.grid(True)
+        self.ax.set_ylim(-0.3, 0.3)
+        self.ani = FuncAnimation(self.figure, self.update_plot, interval=30, blit=True)
+        plt.show()
+        
+        # self.ax.set_xlim(0, 1024)
+        # self.ax.set_ylim(-32768, 32768)
+        # self.line, = self.ax.plot([], [])
 
         # initialize pyaudio
-        self.p = pyaudio.PyAudio()
+        # self.p = pyaudio.PyAudio()
 
         # define audio stream parameters
-        self.CHUNK = 1024 * 4   # number of audio frames per buffer
-        self.FORMAT = pyaudio.paInt16  # audio format
-        self.CHANNELS = 1  # mono audio
-        self.RATE = 44100  # audio sampling rate
+        # self.CHUNK = 1024 * 4   # number of audio frames per buffer
+        # self.FORMAT = pyaudio.paInt16  # audio format
+        # self.CHANNELS = 1  # mono audio
+        # self.RATE = 44100  # audio sampling rate
 
         # create audio stream
-        self.stream = self.p.open(format=self.FORMAT,
-                        channels=self.CHANNELS,
-                        rate=self.RATE,
-                        input=True,
-                        frames_per_buffer=self.CHUNK)
+        # self.stream = self.p.open(format=self.FORMAT,
+        #                 channels=self.CHANNELS,
+        #                 rate=self.RATE,
+        #                 input=True,
+        #                 frames_per_buffer=self.CHUNK)
 
         # set up a timer to regularly update the plot
-        self.timer = self.canvas.new_timer(interval=10)
-        self.timer.add_callback(self.update_plot)
-        self.timer.start()
+        # self.timer = self.canvas.new_timer(interval=10)
+        # self.timer.add_callback(self.update_plot)
+        # self.timer.start()
         #######################################################################
 
         # self.label = QtWidgets.QLabel(self.Graph)
         # self.label.setAlignment(QtCore.Qt.AlignCenter)
         # self.label.setObjectName("label")
-        self.verticalLayout_3.addWidget(self.graphicswidget)
+        self.verticalLayout_3.addWidget(self.canvas)
         self.verticalLayout_2.addWidget(self.Graph)
 
         # Test Mic layout
@@ -1274,10 +1306,41 @@ class Ui_mainInterface(object):
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(self.filenames, file)
 
-    def update_plot(self):
-        data = self.stream.read(self.CHUNK)
-        data_int = np.frombuffer(data, dtype=np.int16)
-        self.line.set_data(np.arange(len(data_int)), data_int)
-        self.canvas.draw()
+    # def update_plot(self):
+    #     data = self.stream.read(self.CHUNK)
+    #     data_int = np.frombuffer(data, dtype=np.int16)
+    #     self.line.set_data(np.arange(len(data_int)), data_int)
+    #     self.canvas.draw()
+    
+    def audio_callback(self,in_data, frame_count, time_info, status):
+        print("audio_callback")
+        # Convert byte stream to numpy array
+        audio_data = np.frombuffer(in_data, dtype=np.float32)
+
+        # Add new audio data to queue
+        self.q.put(audio_data)
+
+        return (None, pyaudio.paContinue)
+    
+    def update_plot(self,frame):
+        # Get all the available audio data from the queue
+        while not self.q.empty():
+            data = self.q.get()
+
+            # Downsample the data if needed
+            if self.DOWN_SAMPLE > 1:
+                data = data[::self.DOWN_SAMPLE]
+
+            # Update the plot data
+            shift = len(data)
+            self.plot_data = np.roll(self.plot_data, -shift, axis=0)
+            self.plot_data[-shift:, :] = data[:, np.newaxis]
+
+        # Update the plot lines with the new data
+        for column, line in enumerate(self.lines):
+            line.set_ydata(self.plot_data[:, column])
+            self.canvas.draw()
+
+        return self.lines
 
 
