@@ -257,9 +257,16 @@ class MainWindow(QMainWindow):
         self.ui.Voicechanger_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Voicechanger_page))
         
-        # # page setting
-        # self.ui.Setting_button.clicked.connect(
-        #     lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Setting_page))
+        self.ui.pushButton.clicked.connect(
+            lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.dashbord_page))
+        
+        # # page settingmain
+        self.ui.setting_Button.clicked.connect(
+            lambda: self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_6))
+        
+        # page setting
+        self.ui.settingButton.clicked.connect(
+            lambda: self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_5))
 
         #link button
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)

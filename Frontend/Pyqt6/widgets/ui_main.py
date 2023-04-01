@@ -22,6 +22,8 @@ from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import main as Main
 import keyboard
+import subprocess
+
 
 #import graph file
 from newgraph import MicrophoneAudioWaveform
@@ -92,9 +94,19 @@ class Ui_mainInterface(object):
         self.Left_side.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Left_side.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Left_side.setObjectName("Left_side")
+        self.stackedWidget_2 = QtWidgets.QStackedWidget(self.Left_side)
+        self.stackedWidget_2.setGeometry(QtCore.QRect(0, 0, 381, 721))
+        self.stackedWidget_2.setObjectName("stackedWidget_2")
+        self.page_5 = QtWidgets.QWidget()
+        self.page_5.setObjectName("page_5")
+        self.frame_2 = QtWidgets.QFrame(self.page_5)
+        self.frame_2.setGeometry(QtCore.QRect(0, 0, 381, 321))
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
 
         # MENUBARS
-        self.Menubars = QtWidgets.QWidget(self.Left_side)
+        self.Menubars = QtWidgets.QWidget(self.frame_2)
         self.Menubars.setGeometry(QtCore.QRect(-1, -1, 381, 330))
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
@@ -199,10 +211,17 @@ class Ui_mainInterface(object):
         self.Voicechanger_button.setIconSize(QtCore.QSize(40, 40))
         self.Voicechanger_button.setObjectName("Voicechanger_button")
         self.verticalLayout.addWidget(self.Voicechanger_button)
-        self.Device_settings = QtWidgets.QFrame(self.Left_side)
+        self.frame_3 = QtWidgets.QFrame(self.page_5)
+        self.frame_3.setGeometry(QtCore.QRect(0, 330, 381, 381))
+        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_3.setObjectName("frame_3")
+        self.Device_settings = QtWidgets.QFrame(self.frame_3)
+        self.Device_settings.setGeometry(QtCore.QRect(0, -10, 372, 391))
+        # self.Device_settings = QtWidgets.QFrame(self.Left_side)
 
         # Device settings
-        self.Device_settings.setGeometry(QtCore.QRect(0, 330, 372, 391))
+        # self.Device_settings.setGeometry(QtCore.QRect(0, 330, 372, 391))
 
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
@@ -385,7 +404,7 @@ class Ui_mainInterface(object):
         self.frame.setObjectName("frame")
 
         self.setting_Button = QtWidgets.QPushButton(self.frame)
-        self.setting_Button.setGeometry(QtCore.QRect(30, 50, 320, 70))
+        self.setting_Button.setGeometry(QtCore.QRect(30, 59, 320, 70))
         self.setting_Button.setMinimumSize(QtCore.QSize(320, 70))
         self.setting_Button.setMaximumSize(QtCore.QSize(320, 70))
         font = QtGui.QFont()
@@ -403,10 +422,116 @@ class Ui_mainInterface(object):
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/setting8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setting_Button.setIcon(icon6)
+        # self.setting_Button.setIcon(icon6)
         self.setting_Button.setIconSize(QtCore.QSize(40, 40))
         self.setting_Button.setObjectName("setting_Button")
         self.verticalLayout_2.addWidget(self.frame)
+        self.stackedWidget_2.addWidget(self.page_5)
+        self.page_6 = QtWidgets.QWidget()
+        self.page_6.setObjectName("page_6")
+        self.frameSetting = QtWidgets.QFrame(self.page_6)
+        self.frameSetting.setGeometry(QtCore.QRect(0, 0, 371, 101))
+        self.frameSetting.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frameSetting.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frameSetting.setObjectName("frameSetting")
+        self.settingmain = QtWidgets.QPushButton(self.frameSetting)
+        self.settingmain.setGeometry(QtCore.QRect(20, 20, 320, 70))
+        self.settingmain.setMinimumSize(QtCore.QSize(320, 70))
+        self.settingmain.setMaximumSize(QtCore.QSize(320, 70))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(32)
+        self.settingmain.setFont(font)
+        self.settingmain.setStyleSheet("QPushButton { \n"
+"    color: #ffffff;\n"
+"}")
+        self.settingmain.setIconSize(QtCore.QSize(32, 32))
+        self.settingmain.setObjectName("settingmain")
+        self.framedefault = QtWidgets.QFrame(self.page_6)
+        self.framedefault.setGeometry(QtCore.QRect(0, 100, 371, 221))
+        self.framedefault.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.framedefault.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.framedefault.setObjectName("framedefault")
+        self.detaildefault = QtWidgets.QTextEdit(self.framedefault)
+        self.detaildefault.setGeometry(QtCore.QRect(30, 10, 321, 111))
+        self.detaildefault.setObjectName("detaildefault")
+        self.settodefault = QtWidgets.QPushButton(self.framedefault)
+        self.settodefault.setGeometry(QtCore.QRect(30, 140, 320, 54))
+        self.settodefault.setMinimumSize(QtCore.QSize(320, 54))
+        self.settodefault.setMaximumSize(QtCore.QSize(320, 54))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.settodefault.setFont(font)
+        self.settodefault.setStyleSheet("QPushButton { \n"
+"    background-color: #850021;\n"
+"    color: #ffffff;\n"
+"}")
+        self.settodefault.setObjectName("settodefault")
+        self.frameEquipment = QtWidgets.QFrame(self.page_6)
+        self.frameEquipment.setGeometry(QtCore.QRect(0, 320, 371, 151))
+        self.frameEquipment.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frameEquipment.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frameEquipment.setObjectName("frameEquipment")
+        self.detailequipment = QtWidgets.QTextEdit(self.frameEquipment)
+        self.detailequipment.setGeometry(QtCore.QRect(30, 10, 321, 61))
+        self.detailequipment.setObjectName("detailequipment")
+        self.Equipmentsetting = QtWidgets.QPushButton(self.frameEquipment)
+        self.Equipmentsetting.clicked.connect(self.open_device)
+        self.Equipmentsetting.setGeometry(QtCore.QRect(30, 80, 320, 54))
+        self.Equipmentsetting.setMinimumSize(QtCore.QSize(320, 54))
+        self.Equipmentsetting.setMaximumSize(QtCore.QSize(320, 54))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.Equipmentsetting.setFont(font)
+        self.Equipmentsetting.setStyleSheet("QPushButton { \n"
+"    background-color: #850021;\n"
+"    color: #ffffff;\n"
+"}")
+        self.Equipmentsetting.setObjectName("Equipmentsetting")
+        # self.Equipmentsetting.connect(self.open_device)
+        self.frametutorial = QtWidgets.QFrame(self.page_6)
+        self.frametutorial.setGeometry(QtCore.QRect(0, 470, 371, 121))
+        self.frametutorial.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frametutorial.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frametutorial.setObjectName("frametutorial")
+        self.Tutorial = QtWidgets.QPushButton(self.frametutorial)
+        self.Tutorial.setGeometry(QtCore.QRect(30, 50, 320, 54))
+        self.Tutorial.setMinimumSize(QtCore.QSize(320, 54))
+        self.Tutorial.setMaximumSize(QtCore.QSize(320, 54))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.Tutorial.setFont(font)
+        self.Tutorial.setStyleSheet("QPushButton { \n"
+"    background-color: #56B7C7;\n"
+"    color: #ffffff;\n"
+"}")
+        self.Tutorial.setObjectName("Tutorial")
+        self.frame_8 = QtWidgets.QFrame(self.page_6)
+        self.frame_8.setGeometry(QtCore.QRect(0, 590, 372, 130))
+        self.frame_8.setMinimumSize(QtCore.QSize(370, 0))
+        self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_8.setObjectName("frame_8")
+        self.settingButton = QtWidgets.QPushButton(self.frame_8)
+        self.settingButton.setGeometry(QtCore.QRect(30, 50, 320, 70))
+        self.settingButton.setMinimumSize(QtCore.QSize(320, 70))
+        self.settingButton.setMaximumSize(QtCore.QSize(320, 70))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(32)
+        self.settingButton.setFont(font)
+        self.settingButton.setStyleSheet("QPushButton { \n"
+"    color: #ffffff;\n"
+"}")
+        
+        
+        # self.settingButton.setIcon(icon6)
+        self.settingButton.setIconSize(QtCore.QSize(32, 32))
+        self.settingButton.setObjectName("settingButton")
+        self.stackedWidget_2.addWidget(self.page_6)
 
         # right side
         self.Right_side = QtWidgets.QFrame(ui_main)
@@ -561,7 +686,7 @@ class Ui_mainInterface(object):
         self.Graph.setObjectName("Graph")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.Graph)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.graph = MicrophoneAudioWaveform()
+        # self.graph = MicrophoneAudioWaveform()
 
         self.label = QtWidgets.QLabel(self.Graph)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
@@ -641,6 +766,26 @@ class Ui_mainInterface(object):
         self.horizontalLayout_3.addWidget(self.audio_label)
         self.stackedWidget.addWidget(self.Audio_page)
 
+        #Dashbord Page
+        self.dashbord_page = QtWidgets.QWidget()
+        self.dashbord_page.setObjectName("dashbord")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.dashbord_page)
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.dashbord_label = QtWidgets.QLabel(self.Audio_page)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(36)
+        font.setBold(True)
+        font.setWeight(75)
+        self.dashbord_label.setFont(font)
+        self.dashbord_label.setStyleSheet("color: #66DAED")
+        self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.dashbord_label.setObjectName("dashbord_label")
+        self.horizontalLayout_6.addWidget(self.dashbord_label)
+        self.stackedWidget.addWidget(self.dashbord_page)
+
         # Soundpad Page
         self.filenames = []
         self.player = QMediaPlayer()
@@ -675,8 +820,11 @@ class Ui_mainInterface(object):
         self.SP_title.setObjectName("SP_title")
 
         # Soundpad Title Layout
-        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.SP_title)
-        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.SP_title)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        # self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.SP_title)
+        # self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        # self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.SP_title_label = QtWidgets.QLabel(self.SP_title)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
@@ -690,7 +838,24 @@ class Ui_mainInterface(object):
                                           "}")
         self.SP_title_label.setAlignment(QtCore.Qt.AlignCenter)
         self.SP_title_label.setObjectName("SP_title_label")
-        self.verticalLayout_7.addWidget(self.SP_title_label)
+        
+        self.horizontalLayout_6.addWidget(self.SP_title_label)
+        self.pushButton = QtWidgets.QPushButton(self.SP_title)
+        self.pushButton.setMinimumSize(QtCore.QSize(50, 50))
+        self.pushButton.setMaximumSize(QtCore.QSize(50, 50))
+        # self.pushButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.pushButton.setObjectName("pushButton")
+        icon_dash = QtGui.QIcon()
+        icon_dash.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-combo-chart-96.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        # DAshboad button clicked
+        # self.pushButton.clicked.connect()
+
+        self.pushButton.setIcon(icon_dash)
+        self.pushButton.setIconSize(QtCore.QSize(40, 40))
+        self.horizontalLayout_6.addWidget(self.pushButton)
+        # self.verticalLayout_7.addWidget(self.SP_title_label)
         self.verticalLayout_6.addWidget(self.SP_title)
         self.SP_item = QtWidgets.QFrame(self.SP_body)
         self.SP_item.setStyleSheet("QFrame{\n"
@@ -708,8 +873,8 @@ class Ui_mainInterface(object):
 
         # Table Layout
         self.SP_table = QtWidgets.QFrame(self.SP_item)
-        self.SP_table.setMinimumSize(QtCore.QSize(900, 460))
-        self.SP_table.setMaximumSize(QtCore.QSize(900, 470))
+        self.SP_table.setMinimumSize(QtCore.QSize(880, 460))
+        self.SP_table.setMaximumSize(QtCore.QSize(880, 470))
         self.SP_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_table.setObjectName("SP_table")
@@ -720,11 +885,57 @@ class Ui_mainInterface(object):
         self.verticalLayout_9.setSpacing(0)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.SP_scrollArea = QtWidgets.QScrollArea(self.SP_table)
+        self.SP_scrollArea.setStyleSheet(
+                                        "QScrollBar:vertical {\n"
+                                            "border: none;\n"
+                                            "background: #244D54;\n"
+                                            "width: 14px;\n"
+                                            "margin: 15px 0 15px 0;\n"
+                                            "border-radius: 0px;\n"
+                                        " }\n"
+                                        "\n"
+                                        "/*  HANDLE BAR VERTICAL */\n"
+                                        "QScrollBar::handle:vertical {    \n"
+                                            "background-color: #56B7C7;\n"
+                                            "min-height: 80px;\n"
+                                            "border-radius: 7px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "/* BTN TOP - SCROLLBAR */\n"
+                                        "QScrollBar::sub-line:vertical {\n"
+                                            "border: none;\n"
+                                            "background-color: #244D54;\n"
+                                            "height: 15px;\n"
+                                            "border-top-left-radius: 7px;\n"
+                                            "border-top-right-radius: 7px;\n"
+                                            "subcontrol-position: top;\n"
+                                            "subcontrol-origin: margin;\n"
+                                        "}\n"
+                                        "\n"
+                                        "/* BTN BOTTOM - SCROLLBAR */\n"
+                                        "QScrollBar::add-line:vertical {\n"
+                                            "border: none;\n"
+                                            "background-color: #244D54;\n"
+                                            "height: 15px;\n"
+                                            "border-bottom-left-radius: 7px;\n"
+                                            "border-bottom-right-radius: 7px;\n"
+                                            "subcontrol-position: bottom;\n"
+                                            "subcontrol-origin: margin;\n"
+                                        "}\n"
+                                        "/* RESET ARROW */\n"
+                                        "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
+                                            "background: none;\n"
+                                        "}\n"
+                                        "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
+                                            "background: none;\n"
+                                        "}"
+                                                          )
         self.SP_scrollArea.setWidgetResizable(True)
         self.SP_scrollArea.setObjectName("SP_scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 900, 470))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 880, 470))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.SP_scrollArea.horizontalScrollBar().hide()
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(
             self.scrollAreaWidgetContents)
         self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
@@ -742,6 +953,8 @@ class Ui_mainInterface(object):
         self.tableWidget.setHorizontalHeaderLabels(
             ['No.', 'Name', 'Duration', 'Hotkeys', '', 'Status', ''])
         self.tableWidget.verticalHeader().hide()
+        # effect = QGraphicsDropShadowEffect()
+        # self.tableWidget.setGraphicsEffect(effect)
         # self.tableWidget.setStyleSheet("QHeaderView {\n"
         #                                "color: #56B7C7;\n"
         #                             #    "text-style; bold\n"
@@ -752,11 +965,39 @@ class Ui_mainInterface(object):
         #                             #    "background:  # f9f9f9;\n"
         #                                "}"
         #                                )
-        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView { font-size: 10pt;"
+        # self.Testmic_button.setStyleSheet("QPushButton{\n"
+        #                                   "    background-color: #244D54;\n"
+        #                                   "    border-style : outset;\n"
+        #                                   "    border-width : 0.5px;\n"
+        #                                   "    border-radius: 25px;\n"
+        #                                   "    border-color : black;\n"
+        #                                   "\n"
+        #                                   "    color: #686868;\n"
+        #                                   "    text-align : center;\n"
+        #                                   "}\n"
+        #                                   "QPushButton:hover{\n"
+        #                                   "    background-color: #35707A;    \n"
+        #                                   "    border-width : 0.5px;\n"
+        #                                   "    border-color :  rgb(1, 209, 158) ;\n"
+        #                                   "    color: rgb(204, 204, 204);\n"
+        #                                   "}\n"
+        #                                   )
+        self.tableWidget.setStyleSheet("QTableWidget::item {"
+                                                          "color: #d7d7d7;"
+                                                          "background-color: rgba(50, 75, 79, 140)"
+                                                        #   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(138, 138, 138, 50), stop:0.886364 rgba(102, 218, 237, 255));"
+                                                          "}"
+                                        "QTableWidget{"
+                                                          "gridline-color:  transparent;"
+                                                          "}"
+                                                          )
+        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView::section { font-size: 10pt;"
                                                           "font-weight: bold;"
                                                           "color: #56B7C7;"
                                                           "background-color: transparent;"
-                                                          "border: 0px;"
+                                                          "}"
+                                                          "QHeaderView {"
+                                                          "border-bottom: 1px solid #00FFF0;"
                                                           "}")
 
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
@@ -788,6 +1029,7 @@ class Ui_mainInterface(object):
                     self.tableWidget.setCellWidget(row, 5, self.listen_button("Listen", fname))
 
                     remove_button = self.remove_button(row, fname)
+
                     self.tableWidget.setCellWidget(row, 6, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
 
@@ -956,6 +1198,10 @@ class Ui_mainInterface(object):
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         return cast(interface, POINTER(IAudioEndpointVolume))
     
+    def open_device(self):
+        subprocess.run(["control", "mmsys.cpl"])
+
+    
     def updatevolume(self,value):
         self.volume.SetMasterVolumeLevelScalar(self.horizontalSlider.value() / 100, None)
         if value == 0:
@@ -987,8 +1233,24 @@ class Ui_mainInterface(object):
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
+        self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
 
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
+        self.settingmain.setText(_translate("ui_main", "Settings"))
+        self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Remove optimization from digital devices currently set as default. This will restore their original configurations.</span></p></body></html>"))
+        self.settodefault.setText(_translate("ui_main", "set to default"))
+        self.detailequipment.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Open control panel sound card setting.</span></p></body></html>"))
+        self.Equipmentsetting.setText(_translate("ui_main", "Equipment setting"))
+        self.Tutorial.setText(_translate("ui_main", "Tutorial"))
+        self.settingButton.setText(_translate("ui_main", "Setting"))
 
     # Side menu button clicked
     ##############################
@@ -1165,11 +1427,13 @@ class Ui_mainInterface(object):
             self.tableWidget.setCellWidget(row, 5, self.listen_button("Listen", fname))
 
             remove_button = self.remove_button(row, fname)
+
             self.tableWidget.setCellWidget(row, 6, remove_button)
             remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
             self.save_file()
 
     # play item
+
     # ========================================================================================================================================
     def play_mic(self, row, filename):
         fname = filename
