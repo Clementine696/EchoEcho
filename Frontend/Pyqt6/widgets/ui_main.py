@@ -1422,9 +1422,9 @@ class Ui_mainInterface(object):
             duration = self.getDuration(fname)
             self.tableWidget.setItem(row, 2, QTableWidgetItem(duration)) 
  
-            self.tableWidget.setCellWidget(row, 4, self.play_button("Play", fname))
+            self.tableWidget.setCellWidget(row, 4, self.play_button("", fname))
 
-            self.tableWidget.setCellWidget(row, 5, self.listen_button("Listen", fname))
+            self.tableWidget.setCellWidget(row, 5, self.listen_button("", fname))
 
             remove_button = self.remove_button(row, fname)
 
@@ -1445,34 +1445,50 @@ class Ui_mainInterface(object):
         self.player.play()
 
     def play_button(self, label, fname):
-        button = QPushButton(label)
-        button.clicked.connect(lambda: self.play_media(button, fname))
-        return button
+        icon_play = QtGui.QIcon()
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        play_button = QPushButton(label)
+        play_button.setIcon(icon_play)
+        play_button.clicked.connect(lambda: self.play_media(play_button, fname))
+        return play_button
 
     def play_media(self, btn, fname):
+        icon_pause = QtGui.QIcon()
+        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-pause-button-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_play = QtGui.QIcon()
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         media_content = QMediaContent(QUrl.fromLocalFile(fname))
         if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
             self.player.stop()
-            btn.setText("Play")
+            # play_button
+            btn.setIcon(icon_play)
+            # btn.setText("play")
         else:
             if self.player.state() == QMediaPlayer.PlayingState:
                 curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
                 curr_btn = self.get_play(curr_fname)
                 if curr_btn is not None:
-                    curr_btn.setText("Play")
+                    curr_btn.setIcon(icon_play)
+                    # curr_btn.setText("Play")
                 self.player.stop()
 
             for row in range(self.tableWidget.rowCount()):
                 item = self.tableWidget.item(row, 1)
                 if item is not None and item.text() != os.path.basename(fname):
                     play_btn = self.tableWidget.cellWidget(row, 4)
-                    if play_btn.text() == "Stop":
+                    if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         self.player.stop()
-                        play_btn.setText("Play")
+                        play_btn.setIcon(icon_play)
+                        # play_btn.setText("Play")
 
             self.player.setMedia(media_content)
             self.player.play()
-            btn.setText("Stop")
+            btn.setIcon(icon_pause)
+            # btn.setText("Stop")
+
 
     def get_play(self, fname):
         for row in range(self.tableWidget.rowCount()):
@@ -1483,34 +1499,48 @@ class Ui_mainInterface(object):
     # ========================================================================================================================================
             
     def listen_button(self, label, fname):
-        button = QPushButton(label)
-        button.clicked.connect(lambda: self.listen_media(button, fname))
-        return button
+        icon_listen = QtGui.QIcon()
+        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        listen_button = QPushButton(label)
+        listen_button.setIcon(icon_listen)
+        listen_button.clicked.connect(lambda: self.listen_media(listen_button, fname))
+        return listen_button
 
     def listen_media(self, btn, fname):
+        icon_listen = QtGui.QIcon()
+        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_pause = QtGui.QIcon()
+        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-pause-button-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         media_content = QMediaContent(QUrl.fromLocalFile(fname))
         if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
             self.player.stop()
-            btn.setText("Listen")
+            btn.setIcon(icon_listen)
+            # btn.setText("")
         else:
             if self.player.state() == QMediaPlayer.PlayingState:
                 curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
                 curr_btn = self.get_listen(curr_fname)
                 if curr_btn is not None:
-                    curr_btn.setText("Listen")
+                    curr_btn.setIcon(icon_listen)
+                    # curr_btn.setText("")
                 self.player.stop()
 
             for row in range(self.tableWidget.rowCount()):
                 item = self.tableWidget.item(row, 1)
                 if item is not None and item.text() != os.path.basename(fname):
                     play_btn = self.tableWidget.cellWidget(row, 5)
-                    if play_btn.text() == "Stop":
+                    if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         self.player.stop()
-                        play_btn.setText("Listen")
+                        play_btn.setIcon(icon_listen)
+                        # play_btn.setText("")
 
             self.player.setMedia(media_content)
             self.player.play()
-            btn.setText("Stop")
+            btn.setIcon(icon_pause)
+            # btn.setText("")
 
     def get_listen(self, fname):
         for row in range(self.tableWidget.rowCount()):
@@ -1529,9 +1559,13 @@ class Ui_mainInterface(object):
 
     # delete item button
     def remove_button(self, row, fname):
-        button = QPushButton("Remove")
-        button.clicked.connect(lambda: self.remove_file(row, fname))
-        return button
+        icon_remove = QtGui.QIcon()
+        icon_remove.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-trash-can-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        remove_button = QPushButton()
+        remove_button.setIcon(icon_remove)
+        remove_button.clicked.connect(lambda: self.remove_file(row, fname))
+        return remove_button
 
     def remove_file(self, row, fname):
         if fname in self.filenames:
