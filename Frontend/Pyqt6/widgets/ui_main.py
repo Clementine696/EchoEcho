@@ -1,11 +1,15 @@
 import os
 import pickle
+import time
 
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
+
+from mutagen.mp3 import MP3
+from mutagen.wave import WAVE
 
 # IMPORT GUI FILE
 from main import *
@@ -1016,24 +1020,19 @@ class Ui_mainInterface(object):
                     row = self.tableWidget.rowCount()
                     self.tableWidget.insertRow(row)
                     self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
-                    media_content = QMediaContent(QUrl.fromLocalFile(fname))
-                    self.player.setMedia(media_content)
-                    self.player.setNotifyInterval(1000)
-                    self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
-                    self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))   
-                    # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
-                    self.tableWidget.setCellWidget(row, 4, self.SP_play_item("Play", fname))     
-                    self.tableWidget.setCellWidget(row, 5, self.SP_listen_item("Listen", fname))
-                    # remove_button = QPushButton("Remove")
-                    # remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
-                    # self.table.setCellWidget(row, 3, remove_button)
-                    icon_delete = QtGui.QIcon()
-                    icon_delete.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-trash-can-48.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
-                    remove_button = QPushButton()
-                    remove_button.setIcon(icon_delete)
+                    duration = self.getDuration(fname)
+                    self.tableWidget.setItem(row, 2, QTableWidgetItem(duration))   
+
+                    self.tableWidget.setCellWidget(row, 4, self.play_button("Play", fname))
+
+                    self.tableWidget.setCellWidget(row, 5, self.listen_button("Listen", fname))
+
+                    remove_button = self.remove_button(row, fname)
+
                     self.tableWidget.setCellWidget(row, 6, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+
                 print("audio load successfully")
 
         except Exception as e:
@@ -1407,58 +1406,36 @@ class Ui_mainInterface(object):
     # add item
 
     def SP_add_item(self):
-        print("SP add item")
         options = QFileDialog.Options()
         folder = r""
-        # เห็นเฉพาะ .wav, .mp3
+
         fname, _ = QFileDialog.getOpenFileName(self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
         if fname:
             print("add file :", fname)
+
             row = self.tableWidget.rowCount()
             self.tableWidget.insertRow(row)
             self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
             # self.table.setItem(row, 1, QTableWidgetItem(""))
             # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
-            media_content = QMediaContent(QUrl.fromLocalFile(fname))
-            self.player.setMedia(media_content)
-            self.player.setNotifyInterval(1000)
-            self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
-            self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))    
-            self.tableWidget.setCellWidget(row, 4, self.SP_play_item("Play", fname))      
-            self.tableWidget.setCellWidget(row, 5, self.SP_listen_item("Listen", fname))
-            icon_delete = QtGui.QIcon()
-            icon_delete.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-trash-can-48.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
-            remove_button = QPushButton()
-            remove_button.setIcon(icon_delete)
-            remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
+            duration = self.getDuration(fname)
+            self.tableWidget.setItem(row, 2, QTableWidgetItem(duration)) 
+ 
+            self.tableWidget.setCellWidget(row, 4, self.play_button("Play", fname))
+
+            self.tableWidget.setCellWidget(row, 5, self.listen_button("Listen", fname))
+
+            remove_button = self.remove_button(row, fname)
+
             self.tableWidget.setCellWidget(row, 6, remove_button)
-            self.filenames.append(fname)
+            remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
             self.save_file()
 
     # play item
-    def SP_play_item(self, text, filename):
-        button = QPushButton()
-        icon_play = QtGui.QIcon()
-        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        button.setIcon(icon_play)
-        button.clicked.connect(lambda: self.play_media(
-            filename, self.tableWidget.currentRow()))
-        return button
 
-    # listen item button
-    def SP_listen_item(self, text, filename):
-        button = QPushButton()
-        icon_play = QtGui.QIcon()
-        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        button.setIcon(icon_play)
-        button.clicked.connect(lambda: self.play_media(
-            filename, self.tableWidget.currentRow()))
-        return button
-    
-
-
-    def play_media(self, filename, row):
+    # ========================================================================================================================================
+    def play_mic(self, row, filename):
         fname = filename
         # convert string to QUrl object using the QUrl constructor
         file = QUrl.fromLocalFile(fname)
@@ -1466,31 +1443,101 @@ class Ui_mainInterface(object):
         self.player.setMedia(media)
         # play the media
         self.player.play()
-        # self.player.mediaStatusChanged.connect(lambda status: self.get_duration(status, filename, row))
 
-    def get_duration(self, media_status, fname, row):
-        if media_status == QMediaPlayer.LoadedMedia:
-            duration = self.player.duration() / 1000.0
-            self.tableWidget.setItem(
-                row, 2, QTableWidgetItem("{:.2f} s".format(duration)))
+    def play_button(self, label, fname):
+        button = QPushButton(label)
+        button.clicked.connect(lambda: self.play_media(button, fname))
+        return button
+
+    def play_media(self, btn, fname):
+        media_content = QMediaContent(QUrl.fromLocalFile(fname))
+        if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
+            self.player.stop()
+            btn.setText("Play")
+        else:
+            if self.player.state() == QMediaPlayer.PlayingState:
+                curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
+                curr_btn = self.get_play(curr_fname)
+                if curr_btn is not None:
+                    curr_btn.setText("Play")
+                self.player.stop()
+
+            for row in range(self.tableWidget.rowCount()):
+                item = self.tableWidget.item(row, 1)
+                if item is not None and item.text() != os.path.basename(fname):
+                    play_btn = self.tableWidget.cellWidget(row, 4)
+                    if play_btn.text() == "Stop":
+                        self.player.stop()
+                        play_btn.setText("Play")
+
+            self.player.setMedia(media_content)
+            self.player.play()
+            btn.setText("Stop")
+
+    def get_play(self, fname):
+        for row in range(self.tableWidget.rowCount()):
+            item = self.tableWidget.item(row, 0)
+            if item is not None and item.text() == os.path.basename(fname):
+                return self.tableWidget.cellWidget(row, 4)
+            
+    # ========================================================================================================================================
+            
+    def listen_button(self, label, fname):
+        button = QPushButton(label)
+        button.clicked.connect(lambda: self.listen_media(button, fname))
+        return button
+
+    def listen_media(self, btn, fname):
+        media_content = QMediaContent(QUrl.fromLocalFile(fname))
+        if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
+            self.player.stop()
+            btn.setText("Listen")
+        else:
+            if self.player.state() == QMediaPlayer.PlayingState:
+                curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
+                curr_btn = self.get_listen(curr_fname)
+                if curr_btn is not None:
+                    curr_btn.setText("Listen")
+                self.player.stop()
+
+            for row in range(self.tableWidget.rowCount()):
+                item = self.tableWidget.item(row, 1)
+                if item is not None and item.text() != os.path.basename(fname):
+                    play_btn = self.tableWidget.cellWidget(row, 5)
+                    if play_btn.text() == "Stop":
+                        self.player.stop()
+                        play_btn.setText("Listen")
+
+            self.player.setMedia(media_content)
+            self.player.play()
+            btn.setText("Stop")
+
+    def get_listen(self, fname):
+        for row in range(self.tableWidget.rowCount()):
+            item = self.tableWidget.item(row, 0)
+            if item is not None and item.text() == os.path.basename(fname):
+                return self.tableWidget.cellWidget(row, 5)
+
+    def getDuration(self, fname):
+        if fname.endswith('.mp3'):
+            audio = MP3(fname)
+            duration = audio.info.length
+        elif fname.endswith('.wav'):
+            audio = WAVE(fname)
+            duration = audio.info.length
+        return time.strftime('%M:%S', time.gmtime(duration))
 
     # delete item button
-    def SP_del_item(self, row, fname):
-        button = QPushButton("Delete")
+    def remove_button(self, row, fname):
+        button = QPushButton("Remove")
         button.clicked.connect(lambda: self.remove_file(row, fname))
         return button
 
     def remove_file(self, row, fname):
-        # Remove the selected row from the table
         if fname in self.filenames:
             self.filenames.remove(fname)
         self.tableWidget.removeRow(row)
-        # os.remove()
-
-        # self.filenames.remove(fname)
-        # self.table.removeRow(row)
-
-        # Save the updated list of filenames
+        
         self.save_file()
 
         # Stop the player if it was playing the removed file

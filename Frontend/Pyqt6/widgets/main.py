@@ -60,6 +60,13 @@ def Boost_Mic(value):
     print('Mic factor : ', value/10)
     # Boost_mic_volumeFactor = value/10
 
+#soundpad
+def play_mic(row, filename):
+    fname = filename
+    # convert string to QUrl object using the QUrl constructor
+    print('main', filename)
+
+
 def Re_Init_SoundSystem():
     global Pushed_reinit
     Pushed_reinit = 1
@@ -283,11 +290,15 @@ class MainWindow(QMainWindow):
             self.ui.micmute.clicked.connect(Toggle_MuteMic)
             #boostmic
             self.ui.horizontalSlider_2.valueChanged.connect(Boost_Mic)
+
+            #soundpad
+            # self.ui.play_button.clicked.connect(play_mic())
+
         except:
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')
             self.ui.stackedWidget.setCurrentWidget(self.ui.Audio_page)
-
+        
 
         # while(self.createSound_system == False):
         #     #nav to Error handler page
