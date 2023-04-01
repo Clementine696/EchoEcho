@@ -250,6 +250,9 @@ class MainWindow(QMainWindow):
         self.ui.Voicechanger_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Voicechanger_page))
         
+        self.ui.pushButton.clicked.connect(
+            lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.dashbord_page))
+        
         # # page settingmain
         self.ui.setting_Button.clicked.connect(
             lambda: self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_6))

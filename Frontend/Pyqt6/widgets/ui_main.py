@@ -18,6 +18,8 @@ from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import main as Main
 import keyboard
+import subprocess
+
 
 #import graph file
 from newgraph import MicrophoneAudioWaveform
@@ -471,6 +473,7 @@ class Ui_mainInterface(object):
         self.detailequipment.setGeometry(QtCore.QRect(30, 10, 321, 61))
         self.detailequipment.setObjectName("detailequipment")
         self.Equipmentsetting = QtWidgets.QPushButton(self.frameEquipment)
+        self.Equipmentsetting.clicked.connect(self.open_device)
         self.Equipmentsetting.setGeometry(QtCore.QRect(30, 80, 320, 54))
         self.Equipmentsetting.setMinimumSize(QtCore.QSize(320, 54))
         self.Equipmentsetting.setMaximumSize(QtCore.QSize(320, 54))
@@ -483,6 +486,7 @@ class Ui_mainInterface(object):
 "    color: #ffffff;\n"
 "}")
         self.Equipmentsetting.setObjectName("Equipmentsetting")
+        # self.Equipmentsetting.connect(self.open_device)
         self.frametutorial = QtWidgets.QFrame(self.page_6)
         self.frametutorial.setGeometry(QtCore.QRect(0, 470, 371, 121))
         self.frametutorial.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -758,6 +762,26 @@ class Ui_mainInterface(object):
         self.horizontalLayout_3.addWidget(self.audio_label)
         self.stackedWidget.addWidget(self.Audio_page)
 
+        #Dashbord Page
+        self.dashbord_page = QtWidgets.QWidget()
+        self.dashbord_page.setObjectName("dashbord")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.dashbord_page)
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.dashbord_label = QtWidgets.QLabel(self.Audio_page)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(36)
+        font.setBold(True)
+        font.setWeight(75)
+        self.dashbord_label.setFont(font)
+        self.dashbord_label.setStyleSheet("color: #66DAED")
+        self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.dashbord_label.setObjectName("dashbord_label")
+        self.horizontalLayout_6.addWidget(self.dashbord_label)
+        self.stackedWidget.addWidget(self.dashbord_page)
+
         # Soundpad Page
         self.filenames = []
         self.player = QMediaPlayer()
@@ -792,8 +816,11 @@ class Ui_mainInterface(object):
         self.SP_title.setObjectName("SP_title")
 
         # Soundpad Title Layout
-        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.SP_title)
-        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.SP_title)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        # self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.SP_title)
+        # self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        # self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.SP_title_label = QtWidgets.QLabel(self.SP_title)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
@@ -807,7 +834,24 @@ class Ui_mainInterface(object):
                                           "}")
         self.SP_title_label.setAlignment(QtCore.Qt.AlignCenter)
         self.SP_title_label.setObjectName("SP_title_label")
-        self.verticalLayout_7.addWidget(self.SP_title_label)
+        
+        self.horizontalLayout_6.addWidget(self.SP_title_label)
+        self.pushButton = QtWidgets.QPushButton(self.SP_title)
+        self.pushButton.setMinimumSize(QtCore.QSize(50, 50))
+        self.pushButton.setMaximumSize(QtCore.QSize(50, 50))
+        # self.pushButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.pushButton.setObjectName("pushButton")
+        icon_dash = QtGui.QIcon()
+        icon_dash.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-combo-chart-96.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        # DAshboad button clicked
+        # self.pushButton.clicked.connect()
+
+        self.pushButton.setIcon(icon_dash)
+        self.pushButton.setIconSize(QtCore.QSize(40, 40))
+        self.horizontalLayout_6.addWidget(self.pushButton)
+        # self.verticalLayout_7.addWidget(self.SP_title_label)
         self.verticalLayout_6.addWidget(self.SP_title)
         self.SP_item = QtWidgets.QFrame(self.SP_body)
         self.SP_item.setStyleSheet("QFrame{\n"
@@ -825,8 +869,8 @@ class Ui_mainInterface(object):
 
         # Table Layout
         self.SP_table = QtWidgets.QFrame(self.SP_item)
-        self.SP_table.setMinimumSize(QtCore.QSize(900, 460))
-        self.SP_table.setMaximumSize(QtCore.QSize(900, 470))
+        self.SP_table.setMinimumSize(QtCore.QSize(880, 460))
+        self.SP_table.setMaximumSize(QtCore.QSize(880, 470))
         self.SP_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_table.setObjectName("SP_table")
@@ -837,11 +881,57 @@ class Ui_mainInterface(object):
         self.verticalLayout_9.setSpacing(0)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.SP_scrollArea = QtWidgets.QScrollArea(self.SP_table)
+        self.SP_scrollArea.setStyleSheet(
+                                        "QScrollBar:vertical {\n"
+                                            "border: none;\n"
+                                            "background: #244D54;\n"
+                                            "width: 14px;\n"
+                                            "margin: 15px 0 15px 0;\n"
+                                            "border-radius: 0px;\n"
+                                        " }\n"
+                                        "\n"
+                                        "/*  HANDLE BAR VERTICAL */\n"
+                                        "QScrollBar::handle:vertical {    \n"
+                                            "background-color: #56B7C7;\n"
+                                            "min-height: 80px;\n"
+                                            "border-radius: 7px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "/* BTN TOP - SCROLLBAR */\n"
+                                        "QScrollBar::sub-line:vertical {\n"
+                                            "border: none;\n"
+                                            "background-color: #244D54;\n"
+                                            "height: 15px;\n"
+                                            "border-top-left-radius: 7px;\n"
+                                            "border-top-right-radius: 7px;\n"
+                                            "subcontrol-position: top;\n"
+                                            "subcontrol-origin: margin;\n"
+                                        "}\n"
+                                        "\n"
+                                        "/* BTN BOTTOM - SCROLLBAR */\n"
+                                        "QScrollBar::add-line:vertical {\n"
+                                            "border: none;\n"
+                                            "background-color: #244D54;\n"
+                                            "height: 15px;\n"
+                                            "border-bottom-left-radius: 7px;\n"
+                                            "border-bottom-right-radius: 7px;\n"
+                                            "subcontrol-position: bottom;\n"
+                                            "subcontrol-origin: margin;\n"
+                                        "}\n"
+                                        "/* RESET ARROW */\n"
+                                        "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
+                                            "background: none;\n"
+                                        "}\n"
+                                        "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
+                                            "background: none;\n"
+                                        "}"
+                                                          )
         self.SP_scrollArea.setWidgetResizable(True)
         self.SP_scrollArea.setObjectName("SP_scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 900, 470))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 880, 470))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.SP_scrollArea.horizontalScrollBar().hide()
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(
             self.scrollAreaWidgetContents)
         self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
@@ -859,6 +949,8 @@ class Ui_mainInterface(object):
         self.tableWidget.setHorizontalHeaderLabels(
             ['No.', 'Name', 'Duration', 'Hotkeys', '', 'Status', ''])
         self.tableWidget.verticalHeader().hide()
+        # effect = QGraphicsDropShadowEffect()
+        # self.tableWidget.setGraphicsEffect(effect)
         # self.tableWidget.setStyleSheet("QHeaderView {\n"
         #                                "color: #56B7C7;\n"
         #                             #    "text-style; bold\n"
@@ -869,11 +961,39 @@ class Ui_mainInterface(object):
         #                             #    "background:  # f9f9f9;\n"
         #                                "}"
         #                                )
-        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView { font-size: 10pt;"
+        # self.Testmic_button.setStyleSheet("QPushButton{\n"
+        #                                   "    background-color: #244D54;\n"
+        #                                   "    border-style : outset;\n"
+        #                                   "    border-width : 0.5px;\n"
+        #                                   "    border-radius: 25px;\n"
+        #                                   "    border-color : black;\n"
+        #                                   "\n"
+        #                                   "    color: #686868;\n"
+        #                                   "    text-align : center;\n"
+        #                                   "}\n"
+        #                                   "QPushButton:hover{\n"
+        #                                   "    background-color: #35707A;    \n"
+        #                                   "    border-width : 0.5px;\n"
+        #                                   "    border-color :  rgb(1, 209, 158) ;\n"
+        #                                   "    color: rgb(204, 204, 204);\n"
+        #                                   "}\n"
+        #                                   )
+        self.tableWidget.setStyleSheet("QTableWidget::item {"
+                                                          "color: #d7d7d7;"
+                                                          "background-color: rgba(50, 75, 79, 140)"
+                                                        #   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(138, 138, 138, 50), stop:0.886364 rgba(102, 218, 237, 255));"
+                                                          "}"
+                                        "QTableWidget{"
+                                                          "gridline-color:  transparent;"
+                                                          "}"
+                                                          )
+        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView::section { font-size: 10pt;"
                                                           "font-weight: bold;"
                                                           "color: #56B7C7;"
                                                           "background-color: transparent;"
-                                                          "border: 0px;"
+                                                          "}"
+                                                          "QHeaderView {"
+                                                          "border-bottom: 1px solid #00FFF0;"
                                                           "}")
 
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
@@ -902,12 +1022,16 @@ class Ui_mainInterface(object):
                     self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
                     self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))   
                     # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
-                    self.tableWidget.setCellWidget(row, 4, self.SP_listen_item("Play", fname))     
+                    self.tableWidget.setCellWidget(row, 4, self.SP_play_item("Play", fname))     
                     self.tableWidget.setCellWidget(row, 5, self.SP_listen_item("Listen", fname))
                     # remove_button = QPushButton("Remove")
                     # remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
                     # self.table.setCellWidget(row, 3, remove_button)
-                    remove_button = QPushButton("Delete")
+                    icon_delete = QtGui.QIcon()
+                    icon_delete.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-trash-can-48.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+                    remove_button = QPushButton()
+                    remove_button.setIcon(icon_delete)
                     self.tableWidget.setCellWidget(row, 6, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
                 print("audio load successfully")
@@ -1075,6 +1199,10 @@ class Ui_mainInterface(object):
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         return cast(interface, POINTER(IAudioEndpointVolume))
     
+    def open_device(self):
+        subprocess.run(["control", "mmsys.cpl"])
+
+    
     def updatevolume(self,value):
         self.volume.SetMasterVolumeLevelScalar(self.horizontalSlider.value() / 100, None)
         if value == 0:
@@ -1106,6 +1234,7 @@ class Ui_mainInterface(object):
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
+        self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
 
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
         self.settingmain.setText(_translate("ui_main", "Settings"))
@@ -1295,24 +1424,39 @@ class Ui_mainInterface(object):
             self.player.setNotifyInterval(1000)
             self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
             self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))    
-            self.tableWidget.setCellWidget(row, 4, self.SP_listen_item("Play", fname))      
+            self.tableWidget.setCellWidget(row, 4, self.SP_play_item("Play", fname))      
             self.tableWidget.setCellWidget(row, 5, self.SP_listen_item("Listen", fname))
-            remove_button = QPushButton("Delete")
+            icon_delete = QtGui.QIcon()
+            icon_delete.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-trash-can-48.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+            remove_button = QPushButton()
+            remove_button.setIcon(icon_delete)
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
             self.tableWidget.setCellWidget(row, 6, remove_button)
             self.filenames.append(fname)
             self.save_file()
 
     # play item
-    def SP_play_item(self, row):
-        print("SP play item", row)
-
-    # listen item button
-    def SP_listen_item(self, text, filename):
-        button = QPushButton(text)
+    def SP_play_item(self, text, filename):
+        button = QPushButton()
+        icon_play = QtGui.QIcon()
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        button.setIcon(icon_play)
         button.clicked.connect(lambda: self.play_media(
             filename, self.tableWidget.currentRow()))
         return button
+
+    # listen item button
+    def SP_listen_item(self, text, filename):
+        button = QPushButton()
+        icon_play = QtGui.QIcon()
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        button.setIcon(icon_play)
+        button.clicked.connect(lambda: self.play_media(
+            filename, self.tableWidget.currentRow()))
+        return button
+    
+
 
     def play_media(self, filename, row):
         fname = filename
