@@ -1430,6 +1430,8 @@ class Ui_mainInterface(object):
 
             self.tableWidget.setCellWidget(row, 6, remove_button)
             remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+            
+            self.filenames.append(fname)
             self.save_file()
 
     # play item
