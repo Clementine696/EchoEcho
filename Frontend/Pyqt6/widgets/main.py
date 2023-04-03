@@ -238,9 +238,9 @@ class MainWindow(QMainWindow):
         self.ui.Microphone_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Microphone_page))
 
-        # # Page Audio
-        # self.ui.Audio_button.clicked.connect(
-        #     lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Audio_page))
+        # Page Test
+        self.ui.Alert_button.clicked.connect(
+            lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Alert_page))
 
         # Page Soundpad
         self.ui.Soundpad_button.clicked.connect(

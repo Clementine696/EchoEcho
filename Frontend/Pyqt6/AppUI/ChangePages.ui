@@ -857,19 +857,37 @@ QPushButton:pressed{
               <enum>QFrame::Raised</enum>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_10">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="leftMargin">
+               <number>50</number>
+              </property>
+              <property name="topMargin">
+               <number>50</number>
+              </property>
+              <property name="rightMargin">
+               <number>50</number>
+              </property>
+              <property name="bottomMargin">
+               <number>50</number>
+              </property>
               <item>
                <widget class="QPushButton" name="pushButton_2">
                 <property name="minimumSize">
                  <size>
-                  <width>882</width>
-                  <height>342</height>
+                  <width>200</width>
+                  <height>200</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>882</width>
-                  <height>342</height>
+                  <width>200</width>
+                  <height>200</height>
                  </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
                 </property>
                 <property name="text">
                  <string>PushButton</string>
@@ -908,7 +926,7 @@ color:#ffffff
                <number>50</number>
               </property>
               <property name="bottomMargin">
-               <number>85</number>
+               <number>250</number>
               </property>
               <item>
                <widget class="QLabel" name="label">
@@ -917,6 +935,9 @@ color:#ffffff
                 </property>
                 <property name="text">
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; color:#ffffff;&quot;&gt;No audio output device found&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -1379,8 +1400,6 @@ QPushButton:pressed {
    </layout>
   </widget>
  </widget>
- <resources>
-  <include location="../icons/icon-alent.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
