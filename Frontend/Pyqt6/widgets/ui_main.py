@@ -1024,9 +1024,9 @@ class Ui_mainInterface(object):
                     duration = self.getDuration(fname)
                     self.tableWidget.setItem(row, 2, QTableWidgetItem(duration))   
 
-                    self.tableWidget.setCellWidget(row, 4, self.play_button("Play", fname))
+                    self.tableWidget.setCellWidget(row, 4, self.play_button("", fname))
 
-                    self.tableWidget.setCellWidget(row, 5, self.listen_button("Listen", fname))
+                    self.tableWidget.setCellWidget(row, 5, self.listen_button("", fname))
 
                     remove_button = self.remove_button(row, fname)
 
@@ -1572,7 +1572,7 @@ class Ui_mainInterface(object):
     def remove_file(self, row, fname):
         if fname in self.filenames:
             self.filenames.remove(fname)
-        self.tableWidget.removeRow(row)
+            self.tableWidget.removeRow(row)
         
         self.save_file()
 
