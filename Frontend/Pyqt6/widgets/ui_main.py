@@ -597,6 +597,9 @@ class Ui_mainInterface(object):
         self.plot_data = np.zeros((self.window_samples, len(self.CHANNELS_TO_PLOT)))
         
         self.figure = Figure()
+        self.rect = plt.Rectangle((0.0017, 0.002), 0.995, 0.999, fill=False, color="black", lw=1, zorder=1000, transform=self.figure.transFigure, figure=self.figure)
+        self.figure.patches.extend([self.rect])
+        self.figure.patch.set_facecolor('#244D54')
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
         
@@ -614,6 +617,7 @@ class Ui_mainInterface(object):
         self.ax.set_ylim(-0.3, 0.3)
         self.ani = FuncAnimation(self.figure, self.update_plot, interval=30, blit=True)
         plt.show()
+        plt.tight_layout()
         
         # self.ax.set_xlim(0, 1024)
         # self.ax.set_ylim(-32768, 32768)
