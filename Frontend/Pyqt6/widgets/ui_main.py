@@ -949,9 +949,9 @@ class Ui_mainInterface(object):
         # self.tableWidget.setRowCount(9)
 
         # self.tableWidget.setRowCount(3)
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setHorizontalHeaderLabels(
-            ['No.', 'Name', 'Duration', 'Hotkeys', '', 'Status', ''])
+            ['Name', 'Duration', 'Hotkeys', '', 'Status', ''])
         self.tableWidget.verticalHeader().hide()
         # effect = QGraphicsDropShadowEffect()
         # self.tableWidget.setGraphicsEffect(effect)
@@ -1005,13 +1005,12 @@ class Ui_mainInterface(object):
         self.tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
 
         self.tableWidget.autofit = False
-        self.tableWidget.setColumnWidth(0, 60)
-        self.tableWidget.setColumnWidth(1, 400)
-        self.tableWidget.setColumnWidth(2, 130)
-        self.tableWidget.setColumnWidth(3, 110)
-        self.tableWidget.setColumnWidth(4, 60)
-        self.tableWidget.setColumnWidth(5, 60)
-        self.tableWidget.setColumnWidth(6, 60)
+        self.tableWidget.setColumnWidth(0, 400)
+        self.tableWidget.setColumnWidth(1, 130)
+        self.tableWidget.setColumnWidth(2, 110)
+        self.tableWidget.setColumnWidth(3, 80)
+        self.tableWidget.setColumnWidth(4, 80)
+        self.tableWidget.setColumnWidth(5, 80)
 
         try:
             with open("soundpad.pickle", "rb") as file:
@@ -1019,18 +1018,18 @@ class Ui_mainInterface(object):
                 for fname in self.filenames:
                     row = self.tableWidget.rowCount()
                     self.tableWidget.insertRow(row)
-                    self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
+                    self.tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
                     duration = self.getDuration(fname)
-                    self.tableWidget.setItem(row, 2, QTableWidgetItem(duration))   
+                    self.tableWidget.setItem(row, 1, QTableWidgetItem(duration))   
 
-                    self.tableWidget.setCellWidget(row, 4, self.play_button("Play", fname))
+                    self.tableWidget.setCellWidget(row, 3, self.play_button("", fname))
 
-                    self.tableWidget.setCellWidget(row, 5, self.listen_button("Listen", fname))
+                    self.tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
 
                     remove_button = self.remove_button(row, fname)
 
-                    self.tableWidget.setCellWidget(row, 6, remove_button)
+                    self.tableWidget.setCellWidget(row, 5, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
 
                 print("audio load successfully")
@@ -1415,21 +1414,23 @@ class Ui_mainInterface(object):
 
             row = self.tableWidget.rowCount()
             self.tableWidget.insertRow(row)
-            self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
+            self.tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
             # self.table.setItem(row, 1, QTableWidgetItem(""))
             # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
 
             duration = self.getDuration(fname)
-            self.tableWidget.setItem(row, 2, QTableWidgetItem(duration)) 
+            self.tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
  
-            self.tableWidget.setCellWidget(row, 4, self.play_button("", fname))
+            self.tableWidget.setCellWidget(row, 3, self.play_button("", fname))
 
-            self.tableWidget.setCellWidget(row, 5, self.listen_button("", fname))
+            self.tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
 
             remove_button = self.remove_button(row, fname)
 
-            self.tableWidget.setCellWidget(row, 6, remove_button)
+            self.tableWidget.setCellWidget(row, 5, remove_button)
             remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+            
+            self.filenames.append(fname)
             self.save_file()
 
     # play item
@@ -1476,9 +1477,9 @@ class Ui_mainInterface(object):
                 self.player.stop()
 
             for row in range(self.tableWidget.rowCount()):
-                item = self.tableWidget.item(row, 1)
+                item = self.tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.tableWidget.cellWidget(row, 4)
+                    play_btn = self.tableWidget.cellWidget(row, 3)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         self.player.stop()
                         play_btn.setIcon(icon_play)
@@ -1494,7 +1495,7 @@ class Ui_mainInterface(object):
         for row in range(self.tableWidget.rowCount()):
             item = self.tableWidget.item(row, 0)
             if item is not None and item.text() == os.path.basename(fname):
-                return self.tableWidget.cellWidget(row, 4)
+                return self.tableWidget.cellWidget(row, 3)
             
     # ========================================================================================================================================
             
@@ -1529,9 +1530,9 @@ class Ui_mainInterface(object):
                 self.player.stop()
 
             for row in range(self.tableWidget.rowCount()):
-                item = self.tableWidget.item(row, 1)
+                item = self.tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.tableWidget.cellWidget(row, 5)
+                    play_btn = self.tableWidget.cellWidget(row, 4)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         self.player.stop()
                         play_btn.setIcon(icon_listen)
@@ -1546,7 +1547,7 @@ class Ui_mainInterface(object):
         for row in range(self.tableWidget.rowCount()):
             item = self.tableWidget.item(row, 0)
             if item is not None and item.text() == os.path.basename(fname):
-                return self.tableWidget.cellWidget(row, 5)
+                return self.tableWidget.cellWidget(row, 4)
 
     def getDuration(self, fname):
         if fname.endswith('.mp3'):
