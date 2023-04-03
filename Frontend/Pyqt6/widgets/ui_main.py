@@ -1584,4 +1584,3 @@ class Ui_mainInterface(object):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(self.filenames, file)
-

@@ -25,7 +25,7 @@ class App(QWidget):
         self.player = QMediaPlayer()
         self.table = QTableWidget()
         self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(["Filename", "Duration", "Play", "Remove", "SetHotkey"])
+        self.table.setHorizontalHeaderLabels(["Filename", "Duration", "Play", "Remove", "count"])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.cellClicked.connect(self.play_button)
 
@@ -78,10 +78,9 @@ class App(QWidget):
                     self.table.setCellWidget(row, 3, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
                 
-                    hotkey_edit = QLineEdit()
-                    self.table.setCellWidget(row, 4, hotkey_edit)
-                    hotkey_edit.returnPressed.connect(lambda _, r=row, f=fname: self.set_hotkey(r, f, hotkey_edit.text()))
-                
+                    play_count = QTableWidgetItem("0")
+                    self.table.setItem(row, 4, play_count)
+
                 print("audio load successfully")
 
         except Exception as e:
@@ -109,7 +108,8 @@ class App(QWidget):
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
             self.table.setCellWidget(row, 3, remove_button)
 
-            self.table.setCellWidget(row, 4, self.set_hotkey(row, fname))
+            play_count = QTableWidgetItem("0")
+            self.table.setItem(row, 4, play_count)
 
             self.filenames.append(fname)
             self.save_file()
@@ -161,13 +161,32 @@ class App(QWidget):
             self.player.stop()
             btn.setText("Play")
         else:
+
+            self.player.setMedia(media_content)
+            self.player.play()
+            btn.setText("...")
+            current_count = int(self.table.item(self.table.currentRow(), 4).text())
+            self.table.item(self.table.currentRow(), 4).setText(str(current_count + 1))
+            self.save_file()
+            # self.player.setMedia(media_content)
+            # self.player.play()
+            # row = self.table.rowCount()
+            # count_item = self.table.item(row, 4)
+            # if count_item is not None:
+            #     count = int(count_item.text()) + 1
+            # else:
+            #     count = 1
+            # if count_item is not None:
+            #     count_item.setText(str(count))
+            # self.table.setItem(row, 4, count_item)
+
         # Stop currently playing song before playing new song
             if self.player.state() == QMediaPlayer.PlayingState:
                 curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
                 curr_btn = self.get_play_button_by_fname(curr_fname)
                 curr_btn.setText("Play")
                 self.player.stop()
-
+            
             self.player.setMedia(media_content)
             self.player.play()
             btn.setText("Stop")
@@ -186,29 +205,29 @@ class App(QWidget):
             duration = audio.info.length
         return time.strftime('%H:%M:%S', time.gmtime(duration))
     
-    def set_hotkey(self, row, fname, hotkey):
-    # add hotkey for the given file
-        if hotkey:
-        # remove any previous hotkey for the same file
-            for key, val in self.hotkeys.items():
-                if val == fname:
-                    del self.hotkeys[key]
+    # def set_hotkey(self, row, fname, hotkey):
+    # # add hotkey for the given file
+    #     if hotkey:
+    #     # remove any previous hotkey for the same file
+    #         for key, val in self.hotkeys.items():
+    #             if val == fname:
+    #                 del self.hotkeys[key]
 
-            self.hotkeys[hotkey] = fname
+    #         self.hotkeys[hotkey] = fname
 
-        # register the hotkey with QShortcut
-            shortcut = QShortcut(QtGui.QKeySequence(hotkey), self)
-            shortcut.activated.connect(lambda _, fname=fname: self.play_media(None, fname))
+    #     # register the hotkey with QShortcut
+    #         shortcut = QShortcut(QtGui.QKeySequence(hotkey), self)
+    #         shortcut.activated.connect(lambda _, fname=fname: self.play_media(None, fname))
 
-        else:
-        # remove any previous hotkey for the same file
-            for key, val in self.hotkeys.items():
-                if val == fname:
-                    del self.hotkeys[key]
+    #     else:
+    #     # remove any previous hotkey for the same file
+    #         for key, val in self.hotkeys.items():
+    #             if val == fname:
+    #                 del self.hotkeys[key]
 
-    # save the hotkeys
-        with open("hotkeys.pickle", "wb") as file:
-            pickle.dump(self.hotkeys, file)
+    # # save the hotkeys
+    #     with open("hotkeys.pickle", "wb") as file:
+    #         pickle.dump(self.hotkeys, file)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
