@@ -9,9 +9,9 @@ def Home():
 def tutorial():
     return render_template('tutorial.html')
 
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboard.html')
+@app.route('/voicechanger')
+def voicechanger():
+    return render_template('voicechanger.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
