@@ -13,16 +13,18 @@ import numpy as np
 import noisereduce as nr
 from math import sqrt
 from pydub import AudioSegment,generators
+from scipy.signal import butter, lfilter
+import scipy.signal as signal
 
 # IMPORT GUI FILE
-from ui_main import *
+from ui_main import Ui_mainInterface
 
 Noise_reduce_state = False
 Test_mic_state = False
 Mute_mic_state = False
 Boost_mic_volumeFactor = 1
 Pushed_reinit = 0
-
+# UI = Ui_mainInterface()
 #update device in main
 
 def Toggle_NoiseReduce():
@@ -170,10 +172,21 @@ class SoundSystem():
 
             #Noise suppression
             if(Noise_reduce_state):
+                cutoff_low = 8000
+                cutoff_high = 3000
+                nyquist_rate = 44100 / 2.0
+                pass_order = 5
+                pass_stop = 40
+                lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
+                highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
                 # print('Noise suppressed')
                 audio_frame = np.frombuffer(audio_data, dtype=np.int16)
-                reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
-                output_sound = reduced_noise.tobytes()
+                audio_frame = signal.decimate(audio_frame, 10, zero_phase=True)
+                # reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
+                filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
+                filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
+                output_sound = filtered_audio.tobytes()
+                
             else:
                 # print('Normal voice')
                 output_sound = audio_data
@@ -198,8 +211,10 @@ class SoundSystem():
             #emergency close thread
             # if(keyboard.is_pressed('z')):
             #     break
-
-        #close program
+            # UI.get_audio_data = np.frombuffer(output_sound, dtype=np.int16)
+            # UI.audio_from_main()
+            # print(UI.get_audio_data)
+        #close programclea
         self.input_stream.stop_stream()
         self.input_stream.close()
         self.virtual_microphone_stream.stop_stream()
@@ -224,9 +239,7 @@ class SoundSystem():
                 self.update_input(i['index'])
                 break
 ###
-
 class MainWindow(QMainWindow):
-
     def __init__(self):
         QMainWindow.__init__(self)
         self.ui = Ui_mainInterface()
