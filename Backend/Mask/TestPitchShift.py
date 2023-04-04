@@ -21,8 +21,9 @@ import librosa
 # define the pitch shift factor
 pitch_shift_factor = 2 # double the pitch
 bins = 12
+hz = 0
 # calculate the pitch shift amount in semitones
-pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(0))
+pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(hz))
 
 
 import scipy.signal as signal
@@ -63,27 +64,39 @@ while len(audio_data) != 0:
     if keyboard.is_pressed("z"):
         break
     
-    if keyboard.is_pressed("a"):
+    if keyboard.is_pressed("1"):
         pitch_shift_factor = pitch_shift_factor + 1
-        pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(0))
+        pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(hz))
         print('pitch_shift_factor = ', pitch_shift_factor)
     
-    if keyboard.is_pressed("b"):
+    if keyboard.is_pressed("2"):
         pitch_shift_factor = pitch_shift_factor - 1
         if pitch_shift_factor < 2:
             pitch_shift_factor = 2
-        pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(0))
+        pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(hz))
         print('pitch_shift_factor = ', pitch_shift_factor)
 
-    if keyboard.is_pressed("c"):
+    if keyboard.is_pressed("4"):
         bins = bins + 1
         print('bins = ', bins)
 
-    if keyboard.is_pressed("d"):
+    if keyboard.is_pressed("5"):
         bins = bins - 1
         if bins < 2:
             bins = 2
         print('bins = ', bins)
+
+    if keyboard.is_pressed("7"):
+        hz = hz + 1
+        pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(hz))
+        print('hz = ', hz)
+
+    if keyboard.is_pressed("8"):
+        hz = hz - 1
+        pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(hz))
+        if hz < 0:
+            hz = 0
+        print('hz = ', hz)
         
 # stop the stream
 output_stream.stop_stream()
