@@ -63,23 +63,23 @@ class App(QWidget):
         # read file in pickle
         try:
             with open("soundpad.pickle", "rb") as file:
-                self.filenames = pickle.load(file)
-                for fname in self.filenames:
+                filenames_counts = pickle.load(file)
+                for fname, count in filenames_counts:
                     row = self.table.rowCount()
                     self.table.insertRow(row)
-                    
+                
                     self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
-                    
+                
                     duration = self.getDuration(fname)
                     self.table.setItem(row, 1, QTableWidgetItem(duration))
-                    
-                    self.table.setCellWidget(row, 2, self.play_button("Play", fname))
-                    
+                
+                    self.play_button("Play", fname)
+                
                     remove_button = self.remove_button(row, fname)
                     self.table.setCellWidget(row, 3, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
-                
-                    play_count = QTableWidgetItem("0")
+            
+                    play_count = QTableWidgetItem(str(count))
                     self.table.setItem(row, 4, play_count)
 
                 print("audio load successfully")
@@ -118,7 +118,9 @@ class App(QWidget):
     def save_file(self):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
-            pickle.dump(self.filenames, file)
+        # convert the counts list to a tuple with the filename
+            filenames_counts = [(fname, self.get_current_counts(fname)) for fname in self.filenames]
+            pickle.dump(filenames_counts, file)
 
     def remove_button(self, row, fname):
         button = QPushButton("Remove")
@@ -166,6 +168,13 @@ class App(QWidget):
             self.player.setMedia(media_content)
             self.player.play()
             btn.setText("Stop")
+    
+    def get_current_counts(self, fname):
+        counts = []
+        for row in range(self.table.rowCount()):
+            if self.table.item(row, 0).text() == os.path.basename(fname):
+                counts.append(int(self.table.item(row, 4).text()))
+        return counts
 
     def get_play_button_by_fname(self, fname):
         for row in range(self.table.rowCount()):
