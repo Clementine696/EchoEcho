@@ -30,6 +30,7 @@ class Ui_mainInterface(object):
     noise_reduce = 0
     test_microphone = 0
     VC_test_microphone = 0
+    Test_VC = 0
     microphone_mute = 0
     audio_mute = 0
     Mic_Side_menu = 0
@@ -1886,6 +1887,39 @@ class Ui_mainInterface(object):
     # Voice Changer Page Function
     def Test_VC_clicked(self):
         print("Test VC clicked")
+        if (Ui_mainInterface.Test_VC == 0):
+            Ui_mainInterface.Test_VC = 1
+            # ทำให้ปุ่มเปิด
+            self.Test_VC.setStyleSheet("QPushButton{\n"
+                                              "    border-radius: 25px;\n"
+                                              "    background-color: #244D54;\n"
+                                              "    border-style : inset;\n"
+                                              "    border-width : 2px;\n"
+                                              "    border-color : #00D19D;\n"
+                                              "    color: #FFFFFF;\n"
+                                              "}"
+                                              )
+        else:
+            Ui_mainInterface.Test_VC = 0
+            # ทำปุ่มปิด
+            self.Test_VC.setStyleSheet("QPushButton{\n"
+                                              "    background-color: #244D54;\n"
+                                              "    border-style : outset;\n"
+                                              "    border-width : 0.5px;\n"
+                                              "    border-radius: 25px;\n"
+                                              "    border-color : black;\n"
+                                              "\n"
+                                              "    color: #686868;\n"
+                                              "    text-align : center;\n"
+                                              "}\n"
+
+                                              "QPushButton:hover{\n"
+                                              "    background-color: #35707A;    \n"
+                                              "    border-width : 0.5px;\n"
+                                              "    border-color :  rgb(1, 209, 158) ;\n"
+                                              "    color: rgb(204, 204, 204);\n"
+                                              "}"
+                                              )
 
     def VC_Testmic_button_clicked(self):
         print("VC Test mic button clicked")
