@@ -11,6 +11,11 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QA
 from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
 
+import pyaudio
+import sounddevice as sd
+import wave
+import threading
+
 # IMPORT GUI FILE
 from main import *
 # from pages.soundpad_page import *
@@ -31,6 +36,26 @@ input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
 output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(
     QAudio.AudioOutput)
 
+try:
+    p = pyaudio.PyAudio()
+    device_list = sd.query_devices()
+    vb_index = p.get_default_output_device_info()['index']
+    for i in (device_list):
+        if "CABLE Input " in i['name']:
+            vb_index = i['index']
+            break
+    ui_virtual_microphone_stream = p.open(format=pyaudio.paInt16,
+                    channels=1,
+                    rate=44100,
+                    output=True,
+                    frames_per_buffer=1024,
+                    output_device_index=vb_index)
+except:
+    print("Cannot detect virtual microphone _ ui")
+
+micplay = False
+micplay_file = "none"
+stop_threads = False
 
 class Ui_mainInterface(object):
     noise_reduce = 0
@@ -1434,17 +1459,11 @@ class Ui_mainInterface(object):
             self.save_file()
 
     # play item
-
+    
+    
     # ========================================================================================================================================
-    def play_mic(self, row, filename):
-        fname = filename
-        # convert string to QUrl object using the QUrl constructor
-        file = QUrl.fromLocalFile(fname)
-        media = QMediaContent(file)
-        self.player.setMedia(media)
-        # play the media
-        self.player.play()
-
+    #//TODO:
+    
     def play_button(self, label, fname):
         icon_play = QtGui.QIcon()
         icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
@@ -1461,41 +1480,77 @@ class Ui_mainInterface(object):
         icon_play = QtGui.QIcon()
         icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        media_content = QMediaContent(QUrl.fromLocalFile(fname))
-        if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
-            self.player.stop()
+        # media_content = QMediaContent(QUrl.fromLocalFile(fname))
+        media_content = fname
+        # if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
+        #     self.player.stop()
+        #     # play_button
+        #     btn.setIcon(icon_play)
+        #     # btn.setText("play")
+        global micplay
+        global stop_threads
+        global micplay_file
+        if micplay == True and micplay_file == media_content:
+            micplay = False
+            stop_threads = True
             # play_button
             btn.setIcon(icon_play)
             # btn.setText("play")
         else:
-            if self.player.state() == QMediaPlayer.PlayingState:
-                curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
+            if micplay == True:
+                curr_fname = micplay_file
                 curr_btn = self.get_play(curr_fname)
                 if curr_btn is not None:
                     curr_btn.setIcon(icon_play)
                     # curr_btn.setText("Play")
-                self.player.stop()
+                # self.player.stop()
+                micplay = False
+                stop_threads = True
 
             for row in range(self.tableWidget.rowCount()):
                 item = self.tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
                     play_btn = self.tableWidget.cellWidget(row, 3)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
-                        self.player.stop()
+                        # self.player.stop()
+                        micplay = False
+                        stop_threads = True
                         play_btn.setIcon(icon_play)
                         # play_btn.setText("Play")
 
-            self.player.setMedia(media_content)
-            self.player.play()
+#==========================================================================
+            # self.player.setMedia(media_content)
+            # self.player.play()
+
+            micplay = True
+            stop_threads = False
+            micplay_file = media_content
+            def runsound():
+                wf = wave.open(media_content, "rb")
+                data = wf.readframes(1024)
+                while len(data) != 0:
+                    ui_virtual_microphone_stream.write(data)
+                    data = wf.readframes(1024)
+                    if stop_threads:
+                        break
+            t1 = threading.Thread(target = runsound)
+            t1.daemon = True
+            t1.start()
+            
+            # while len(data) != 0:
+            #     ui_virtual_microphone_stream.write(data)
+            #     data = wf.readframes(1024)
+
+#==========================================================================
             btn.setIcon(icon_pause)
             # btn.setText("Stop")
-
 
     def get_play(self, fname):
         for row in range(self.tableWidget.rowCount()):
             item = self.tableWidget.item(row, 0)
             if item is not None and item.text() == os.path.basename(fname):
                 return self.tableWidget.cellWidget(row, 3)
+            
             
     # ========================================================================================================================================
             
