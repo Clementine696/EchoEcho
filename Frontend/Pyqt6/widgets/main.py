@@ -258,9 +258,9 @@ class MainWindow(QMainWindow):
         self.ui.Microphone_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Microphone_page))
 
-        # # Page Audio
-        # self.ui.Audio_button.clicked.connect(
-        #     lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Audio_page))
+        # Page Test
+        self.ui.Alert_button.clicked.connect(
+            lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Alert_page))
 
         # Page Soundpad
         self.ui.Soundpad_button.clicked.connect(
@@ -310,8 +310,13 @@ class MainWindow(QMainWindow):
         except:
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')
-            self.ui.stackedWidget.setCurrentWidget(self.ui.Audio_page)
-        
+
+            self.ui.stackedWidget.setCurrentWidget(self.ui.Alert_page)
+            # self.ui.label.setText(_translate(
+            # "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>")) #//TODO:
+            # self.ui.Alert_button_detail.setText(_translate(
+            # "ui_main", "Check your audio output device and try again")) #//TODO:
+
 
         # while(self.createSound_system == False):
         #     #nav to Error handler page

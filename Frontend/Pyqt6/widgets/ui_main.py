@@ -174,6 +174,24 @@ class Ui_mainInterface(object):
         self.Microphone_button.setObjectName("Microphone_button")
         self.verticalLayout.addWidget(self.Microphone_button)
 
+        # Alert button
+        self.Alert_button = QtWidgets.QPushButton(self.Menu_button)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(28)
+        self.Alert_button.setFont(font)
+        self.Alert_button.setStyleSheet("QPushButton{\n"
+                                        "    background-color: rgba(0, 0, 0, 0)\n"
+                                        "}\n"
+                                        "QPushButton:hover{\n"
+                                        "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                        "}"
+                                        )
+
+        self.Alert_button.setIconSize(QtCore.QSize(40, 40))
+        self.Alert_button.setObjectName("Alert_button")
+        self.verticalLayout.addWidget(self.Alert_button)
+
         # Soundpad button
         self.Soundpad_button = QtWidgets.QPushButton(self.Menu_button)
         font = QtGui.QFont()
@@ -427,7 +445,7 @@ class Ui_mainInterface(object):
                                           "{\n"
                                           " color: #FFFFFF;\n"
                                           "}")
-        
+
         # # เรียกใช้ ฟังก์ชั่น open_setting
         # self.setting_Button.clicked.connect(self.open_setting)
 
@@ -803,25 +821,71 @@ class Ui_mainInterface(object):
         self.horizontalLayout_2.addWidget(self.frame)
         self.stackedWidget.addWidget(self.Microphone_page)
 
-        # Audio Page
-        self.Audio_page = QtWidgets.QWidget()
-        self.Audio_page.setObjectName("Audio_page")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.Audio_page)
+        # Alert Page
+        self.Alert_page = QtWidgets.QWidget()
+        self.Alert_page.setObjectName("Alert_page")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.Alert_page)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.audio_label = QtWidgets.QLabel(self.Audio_page)
+        self.Alert_Frame = QtWidgets.QFrame(self.Alert_page)
+        self.Alert_Frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Alert_Frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Alert_Frame.setObjectName("Alert_Frame")
+        self.verticalLayout_19 = QtWidgets.QVBoxLayout(self.Alert_Frame)
+        self.verticalLayout_19.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_19.setSpacing(0)
+        self.verticalLayout_19.setObjectName("verticalLayout_19")
+        self.frame_4 = QtWidgets.QFrame(self.Alert_Frame)
+        self.frame_4.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
+        self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_4.setObjectName("frame_4")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.frame_4)
+        self.verticalLayout_10.setObjectName("verticalLayout_10")
+        self.Alert_icon = QtWidgets.QPushButton(self.frame_4)
+        self.verticalLayout_10.setContentsMargins(300, 100, 50, 0)
+        self.verticalLayout_10.setSpacing(0)
+        self.Alert_icon.setMinimumSize(QtCore.QSize(300, 300))
+        self.Alert_icon.setMaximumSize(QtCore.QSize(300, 300))
+        self.Alert_icon.setObjectName("Alert_icon")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/alert.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Alert_icon.setIcon(icon)
+        self.Alert_icon.setIconSize(QtCore.QSize(250, 250))
+        self.verticalLayout_10.addWidget(self.Alert_icon)
+        self.verticalLayout_19.addWidget(self.frame_4)
+        self.Text_Frame = QtWidgets.QFrame(self.Alert_Frame)
         font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(36)
-        font.setBold(True)
-        font.setWeight(75)
-        self.audio_label.setFont(font)
-        self.audio_label.setStyleSheet("color: #66DAED")
-        self.audio_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.audio_label.setObjectName("audio_label")
-        self.horizontalLayout_3.addWidget(self.audio_label)
-        self.stackedWidget.addWidget(self.Audio_page)
+        font.setUnderline(True)
+        self.Text_Frame.setFont(font)
+        self.Text_Frame.setStyleSheet("background-color: rgba(0, 0, 0, 0);\n"
+                                      "color:#ffffff\n"
+                                      "")
+        self.Text_Frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Text_Frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Text_Frame.setObjectName("Text_Frame")
+        self.verticalLayout_20 = QtWidgets.QVBoxLayout(self.Text_Frame)
+        self.verticalLayout_20.setContentsMargins(50, 0, 50, 250)
+        self.verticalLayout_20.setObjectName("verticalLayout_20")
+        self.label = QtWidgets.QLabel(self.Text_Frame)
+        self.label.setObjectName("label")
+        self.verticalLayout_20.addWidget(self.label)
+        self.Alert_button_detail = QtWidgets.QPushButton(self.Text_Frame)
+
+        self.Alert_button_detail.clicked.connect(self.Alert_button_detail_clicked)
+
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setUnderline(True)
+        self.Alert_button_detail.setFont(font)
+        self.Alert_button_detail.setStyleSheet("")
+        self.Alert_button_detail.setObjectName("Alert_button_detail")
+        self.verticalLayout_20.addWidget(self.Alert_button_detail)
+        self.verticalLayout_19.addWidget(self.Text_Frame)
+        self.horizontalLayout_3.addWidget(self.Alert_Frame)
+        self.stackedWidget.addWidget(self.Alert_page)
 
         #Dashbord Page
         self.dashbord_page = QtWidgets.QWidget()
@@ -1076,6 +1140,7 @@ class Ui_mainInterface(object):
                 for fname in self.filenames:
                     row = self.tableWidget.rowCount()
                     self.tableWidget.insertRow(row)
+
                     self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
 
                     duration = self.getDuration(fname)
@@ -1093,7 +1158,7 @@ class Ui_mainInterface(object):
                 print("audio load successfully")
 
         except Exception as e:
-            print("Error loading audio files:",e)
+            print("Error loading audio files:", e)
 
         # for index in range(self.tableWidget.rowCount()):
 
@@ -1208,7 +1273,7 @@ class Ui_mainInterface(object):
             icon_volume_mute.addPixmap(QtGui.QPixmap(
                 "Frontend/Pyqt6/icons/mutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_mute)
-            
+
         else:
             print("Volume UnMute")
             Ui_mainInterface.audio_mute = 0
@@ -1217,7 +1282,6 @@ class Ui_mainInterface(object):
             icon_volume_unmute.addPixmap(QtGui.QPixmap(
                 "Frontend/Pyqt6/icons/unmutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_unmute)
-            
 
     def mic_mute(self):
         if (Ui_mainInterface.microphone_mute == 0):
@@ -1227,7 +1291,7 @@ class Ui_mainInterface(object):
             icon_mic_mute.addPixmap(QtGui.QPixmap(
                 "Frontend/Pyqt6/icons/mutemic-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.micmute.setIcon(icon_mic_mute)
-            
+
         else:
             print("Mic UnMute")
             Ui_mainInterface.microphone_mute = 0
@@ -1235,7 +1299,7 @@ class Ui_mainInterface(object):
             icon_mic_unmute.addPixmap(QtGui.QPixmap(
                 "Frontend/Pyqt6/icons/mic-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.micmute.setIcon(icon_mic_unmute)
-            
+
     def updateboostmicl(self, value):
         if value == 0:
             Ui_mainInterface.microphone_mute = 1
@@ -1252,32 +1316,39 @@ class Ui_mainInterface(object):
 
     def get_volume(self):
         devices = AudioUtilities.GetSpeakers()
-        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        interface = devices.Activate(
+            IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         return cast(interface, POINTER(IAudioEndpointVolume))
-    
+
     def open_device(self):
         subprocess.run(["control", "mmsys.cpl"])
 
     
     def updatevolume(self,value):
         self.volume.SetMasterVolumeLevelScalar(self.horizontalSlider.value() / 100, None)
+
         if value == 0:
             Ui_mainInterface.audio_mute = 1
             icon_volume_mute = QtGui.QIcon()
-            icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mutespeaker-sai8.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_mute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/mutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_mute)
             self.volume.SetMute(1, None)
         else:
             Ui_mainInterface.audio_mute = 0
             icon_volume_unmute = QtGui.QIcon()
-            icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/unmutespeaker-sai8.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_unmute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/unmutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_unmute)
-            self.volume.SetMute(0,None)
+            self.volume.SetMute(0, None)
 
     def retranslateUi(self, ui_main):
         _translate = QtCore.QCoreApplication.translate
         ui_main.setWindowTitle(_translate("ui_main", "EchoEcho"))
         self.Microphone_button.setText(_translate("ui_main", "Microphone"))
+        # Test
+        self.Alert_button.setText(_translate("ui_main", "Test"))
+
         self.Soundpad_button.setText(_translate("ui_main", "Soundpad"))
         self.Voicechanger_button.setText(_translate("ui_main", "VoiceChanger"))
         self.Mic_title_label.setText(_translate("ui_main", "Microphone"))
@@ -1288,11 +1359,28 @@ class Ui_mainInterface(object):
         self.Noise_label.setText(_translate("ui_main", "Noise Suppression"))
         # self.label.setText(_translate("ui_main", "Graph_text"))
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
-        self.audio_label.setText(_translate("ui_main", "Audio"))
+        # self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
         self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
 
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
+
+    
+    # Alert button clicked function
+        # self.label.setText(_translate(
+        #     "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>")) #//TODO:
+        # self.Alert_button_detail.setText(_translate(
+        #     "ui_main", "Check your audio output device and try again")) #//TODO:
+        
+        self.label.setText(_translate(
+            "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No virtual cable found</span></p></body></html>")) #//TODO:
+        self.Alert_button_detail.setText(_translate(
+            "ui_main", "Check your virtual cable or install from vb-audio.com")) #//TODO:
+
+    # Alert button clicked function 
+    def Alert_button_detail_clicked(self):
+        print("Alert button clicked")
+
         self.settingmain.setText(_translate("ui_main", "Settings"))
         self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -1493,14 +1581,17 @@ class Ui_mainInterface(object):
         folder = r""
 
         fname, _ = QFileDialog.getOpenFileName(self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+
         if fname:
             print("add file :", fname)
 
             row = self.tableWidget.rowCount()
             self.tableWidget.insertRow(row)
-            self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
+            self.tableWidget.setItem(
+                row, 1, QTableWidgetItem(os.path.basename(fname)))
             # self.table.setItem(row, 1, QTableWidgetItem(""))
             # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
+
 
             duration = self.getDuration(fname)
             self.tableWidget.setItem(row, 2, QTableWidgetItem(duration)) 
@@ -1744,6 +1835,4 @@ class Ui_mainInterface(object):
             line.set_ydata(self.plot_data[:, column])
             line.set_color((0, 1, 0.29))
             self.canvas.draw()
-
-
 
