@@ -279,7 +279,7 @@ class MainWindow(QMainWindow):
         except:
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')
-            self.ui.stackedWidget.setCurrentWidget(self.ui.Audio_page)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.Alert_page)
 
 
         # while(self.createSound_system == False):
