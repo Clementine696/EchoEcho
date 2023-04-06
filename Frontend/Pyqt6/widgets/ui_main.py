@@ -29,13 +29,15 @@ import subprocess
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
+# from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
 
 
 #import graph file
 from newgraph import MicrophoneAudioWaveform
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
-output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(
-    QAudio.AudioOutput)
+output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioOutput)
 
 
 class Ui_mainInterface(object):
@@ -849,26 +851,31 @@ class Ui_mainInterface(object):
         self.widget_2 = QtWidgets.QWidget(self.frame_10)
         self.widget_2.setObjectName("widget_2")
 
-        fig, ax = plt.subplots()
-        ax.axis('equal')
+        fig = Figure()
+        ax = fig.add_subplot(111)
+        # fig, ax = plt.subplots()
+        # ax.axis('equal')
 
         # define data for the donut plot
         data = [10, 20, 30, 40]
         labels = ['A', 'B', 'C', 'D']
-        colors = ['red', 'green', 'blue', 'yellow']
-        explode = (0.05, 0.05, 0.05, 0.05)
+        colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7']
+        explode = (0, 0, 0.1, 0)
 
         # create the donut plot
         wedges, texts, autotexts = ax.pie(data, colors=colors, labels=labels,
-                                        autopct='%1.1f%%', startangle=90,
+                                        autopct='%d%%', startangle=90,
                                         pctdistance=0.85, explode=explode)
 
         # add a circle to create a donut chart
-        centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+        centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+        # plt.axis('equal')
+        # plt.legend(loc='upper left')
         ax.add_artist(centre_circle)
         canvas = FigureCanvas(fig)
-        canvas.setStyleSheet("background-color: red;")
+        # canvas.setStyleSheet("background-color: red;")
         # self.canvas.patch.set_facecolor('#244D54')
+        fig.patch.set_facecolor('none')
 
         # add the canvas to the PyQt5 widget
         layout = QtWidgets.QVBoxLayout(self.widget_2)
