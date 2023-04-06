@@ -203,9 +203,9 @@ class Ui_mainInterface(object):
 
         # Alert button
         # self.Alert_button = QtWidgets.QPushButton(self.Menu_button)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(28)
+        # font = QtGui.QFont()
+        # font.setFamily("Segoe UI")
+        # font.setPointSize(28)
         # self.Alert_button.setFont(font)
         # self.Alert_button.setStyleSheet("QPushButton{\n"
         #                                 "    background-color: rgba(0, 0, 0, 0)\n"
@@ -1648,6 +1648,7 @@ class Ui_mainInterface(object):
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         play_button = QPushButton(label)
         play_button.setIcon(icon_play)
+        play_button.setIconSize(QtCore.QSize(30, 30))
         play_button.clicked.connect(lambda: self.play_media(play_button, fname))
         return play_button
 
@@ -1738,6 +1739,7 @@ class Ui_mainInterface(object):
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         listen_button = QPushButton(label)
         listen_button.setIcon(icon_listen)
+        listen_button.setIconSize(QtCore.QSize(30, 30))
         listen_button.clicked.connect(lambda: self.listen_media(listen_button, fname))
         return listen_button
 
@@ -1798,6 +1800,7 @@ class Ui_mainInterface(object):
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         remove_button = QPushButton()
         remove_button.setIcon(icon_remove)
+        remove_button.setIconSize(QtCore.QSize(30, 30))
         remove_button.clicked.connect(lambda: self.remove_file(row, fname))
         return remove_button
 
