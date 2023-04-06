@@ -1,6 +1,6 @@
 import sys
 import os
-from PySide6 import *
+# from PySide6 import *
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 import sounddevice as sd
@@ -13,16 +13,18 @@ import numpy as np
 import noisereduce as nr
 from math import sqrt
 from pydub import AudioSegment,generators
+from scipy.signal import butter, lfilter
+import scipy.signal as signal
 
 # IMPORT GUI FILE
-from ui_main import *
+from ui_main import Ui_mainInterface
 
 Noise_reduce_state = False
 Test_mic_state = False
 Mute_mic_state = False
 Boost_mic_volumeFactor = 1
 Pushed_reinit = 0
-
+# UI = Ui_mainInterface()
 #update device in main
 
 def Toggle_NoiseReduce():
@@ -59,6 +61,13 @@ def Boost_Mic(value):
     Boost_mic_volumeFactor = value/10
     print('Mic factor : ', value/10)
     # Boost_mic_volumeFactor = value/10
+
+#soundpad
+def play_mic(row, filename):
+    fname = filename
+    # convert string to QUrl object using the QUrl constructor
+    print('main', filename)
+
 
 def Re_Init_SoundSystem():
     global Pushed_reinit
@@ -170,10 +179,21 @@ class SoundSystem():
 
             #Noise suppression
             if(Noise_reduce_state):
+                cutoff_low = 8000
+                cutoff_high = 3000
+                nyquist_rate = 44100 / 2.0
+                pass_order = 5
+                pass_stop = 40
+                lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
+                highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
                 # print('Noise suppressed')
                 audio_frame = np.frombuffer(audio_data, dtype=np.int16)
-                reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
-                output_sound = reduced_noise.tobytes()
+                audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
+                # reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
+                filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
+                filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
+                output_sound = filtered_audio.tobytes()
+                
             else:
                 # print('Normal voice')
                 output_sound = audio_data
@@ -198,8 +218,10 @@ class SoundSystem():
             #emergency close thread
             # if(keyboard.is_pressed('z')):
             #     break
-
-        #close program
+            # UI.get_audio_data = np.frombuffer(output_sound, dtype=np.int16)
+            # UI.audio_from_main()
+            # print(UI.get_audio_data)
+        #close programclea
         self.input_stream.stop_stream()
         self.input_stream.close()
         self.virtual_microphone_stream.stop_stream()
@@ -224,9 +246,7 @@ class SoundSystem():
                 self.update_input(i['index'])
                 break
 ###
-
 class MainWindow(QMainWindow):
-
     def __init__(self):
         QMainWindow.__init__(self)
         self.ui = Ui_mainInterface()
@@ -250,9 +270,16 @@ class MainWindow(QMainWindow):
         self.ui.Voicechanger_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Voicechanger_page))
         
-        # # page setting
-        # self.ui.Setting_button.clicked.connect(
-        #     lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Setting_page))
+        self.ui.pushButton.clicked.connect(
+            lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.dashbord_page))
+        
+        # # page settingmain
+        self.ui.setting_Button.clicked.connect(
+            lambda: self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_6))
+        
+        # page setting
+        self.ui.settingButton.clicked.connect(
+            lambda: self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_5))
 
         #link button
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)
@@ -276,9 +303,14 @@ class MainWindow(QMainWindow):
             self.ui.micmute.clicked.connect(Toggle_MuteMic)
             #boostmic
             self.ui.horizontalSlider_2.valueChanged.connect(Boost_Mic)
+
+            #soundpad
+            # self.ui.play_button.clicked.connect(play_mic())
+
         except:
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')
+
             self.ui.stackedWidget.setCurrentWidget(self.ui.Alert_page)
             # self.ui.label.setText(_translate(
             # "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>")) #//TODO:
