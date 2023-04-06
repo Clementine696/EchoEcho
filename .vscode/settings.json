@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
         "./Frontend/Pyqt6/widgets/pages"
-    ]
+    ],
+    "python.formatting.provider": "black"
 }
