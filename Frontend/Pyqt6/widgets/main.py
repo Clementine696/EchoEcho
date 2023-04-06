@@ -73,8 +73,6 @@ def Re_Init_SoundSystem():
     global Pushed_reinit
     Pushed_reinit = 1
     print('try init again')
-
-
 ###
 class SoundSystem():
     def __init__(self):

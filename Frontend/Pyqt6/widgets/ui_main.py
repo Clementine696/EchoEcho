@@ -11,6 +11,11 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QA
 from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
 
+import pyaudio
+import sounddevice as sd
+import wave
+import threading
+
 # IMPORT GUI FILE
 # from pages.soundpad_page import *
 # from PySide6 import QtMultimedia
@@ -36,6 +41,28 @@ import scipy.signal as signal
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
 output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(
     QAudio.AudioOutput)
+
+
+try:
+    p = pyaudio.PyAudio()
+    device_list = sd.query_devices()
+    vb_index = p.get_default_output_device_info()['index']
+    for i in (device_list):
+        if "CABLE Input " in i['name']:
+            vb_index = i['index']
+            break
+    ui_virtual_microphone_stream = p.open(format=pyaudio.paInt16,
+                    channels=1,
+                    rate=44100,
+                    output=True,
+                    frames_per_buffer=1024,
+                    output_device_index=vb_index)
+except:
+    print("Cannot detect virtual microphone _ ui")
+
+micplay = False
+micplay_file = "none"
+stop_threads = False
 
 class Ui_mainInterface(object):
     noise_reduce = 0
@@ -1070,9 +1097,9 @@ class Ui_mainInterface(object):
         # self.tableWidget.setRowCount(9)
 
         # self.tableWidget.setRowCount(3)
-        self.tableWidget.setColumnCount(7)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setHorizontalHeaderLabels(
-            ['No.', 'Name', 'Duration', 'Hotkeys', '', 'Status', ''])
+            ['Name', 'Duration', 'Hotkeys', '', 'Status', ''])
         self.tableWidget.verticalHeader().hide()
         # effect = QGraphicsDropShadowEffect()
         # self.tableWidget.setGraphicsEffect(effect)
@@ -1126,13 +1153,12 @@ class Ui_mainInterface(object):
         self.tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
 
         self.tableWidget.autofit = False
-        self.tableWidget.setColumnWidth(0, 60)
-        self.tableWidget.setColumnWidth(1, 400)
-        self.tableWidget.setColumnWidth(2, 130)
-        self.tableWidget.setColumnWidth(3, 110)
-        self.tableWidget.setColumnWidth(4, 60)
-        self.tableWidget.setColumnWidth(5, 60)
-        self.tableWidget.setColumnWidth(6, 60)
+        self.tableWidget.setColumnWidth(0, 400)
+        self.tableWidget.setColumnWidth(1, 130)
+        self.tableWidget.setColumnWidth(2, 110)
+        self.tableWidget.setColumnWidth(3, 80)
+        self.tableWidget.setColumnWidth(4, 80)
+        self.tableWidget.setColumnWidth(5, 80)
 
         try:
             with open("soundpad.pickle", "rb") as file:
@@ -1141,18 +1167,19 @@ class Ui_mainInterface(object):
                     row = self.tableWidget.rowCount()
                     self.tableWidget.insertRow(row)
 
-                    self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
+                    self.tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
                     duration = self.getDuration(fname)
-                    self.tableWidget.setItem(row, 2, QTableWidgetItem(duration))   
+                    self.tableWidget.setItem(row, 1, QTableWidgetItem(duration))   
 
-                    self.tableWidget.setCellWidget(row, 4, self.play_button("", fname))
+                    self.tableWidget.setCellWidget(row, 3, self.play_button("", fname))
 
-                    self.tableWidget.setCellWidget(row, 5, self.listen_button("", fname))
+                    self.tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
+
 
                     remove_button = self.remove_button(row, fname)
 
-                    self.tableWidget.setCellWidget(row, 6, remove_button)
+                    self.tableWidget.setCellWidget(row, 5, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
 
                 print("audio load successfully")
@@ -1587,39 +1614,34 @@ class Ui_mainInterface(object):
 
             row = self.tableWidget.rowCount()
             self.tableWidget.insertRow(row)
-            self.tableWidget.setItem(
-                row, 1, QTableWidgetItem(os.path.basename(fname)))
+
+            self.tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
+
             # self.table.setItem(row, 1, QTableWidgetItem(""))
             # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
 
 
             duration = self.getDuration(fname)
-            self.tableWidget.setItem(row, 2, QTableWidgetItem(duration)) 
+            self.tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
  
-            self.tableWidget.setCellWidget(row, 4, self.play_button("", fname))
+            self.tableWidget.setCellWidget(row, 3, self.play_button("", fname))
 
-            self.tableWidget.setCellWidget(row, 5, self.listen_button("", fname))
+            self.tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
 
             remove_button = self.remove_button(row, fname)
 
-            self.tableWidget.setCellWidget(row, 6, remove_button)
+            self.tableWidget.setCellWidget(row, 5, remove_button)
             remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
             
             self.filenames.append(fname)
             self.save_file()
 
     # play item
-
+    
+    
     # ========================================================================================================================================
-    def play_mic(self, row, filename):
-        fname = filename
-        # convert string to QUrl object using the QUrl constructor
-        file = QUrl.fromLocalFile(fname)
-        media = QMediaContent(file)
-        self.player.setMedia(media)
-        # play the media
-        self.player.play()
-
+    #//TODO:
+    
     def play_button(self, label, fname):
         icon_play = QtGui.QIcon()
         icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
@@ -1636,41 +1658,77 @@ class Ui_mainInterface(object):
         icon_play = QtGui.QIcon()
         icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        media_content = QMediaContent(QUrl.fromLocalFile(fname))
-        if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
-            self.player.stop()
+        # media_content = QMediaContent(QUrl.fromLocalFile(fname))
+        media_content = fname
+        # if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
+        #     self.player.stop()
+        #     # play_button
+        #     btn.setIcon(icon_play)
+        #     # btn.setText("play")
+        global micplay
+        global stop_threads
+        global micplay_file
+        if micplay == True and micplay_file == media_content:
+            micplay = False
+            stop_threads = True
             # play_button
             btn.setIcon(icon_play)
             # btn.setText("play")
         else:
-            if self.player.state() == QMediaPlayer.PlayingState:
-                curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
+            if micplay == True:
+                curr_fname = micplay_file
                 curr_btn = self.get_play(curr_fname)
                 if curr_btn is not None:
                     curr_btn.setIcon(icon_play)
                     # curr_btn.setText("Play")
-                self.player.stop()
+                # self.player.stop()
+                micplay = False
+                stop_threads = True
 
             for row in range(self.tableWidget.rowCount()):
-                item = self.tableWidget.item(row, 1)
+                item = self.tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.tableWidget.cellWidget(row, 4)
+                    play_btn = self.tableWidget.cellWidget(row, 3)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
-                        self.player.stop()
+                        # self.player.stop()
+                        micplay = False
+                        stop_threads = True
                         play_btn.setIcon(icon_play)
                         # play_btn.setText("Play")
 
-            self.player.setMedia(media_content)
-            self.player.play()
+#==========================================================================
+            # self.player.setMedia(media_content)
+            # self.player.play()
+
+            micplay = True
+            stop_threads = False
+            micplay_file = media_content
+            def runsound():
+                wf = wave.open(media_content, "rb")
+                data = wf.readframes(1024)
+                while len(data) != 0:
+                    ui_virtual_microphone_stream.write(data)
+                    data = wf.readframes(1024)
+                    if stop_threads:
+                        break
+            t1 = threading.Thread(target = runsound)
+            t1.daemon = True
+            t1.start()
+            
+            # while len(data) != 0:
+            #     ui_virtual_microphone_stream.write(data)
+            #     data = wf.readframes(1024)
+
+#==========================================================================
             btn.setIcon(icon_pause)
             # btn.setText("Stop")
-
 
     def get_play(self, fname):
         for row in range(self.tableWidget.rowCount()):
             item = self.tableWidget.item(row, 0)
             if item is not None and item.text() == os.path.basename(fname):
-                return self.tableWidget.cellWidget(row, 4)
+                return self.tableWidget.cellWidget(row, 3)
+            
             
     # ========================================================================================================================================
             
@@ -1705,9 +1763,9 @@ class Ui_mainInterface(object):
                 self.player.stop()
 
             for row in range(self.tableWidget.rowCount()):
-                item = self.tableWidget.item(row, 1)
+                item = self.tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.tableWidget.cellWidget(row, 5)
+                    play_btn = self.tableWidget.cellWidget(row, 4)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         self.player.stop()
                         play_btn.setIcon(icon_listen)
@@ -1722,7 +1780,7 @@ class Ui_mainInterface(object):
         for row in range(self.tableWidget.rowCount()):
             item = self.tableWidget.item(row, 0)
             if item is not None and item.text() == os.path.basename(fname):
-                return self.tableWidget.cellWidget(row, 5)
+                return self.tableWidget.cellWidget(row, 4)
 
     def getDuration(self, fname):
         if fname.endswith('.mp3'):
@@ -1759,6 +1817,7 @@ class Ui_mainInterface(object):
     def save_file(self):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
+
             pickle.dump(self.filenames, file)
             
     def normal_audio_callback(self,in_data, frame_count, time_info, status):
@@ -1835,4 +1894,3 @@ class Ui_mainInterface(object):
             line.set_ydata(self.plot_data[:, column])
             line.set_color((0, 1, 0.29))
             self.canvas.draw()
-
