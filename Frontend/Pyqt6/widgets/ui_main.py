@@ -1169,7 +1169,7 @@ class Ui_mainInterface(object):
         self.horizontalSlider_VC_Eq1.setMinimum(0)
         self.horizontalSlider_VC_Eq1.setValue(10)
         self.horizontalSlider_VC_Eq1.setPageStep(1)
-        self.horizontalSlider_VC_Eq1.valueChanged.connect(self.VC_Eq_Slider1)
+        self.horizontalSlider_VC_Eq1.valueChanged.connect(self.VC_Eq_Slider1) #//TODO:
         self.horizontalSlider_VC_Eq1.setObjectName("horizontalSlider_VC_Eq1")
         self.verticalLayout_18.addWidget(self.horizontalSlider_VC_Eq1)
 
@@ -1251,7 +1251,7 @@ class Ui_mainInterface(object):
         self.horizontalSlider_VC_Eq2.setMinimum(0)
         self.horizontalSlider_VC_Eq2.setValue(10)
         self.horizontalSlider_VC_Eq2.setPageStep(1)
-        self.horizontalSlider_VC_Eq2.valueChanged.connect(self.VC_Eq_Slider2)
+        self.horizontalSlider_VC_Eq2.valueChanged.connect(self.VC_Eq_Slider2)#//TODO:
         self.horizontalSlider_VC_Eq2.setObjectName("horizontalSlider_VC_Eq2")
         self.verticalLayout_34.addWidget(self.horizontalSlider_VC_Eq2)
         self.verticalLayout_32.addWidget(self.VC_slider_frame_6)
@@ -1332,7 +1332,7 @@ class Ui_mainInterface(object):
         self.horizontalSlider_VC_Eq3.setMinimum(0)
         self.horizontalSlider_VC_Eq3.setValue(10)
         self.horizontalSlider_VC_Eq3.setPageStep(1)
-        self.horizontalSlider_VC_Eq3.valueChanged.connect(self.VC_Eq_Slider3)
+        self.horizontalSlider_VC_Eq3.valueChanged.connect(self.VC_Eq_Slider3)#//TODO:
         self.horizontalSlider_VC_Eq3.setObjectName("horizontalSlider_VC_Eq3")
         self.verticalLayout_52.addWidget(self.horizontalSlider_VC_Eq3)
         self.verticalLayout_50.addWidget(self.VC_slider_frame_12)

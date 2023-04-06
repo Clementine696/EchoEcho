@@ -30,6 +30,8 @@ filter_order = 10
 nyquist_freq = 0.5 * 48000
 b, a = signal.butter(filter_order, cutoff_freq/nyquist_freq, btype='lowpass')
 
+
+
 # IMPORT GUI FILE
 from ui_main import *
 
