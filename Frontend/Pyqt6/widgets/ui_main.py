@@ -599,6 +599,9 @@ class Ui_mainInterface(object):
         
         #init plot
         self.figure = Figure()
+        self.rect = plt.Rectangle((0.0017, 0.002), 0.995, 0.999, fill=False, color="black", lw=1, zorder=1000, transform=self.figure.transFigure, figure=self.figure)
+        self.figure.patches.extend([self.rect])
+        self.figure.patch.set_facecolor('#244D54')
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
         
