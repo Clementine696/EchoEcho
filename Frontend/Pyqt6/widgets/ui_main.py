@@ -5,14 +5,13 @@ import time
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog
-from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtCore import Qt, QUrl, QTimer
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
 
 from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
 
 # IMPORT GUI FILE
-from main import *
 # from pages.soundpad_page import *
 # from PySide6 import QtMultimedia
 from PyQt5 import uic
@@ -20,17 +19,23 @@ from PyQt5 import uic
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-import main as Main
 import keyboard
-import subprocess
-
-
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import queue
+import sys
+from matplotlib.animation import FuncAnimation
+import matplotlib.pyplot as plt
+import numpy as np
+import sounddevice as sd
+import pyaudio
+from scipy.signal import butter, lfilter
+import scipy.signal as signal
 #import graph file
-from newgraph import MicrophoneAudioWaveform
+# from newgraph import MicrophoneAudioWaveform
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
 output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(
     QAudio.AudioOutput)
-
 
 class Ui_mainInterface(object):
     noise_reduce = 0
@@ -40,7 +45,14 @@ class Ui_mainInterface(object):
     Mic_Side_menu = 0
     SP_Side_menu = 0
     VC_Side_menu = 0
-
+    
+    def __init__(self):
+        self.get_audio_data = np.zeros(1024)
+        self.q = queue.Queue()
+        self.q_normal = queue.Queue()
+        self.q_reduce = queue.Queue()
+        self.current_plot = 'normal'
+    
     def setupUi(self, ui_main):
         # Application size
         ui_main.setObjectName("ui_main")
@@ -556,6 +568,8 @@ class Ui_mainInterface(object):
         self.Right_side.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Right_side.setObjectName("Right_side")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.Right_side)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
         # stacked widget
@@ -686,12 +700,60 @@ class Ui_mainInterface(object):
         self.Graph.setObjectName("Graph")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.Graph)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        # self.graph = MicrophoneAudioWaveform()
+        #######################################################################
+        # Audio parameters
+        self.FORMAT = pyaudio.paFloat32
+        self.CHANNELS = 1
+        self.RATE = 44100
+        self.CHUNK_SIZE = 1024
+        # self.CALLBACK = self.normal_audio_callback
+        self.PLOT = self.normal_update_plot
+        
+        # Plot parameters
+        self.WINDOW_SIZE = 1000  # ms
+        self.DOWN_SAMPLE = 1
+        self.CHANNELS_TO_PLOT = [0]
+        
+        # Initialize queue for incoming audio data
+        # self.q = queue.Queue()
 
-        self.label = QtWidgets.QLabel(self.Graph)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.verticalLayout_3.addWidget(self.label)
+        # Calculate number of samples to display in window
+        self.window_samples = int(self.WINDOW_SIZE * self.RATE / 1000 / self.DOWN_SAMPLE)
+
+        # Initialize plot data
+        self.plot_data = np.zeros((self.window_samples, len(self.CHANNELS_TO_PLOT)))
+        
+        #init plot
+        self.figure = Figure()
+        self.rect = plt.Rectangle((0.0017, 0.002), 0.995, 0.999, fill=False, color="black", lw=1, zorder=1000, transform=self.figure.transFigure, figure=self.figure)
+        self.figure.patches.extend([self.rect])
+        self.figure.patch.set_facecolor('#244D54')
+        self.canvas = FigureCanvas(self.figure)
+        self.ax = self.figure.add_subplot(111)
+        
+        #init lines
+        # self.lines = self.ax.plot(self.plot_data, color=(0, 1, 0.29))
+        self.lines = self.ax.plot(self.plot_data, color=(0, 0, 0))
+            
+        self.pa = pyaudio.PyAudio()
+        self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
+                frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.normal_audio_callback)
+        
+        # self.audio_from_main()
+            
+        self.ax.set_facecolor((0, 0, 0))
+        self.ax.set_yticks([0])
+        self.ax.yaxis.grid(True)
+        self.ax.set_ylim(-0.3, 0.3)
+        # self.ani = FuncAnimation(self.figure, self.normal_update_plot, interval=30, blit=True)
+        self.timer = QTimer()
+        # self.timer.stop()
+        # self.timer.timeout.disconnect()
+        self.timer.timeout.connect(self.PLOT)
+        self.timer.start(30)
+        
+        plt.show()
+        self.verticalLayout_3.addWidget(self.canvas)
         self.verticalLayout_2.addWidget(self.Graph)
 
         # Test Mic layout
@@ -1229,7 +1291,7 @@ class Ui_mainInterface(object):
                                              "detecting the sound coming into the headset, and generating signals \n"
                                              "that are  out-of-phase with the  offending signals, canceling them out."))
         self.Noise_label.setText(_translate("ui_main", "Noise Suppression"))
-        self.label.setText(_translate("ui_main", "Graph_text"))
+        # self.label.setText(_translate("ui_main", "Graph_text"))
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
@@ -1333,6 +1395,9 @@ class Ui_mainInterface(object):
         # print("Noise button clicked")
         if (Ui_mainInterface.noise_reduce == 0):
             Ui_mainInterface.noise_reduce = 1
+            self.current_plot = 'reduce'
+            print("current plot = ", self.current_plot)
+
             # ทำให้ปุ่มเปิด
             self.Noise_button.setStyleSheet("QPushButton{\n"
                                             "    border-radius: 40px;\n"
@@ -1344,8 +1409,18 @@ class Ui_mainInterface(object):
                                             "    color: #FFFFFF;\n"
                                             "}"
                                             )
+            self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
+                frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.reduce_audio_callback)
+            for line in self.lines:
+                line.remove()
+            self.lines = self.ax.plot(self.plot_data)
+            # self.CALLBACK = self.reduce_audio_callback
+            self.PLOT = self.reduce_update_plot 
         else:
             Ui_mainInterface.noise_reduce = 0
+            self.current_plot = 'normal'
+            
+            print("current plot = ", self.current_plot)
             # ทำปุ่มปิด
             self.Noise_button.setStyleSheet("QPushButton{\n"
                                             "    background-color: #244D54;\n"
@@ -1364,6 +1439,17 @@ class Ui_mainInterface(object):
                                             "    color: #B0B0B0;\n"
                                             "}"
                                             )
+            self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
+                frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.normal_audio_callback)
+            for line in self.lines:
+                line.remove()
+            self.lines = self.ax.plot(self.plot_data)
+            # self.CALLBACK = self.normal_audio_callback
+            self.PLOT = self.normal_update_plot 
+        self.timer.stop()
+        self.timer.timeout.disconnect()
+        self.timer.timeout.connect(self.PLOT)
+        self.timer.start(30)
     #############################################
 
     def TestMic_button_clicked(self):
@@ -1586,4 +1672,81 @@ class Ui_mainInterface(object):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(self.filenames, file)
+            
+    def normal_audio_callback(self,in_data, frame_count, time_info, status):
+        # Convert byte stream to numpy array
+        # print("normal_callback")
+        audio_data = np.frombuffer(in_data, dtype=np.float32)
+        # Add new audio data to queue
+        self.q_normal.put(audio_data)
+
+        return (None, pyaudio.paContinue)
+    
+    def reduce_audio_callback(self,in_data, frame_count, time_info, status):
+        # print("reduce_callback")
+        # Convert byte stream to numpy array
+        audio_data = np.frombuffer(in_data, dtype=np.float32)
+        cutoff_low = 8000
+        cutoff_high = 3000
+        nyquist_rate = 44100 / 2.0
+        pass_order = 5
+        pass_stop = 40
+        lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
+        highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
+        audio_frame = np.frombuffer(audio_data, dtype=np.float32)
+        audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
+        filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
+        filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
+        
+        # Add new audio data to queue
+        self.q_reduce.put(filtered_audio)
+
+        return (None, pyaudio.paContinue)
+    
+    def normal_update_plot(self):
+        # Get all the available audio data from the queue
+        # print(self.q.qsize())
+        if self.current_plot != 'normal':
+            return
+        while not self.q_normal.empty():
+            # print("normal queue not empty")
+            data = self.q_normal.get()
+            # Downsample the data if needed
+            # if self.DOWN_SAMPLE > 1:
+            data = data[::6]
+
+            # Update the plot data
+            shift = len(data)
+            self.plot_data = np.roll(self.plot_data, -shift, axis=0)
+            self.plot_data[-shift:, :] = data[:, np.newaxis]
+
+        # Update the plot lines with the new data
+        for column, line in enumerate(self.lines):
+            line.set_ydata(self.plot_data[:, column])
+            line.set_color((1, 0, 0))
+            self.canvas.draw()
+    
+    def reduce_update_plot(self):
+        if self.current_plot != 'reduce':
+            return
+        # Get all the available audio data from the queue
+        while not self.q_reduce.empty():
+            # print("reduce queue not empty")
+            data = self.q_reduce.get()
+            # Downsample the data if needed
+            # if self.DOWN_SAMPLE > 1:
+            data = data[::self.DOWN_SAMPLE]
+
+            # Update the plot data
+            shift = len(data)
+            self.plot_data = np.roll(self.plot_data, -shift, axis=0)
+            self.plot_data[-shift:, :] = data[:, np.newaxis]
+
+        # Update the plot lines with the new data
+        for column, line in enumerate(self.lines):
+            line.set_ydata(self.plot_data[:, column])
+            line.set_color((0, 1, 0.29))
+            self.canvas.draw()
+
+
 
