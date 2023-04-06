@@ -460,28 +460,23 @@ class Ui_mainInterface(object):
         self.settingmain.setIconSize(QtCore.QSize(32, 32))
         self.settingmain.setObjectName("settingmain")
         self.framedefault = QtWidgets.QFrame(self.page_6)
-        self.framedefault.setGeometry(QtCore.QRect(0, 100, 371, 221))
+        self.framedefault.setGeometry(QtCore.QRect(0, 100, 371, 180))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.framedefault.sizePolicy().hasHeightForWidth())
+        self.framedefault.setSizePolicy(sizePolicy)
+        self.framedefault.setMinimumSize(QtCore.QSize(0, 180))
+        self.framedefault.setMaximumSize(QtCore.QSize(16777215, 180))
         self.framedefault.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.framedefault.setFrameShadow(QtWidgets.QFrame.Raised)
         self.framedefault.setObjectName("framedefault")
         self.detaildefault = QtWidgets.QTextEdit(self.framedefault)
-        self.detaildefault.setGeometry(QtCore.QRect(30, 10, 321, 111))
+        self.detaildefault.setGeometry(QtCore.QRect(30, 20, 321, 121))
         self.detaildefault.setObjectName("detaildefault")
-        self.settodefault = QtWidgets.QPushButton(self.framedefault)
-        self.settodefault.setGeometry(QtCore.QRect(30, 140, 320, 54))
-        self.settodefault.setMinimumSize(QtCore.QSize(320, 54))
-        self.settodefault.setMaximumSize(QtCore.QSize(320, 54))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.settodefault.setFont(font)
-        self.settodefault.setStyleSheet("QPushButton { \n"
-"    background-color: #850021;\n"
-"    color: #ffffff;\n"
-"}")
-        self.settodefault.setObjectName("settodefault")
+        
         self.frameEquipment = QtWidgets.QFrame(self.page_6)
-        self.frameEquipment.setGeometry(QtCore.QRect(0, 320, 371, 151))
+        self.frameEquipment.setGeometry(QtCore.QRect(0, 280, 371, 191))
         self.frameEquipment.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frameEquipment.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frameEquipment.setObjectName("frameEquipment")
@@ -1303,8 +1298,10 @@ class Ui_mainInterface(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Remove optimization from digital devices currently set as default. This will restore their original configurations.</span></p></body></html>"))
-        self.settodefault.setText(_translate("ui_main", "set to default"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; color:#cccccc;\">CURRENT VERSION:</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt; font-weight:600; color:#cccccc;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">EchoEcho App: 1.0.1</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.detailequipment.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
