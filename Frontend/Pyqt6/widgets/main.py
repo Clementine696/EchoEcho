@@ -280,6 +280,10 @@ class MainWindow(QMainWindow):
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')
             self.ui.stackedWidget.setCurrentWidget(self.ui.Alert_page)
+            # self.ui.label.setText(_translate(
+            # "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>")) #//TODO:
+            # self.ui.Alert_button_detail.setText(_translate(
+            # "ui_main", "Check your audio output device and try again")) #//TODO:
 
 
         # while(self.createSound_system == False):

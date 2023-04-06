@@ -1063,12 +1063,17 @@ class Ui_mainInterface(object):
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
     
     # Alert button clicked function
-        self.label.setText(_translate(
-            "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>"))
-        self.Alert_button_detail.setText(_translate(
-            "ui_main", "Check your audio output device and try again"))
+        # self.label.setText(_translate(
+        #     "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>")) #//TODO:
+        # self.Alert_button_detail.setText(_translate(
+        #     "ui_main", "Check your audio output device and try again")) #//TODO:
         
-    # Alert button clicked function
+        self.label.setText(_translate(
+            "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No virtual cable found</span></p></body></html>")) #//TODO:
+        self.Alert_button_detail.setText(_translate(
+            "ui_main", "Check your virtual cable or install from vb-audio.com")) #//TODO:
+
+    # Alert button clicked function 
     def Alert_button_detail_clicked(self):
         print("Alert button clicked")
 
