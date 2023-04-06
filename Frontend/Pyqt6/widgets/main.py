@@ -17,11 +17,11 @@ from pydub import AudioSegment,generators
 #Voice Changer
 import librosa
 # define the pitch shift factor
-pitch_shift_factor = 2 # double the pitch
-bins = 12
-hz = 0
+main_pitch_shift_factor = 2 # double the pitch
+main_bins = 12
+main_hz = 0
 # calculate the pitch shift amount in semitones
-pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(hz))
+pitch_shift_amount = librosa.hz_to_midi(main_pitch_shift_factor * librosa.midi_to_hz(main_hz))
 import scipy.signal as signal
 # define filter parameters
 cutoff_freq = 4000  # Hz
@@ -31,6 +31,24 @@ nyquist_freq = 0.5 * 48000
 b, a = signal.butter(filter_order, cutoff_freq/nyquist_freq, btype='lowpass')
 
 
+def main_pitch_eq(value):
+    global main_pitch_shift_factor
+    global pitch_shift_amount
+    main_pitch_shift_factor = value
+    # print('main_pitch_shift_factor',main_pitch_shift_factor)
+    pitch_shift_amount = librosa.hz_to_midi(main_pitch_shift_factor * librosa.midi_to_hz(main_hz))
+
+def main_bins_eq(value):
+    global main_bins
+    main_bins = value
+    # print('main_bins',main_bins)
+
+def main_hz_eq(value):
+    global main_hz
+    global pitch_shift_amount
+    main_hz = value
+    # print('main_hz',main_hz)
+    pitch_shift_amount = librosa.hz_to_midi(main_pitch_shift_factor * librosa.midi_to_hz(main_hz))
 
 # IMPORT GUI FILE
 from ui_main import *
@@ -221,12 +239,13 @@ class SoundSystem():
                 numpy_data = np.fromstring(audio_data, dtype=np.int16)
                 numpy_data_float = numpy_data.astype('float32') / 32767.0 # scale to range [-1, 1]
                 # pitch shift the audio data
-                pitch_shifted_data = librosa.effects.pitch_shift(numpy_data_float, 48000, n_steps=pitch_shift_amount, bins_per_octave=bins)
+                # global pitch_shift_amount
+                # global bins
+                # global pitch_shifted_data
+                pitch_shifted_data = librosa.effects.pitch_shift(numpy_data_float, 48000, n_steps=pitch_shift_amount, bins_per_octave=main_bins)
                 # apply the filter to the pitch shifted data
-                filtered_data = signal.filtfilt(b, a, pitch_shifted_data)
+                # filtered_data = signal.filtfilt(b, a, pitch_shifted_data)
                 # convert the pitch shifted data to a string for playback
-                output_sound = (pitch_shifted_data * 32767).astype(np.int16).tostring()
-                # output_sound = pitch_shifted_data.astype(np.int16).tostring()
                 output_sound = (pitch_shifted_data * 32767).astype(np.int16).tostring()
 
             self.virtual_microphone_stream.write(output_sound)
@@ -319,6 +338,11 @@ class MainWindow(QMainWindow):
             self.ui.micmute.clicked.connect(Toggle_MuteMic)
             #boostmic
             self.ui.horizontalSlider_2.valueChanged.connect(Boost_Mic)
+
+            self.ui.horizontalSlider_VC_Eq1.valueChanged.connect(main_pitch_eq) #//TODO:
+            self.ui.horizontalSlider_VC_Eq2.valueChanged.connect(main_bins_eq)
+            self.ui.horizontalSlider_VC_Eq3.valueChanged.connect(main_hz_eq)
+
         except:
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')

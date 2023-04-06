@@ -1165,9 +1165,9 @@ class Ui_mainInterface(object):
 
         self.horizontalSlider_VC_Eq1 = QtWidgets.QSlider(self.VC_slider_frame)
         self.horizontalSlider_VC_Eq1.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider_VC_Eq1.setMaximum(20)
-        self.horizontalSlider_VC_Eq1.setMinimum(0)
-        self.horizontalSlider_VC_Eq1.setValue(10)
+        self.horizontalSlider_VC_Eq1.setMaximum(15)
+        self.horizontalSlider_VC_Eq1.setMinimum(2)
+        self.horizontalSlider_VC_Eq1.setValue(2)
         self.horizontalSlider_VC_Eq1.setPageStep(1)
         self.horizontalSlider_VC_Eq1.valueChanged.connect(self.VC_Eq_Slider1) #//TODO:
         self.horizontalSlider_VC_Eq1.setObjectName("horizontalSlider_VC_Eq1")
@@ -1247,9 +1247,9 @@ class Ui_mainInterface(object):
         self.verticalLayout_34.setObjectName("verticalLayout_34")
         self.horizontalSlider_VC_Eq2 = QtWidgets.QSlider(self.VC_slider_frame_6)
         self.horizontalSlider_VC_Eq2.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider_VC_Eq2.setMaximum(20)
-        self.horizontalSlider_VC_Eq2.setMinimum(0)
-        self.horizontalSlider_VC_Eq2.setValue(10)
+        self.horizontalSlider_VC_Eq2.setMaximum(50)
+        self.horizontalSlider_VC_Eq2.setMinimum(6)
+        self.horizontalSlider_VC_Eq2.setValue(12)
         self.horizontalSlider_VC_Eq2.setPageStep(1)
         self.horizontalSlider_VC_Eq2.valueChanged.connect(self.VC_Eq_Slider2)#//TODO:
         self.horizontalSlider_VC_Eq2.setObjectName("horizontalSlider_VC_Eq2")
@@ -1328,9 +1328,9 @@ class Ui_mainInterface(object):
         self.verticalLayout_52.setObjectName("verticalLayout_52")
         self.horizontalSlider_VC_Eq3 = QtWidgets.QSlider(self.VC_slider_frame_12)
         self.horizontalSlider_VC_Eq3.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider_VC_Eq3.setMaximum(20)
+        self.horizontalSlider_VC_Eq3.setMaximum(30)
         self.horizontalSlider_VC_Eq3.setMinimum(0)
-        self.horizontalSlider_VC_Eq3.setValue(10)
+        self.horizontalSlider_VC_Eq3.setValue(0)
         self.horizontalSlider_VC_Eq3.setPageStep(1)
         self.horizontalSlider_VC_Eq3.valueChanged.connect(self.VC_Eq_Slider3)#//TODO:
         self.horizontalSlider_VC_Eq3.setObjectName("horizontalSlider_VC_Eq3")
