@@ -7,6 +7,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
+from PyQt5.QtChart import QChart, QChartView, QPieSeries, QPieSlice
+from PyQt5.QtGui import QPainter, QPen, QFont
+from PyQt5.QtCore import Qt
 
 from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
@@ -23,6 +26,9 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import main as Main
 import keyboard
 import subprocess
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+
 
 
 #import graph file
@@ -821,6 +827,55 @@ class Ui_mainInterface(object):
         self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_7.setObjectName("frame_7")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.frame_7)
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_12.setSpacing(0)
+        self.verticalLayout_12.setObjectName("verticalLayout_12")
+        self.frame_9 = QtWidgets.QFrame(self.frame_7)
+        self.frame_9.setMinimumSize(QtCore.QSize(900, 150))
+        self.frame_9.setMaximumSize(QtCore.QSize(900, 150))
+        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_9.setObjectName("frame_9")
+        self.verticalLayout_12.addWidget(self.frame_9)
+        self.frame_10 = QtWidgets.QFrame(self.frame_7)
+        self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_10.setObjectName("frame_10")
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame_10)
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        self.widget_2 = QtWidgets.QWidget(self.frame_10)
+        self.widget_2.setObjectName("widget_2")
+
+        fig, ax = plt.subplots()
+        ax.axis('equal')
+
+        # define data for the donut plot
+        data = [10, 20, 30, 40]
+        labels = ['A', 'B', 'C', 'D']
+        colors = ['red', 'green', 'blue', 'yellow']
+        explode = (0.05, 0.05, 0.05, 0.05)
+
+        # create the donut plot
+        wedges, texts, autotexts = ax.pie(data, colors=colors, labels=labels,
+                                        autopct='%1.1f%%', startangle=90,
+                                        pctdistance=0.85, explode=explode)
+
+        # add a circle to create a donut chart
+        centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+        ax.add_artist(centre_circle)
+        canvas = FigureCanvas(fig)
+        canvas.setStyleSheet("background-color: red;")
+        # self.canvas.patch.set_facecolor('#244D54')
+
+        # add the canvas to the PyQt5 widget
+        layout = QtWidgets.QVBoxLayout(self.widget_2)
+        layout.addWidget(canvas)
+        # self.create_donutchart()
+        self.horizontalLayout_7.addWidget(self.widget_2)
+        self.verticalLayout_12.addWidget(self.frame_10)
         self.verticalLayout_7.addWidget(self.frame_7)
         self.horizontalLayout_6.addWidget(self.frame_dash_page)
         self.stackedWidget.addWidget(self.dashbord_page)
@@ -1622,4 +1677,30 @@ class Ui_mainInterface(object):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(self.filenames, file)
+
+
+    def create_donutchart(self):
+
+        series = QPieSeries()
+        series.setHoleSize(0.35)
+        series.append("Protein 4.2%", 4.2)
+        slice = QPieSlice()
+        slice = series.append("Fat 15.6%", 15.6)
+        slice.setExploded()
+        slice.setLabelVisible()
+        series.append("Other 23.8%", 23.8)
+        series.append("Carbs 56.4%", 56.4)
+
+        chart = QChart()
+        chart.legend().hide()
+        chart.addSeries(series)
+
+        chart.setAnimationOptions(QChart.SeriesAnimations)
+        chart.setTitle("DonutChart Example")
+        chart.setTheme(QChart.ChartThemeBlueCerulean)
+
+
+
+        chartview = QChartView(chart)
+        chartview.setRenderHint(QPainter.Antialiasing)
 
