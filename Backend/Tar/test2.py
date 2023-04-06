@@ -22,7 +22,7 @@ class App(QWidget):
 
         self.filenames = []
         # self.hotkeys = {}
-        self.count = [0] * len(self.filenames)
+        self.count = []
         self.player = QMediaPlayer()
         self.table = QTableWidget()
         self.table.setColumnCount(5)
@@ -63,8 +63,9 @@ class App(QWidget):
         # read file in pickle
         try:
             with open("soundpad.pickle", "rb") as file:
-                filenames_counts = pickle.load(file)
-                for fname, count in filenames_counts:
+                self.filenames = pickle.load(file)
+                for fname, count in self.filenames:
+                    print(fname)
                     row = self.table.rowCount()
                     self.table.insertRow(row)
                 
@@ -78,10 +79,11 @@ class App(QWidget):
                     remove_button = self.remove_button(row, fname)
                     self.table.setCellWidget(row, 3, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
-            
-                    play_count = self.get_current_counts(fname)
+
+                    play_count = self.get_current_counts(count)
                     self.table.setItem(row, 4, QTableWidgetItem(str(play_count)))
 
+                    
                 print("audio load successfully")
 
         except Exception as e:
@@ -124,8 +126,6 @@ class App(QWidget):
             # pickle.dump(filenames_counts, file)
             pickle.dump(self.filenames, file)
 
-        
-
     def remove_button(self, row, fname):
         button = QPushButton("Remove")
         button.clicked.connect(lambda: self.remove_file(row, fname))
@@ -165,26 +165,33 @@ class App(QWidget):
 
             self.player.setMedia(media_content)
             self.player.play()
-            # self.get_current_counts()
-            current_count = int(self.table.item(self.table.currentRow(), 4).text())
-            current_count = current_count + 1
-            self.table.item(self.table.currentRow(), 4).setText(str(current_count))
+            self.get_current_counts()
+            # current_count = int(self.table.item(self.table.currentRow(), 4).text())
+            # current_count = current_count + 1
+            # self.table.item(self.table.currentRow(), 4).setText(str(current_count))
             # self.count.append(fname)
             # self.count[self.filenames.index(fname)] += 1
             # row = self.filenames.index(fname)
             # self.table.item(row, 4).setText(str(self.count[row]))
 
-            # print(fname, current_count)
+            print(fname)
 
             self.player.setMedia(media_content)
             self.player.play()
             btn.setText("Stop")
         
         self.save_file()
-    
+
     # def get_current_counts(self, fname):
     #     count = self.count[self.filenames.index(fname)] if fname in self.filenames else 0
     #     return count
+    
+    def get_current_counts(self):
+        current_count = int(self.table.item(self.table.currentRow(), 4).text())
+        current_count = current_count + 1
+        self.table.item(self.table.currentRow(), 4).setText(str(current_count))
+
+        print(current_count)
 
     # def get_play_button_by_fname(self, fname):
     #     for row in range(self.table.rowCount()):
