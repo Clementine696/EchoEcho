@@ -1102,6 +1102,8 @@ class Ui_mainInterface(object):
         # Table Widget
         self.SP_tableWidget = QtWidgets.QTableWidget(
             self.scrollAreaWidgetContents)
+        self.tableWidget = QtWidgets.QTableWidget(
+            self.scrollAreaWidgetContents)
         self.tableWidget.setStyleSheet("")
         self.tableWidget.setObjectName("tableWidget")
         # self.tableWidget.setColumnCount(5)
@@ -1950,7 +1952,7 @@ class Ui_mainInterface(object):
         self.horizontalLayout.addWidget(self.stackedWidget)
 
         self.retranslateUi(ui_main)
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
     def updateInput_now(self, value):
@@ -2091,7 +2093,7 @@ class Ui_mainInterface(object):
         self.VC_Testmic_button.setText(
             _translate("ui_main", "Test Microphone"))
         self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
-        self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
+        # self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
         self.settingmain.setText(_translate("ui_main", "Settings"))
         self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
