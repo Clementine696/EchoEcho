@@ -1071,7 +1071,7 @@ class Ui_mainInterface(object):
         self.label.setText(_translate(
             "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No virtual cable found</span></p></body></html>")) #//TODO:
         self.Alert_button_detail.setText(_translate(
-            "ui_main", "Check your virtual cable or install from vb-audio.com")) #//TODO:
+            "ui_main", "Check your virtual cable or download from vb-audio.com")) #//TODO:
 
     # Alert button clicked function 
     def Alert_button_detail_clicked(self):
