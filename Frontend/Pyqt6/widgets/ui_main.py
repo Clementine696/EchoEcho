@@ -1021,11 +1021,14 @@ class Ui_mainInterface(object):
 
         # Table Layout
         self.SP_table = QtWidgets.QFrame(self.SP_item)
-        self.SP_table.setMinimumSize(QtCore.QSize(880, 460))
+        self.SP_table.setMinimumSize(QtCore.QSize(880, 470))
         self.SP_table.setMaximumSize(QtCore.QSize(880, 470))
         self.SP_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_table.setObjectName("SP_table")
+        self.SP_table.setStyleSheet("QFrame{\n"
+                                   "    background-color: rgba(0, 0, 0, 0);\n"
+                                   "}")
 
         #
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.SP_table)
@@ -1389,8 +1392,24 @@ class Ui_mainInterface(object):
         # self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
         self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
-
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
+        self.settingmain.setText(_translate("ui_main", "Settings"))
+        self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; color:#cccccc;\">CURRENT VERSION:</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt; font-weight:600; color:#cccccc;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">EchoEcho App: 1.0.1</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.detailequipment.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Open control panel sound card setting.</span></p></body></html>"))
+        self.Equipmentsetting.setText(_translate("ui_main", "Equipment setting"))
+        self.Tutorial.setText(_translate("ui_main", "Tutorial"))
+        self.settingButton.setText(_translate("ui_main", "Setting"))
 
     
     # Alert button clicked function
