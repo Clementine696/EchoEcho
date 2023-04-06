@@ -181,7 +181,7 @@ class SoundSystem():
                 highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
                 # print('Noise suppressed')
                 audio_frame = np.frombuffer(audio_data, dtype=np.int16)
-                audio_frame = signal.decimate(audio_frame, 10, zero_phase=True)
+                audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
                 # reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
                 filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
                 filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)

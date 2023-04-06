@@ -1340,7 +1340,7 @@ class Ui_mainInterface(object):
         lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
         highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
         audio_frame = np.frombuffer(audio_data, dtype=np.float32)
-        audio_frame = signal.decimate(audio_frame, 1, zero_phase=True)
+        audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
         filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
         filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
         
@@ -1364,8 +1364,8 @@ class Ui_mainInterface(object):
             # print("normal queue not empty")
             data = self.q_normal.get()
             # Downsample the data if needed
-            if self.DOWN_SAMPLE > 1:
-                data = data[::self.DOWN_SAMPLE]
+            # if self.DOWN_SAMPLE > 1:
+            data = data[::6]
 
             # Update the plot data
             shift = len(data)
@@ -1388,8 +1388,8 @@ class Ui_mainInterface(object):
             # print("reduce queue not empty")
             data = self.q_reduce.get()
             # Downsample the data if needed
-            if self.DOWN_SAMPLE > 1:
-                data = data[::self.DOWN_SAMPLE]
+            # if self.DOWN_SAMPLE > 1:
+            data = data[::self.DOWN_SAMPLE]
 
             # Update the plot data
             shift = len(data)
