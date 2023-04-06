@@ -202,22 +202,22 @@ class Ui_mainInterface(object):
         self.verticalLayout.addWidget(self.Microphone_button)
 
         # Alert button
-        self.Alert_button = QtWidgets.QPushButton(self.Menu_button)
+        # self.Alert_button = QtWidgets.QPushButton(self.Menu_button)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(28)
-        self.Alert_button.setFont(font)
-        self.Alert_button.setStyleSheet("QPushButton{\n"
-                                        "    background-color: rgba(0, 0, 0, 0)\n"
-                                        "}\n"
-                                        "QPushButton:hover{\n"
-                                        "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-                                        "}"
-                                        )
+        # self.Alert_button.setFont(font)
+        # self.Alert_button.setStyleSheet("QPushButton{\n"
+        #                                 "    background-color: rgba(0, 0, 0, 0)\n"
+        #                                 "}\n"
+        #                                 "QPushButton:hover{\n"
+        #                                 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+        #                                 "}"
+        #                                 )
 
-        self.Alert_button.setIconSize(QtCore.QSize(40, 40))
-        self.Alert_button.setObjectName("Alert_button")
-        self.verticalLayout.addWidget(self.Alert_button)
+        # self.Alert_button.setIconSize(QtCore.QSize(40, 40))
+        # self.Alert_button.setObjectName("Alert_button")
+        # self.verticalLayout.addWidget(self.Alert_button)
 
         # Soundpad button
         self.Soundpad_button = QtWidgets.QPushButton(self.Menu_button)
@@ -921,7 +921,7 @@ class Ui_mainInterface(object):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.dashbord_label = QtWidgets.QLabel(self.Audio_page)
+        self.dashbord_label = QtWidgets.QLabel(self.dashbord_page)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(36)
@@ -1374,7 +1374,7 @@ class Ui_mainInterface(object):
         ui_main.setWindowTitle(_translate("ui_main", "EchoEcho"))
         self.Microphone_button.setText(_translate("ui_main", "Microphone"))
         # Test
-        self.Alert_button.setText(_translate("ui_main", "Test"))
+        # self.Alert_button.setText(_translate("ui_main", "Test"))
 
         self.Soundpad_button.setText(_translate("ui_main", "Soundpad"))
         self.Voicechanger_button.setText(_translate("ui_main", "VoiceChanger"))
