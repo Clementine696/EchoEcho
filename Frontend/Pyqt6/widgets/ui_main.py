@@ -1,11 +1,15 @@
 import os
 import pickle
+import time
 
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog
 from PyQt5.QtCore import Qt, QUrl, QTimer
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
+
+from mutagen.mp3 import MP3
+from mutagen.wave import WAVE
 
 # IMPORT GUI FILE
 # from pages.soundpad_page import *
@@ -32,7 +36,6 @@ import scipy.signal as signal
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
 output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(
     QAudio.AudioOutput)
-
 
 class Ui_mainInterface(object):
     noise_reduce = 0
@@ -103,9 +106,19 @@ class Ui_mainInterface(object):
         self.Left_side.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Left_side.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Left_side.setObjectName("Left_side")
+        self.stackedWidget_2 = QtWidgets.QStackedWidget(self.Left_side)
+        self.stackedWidget_2.setGeometry(QtCore.QRect(0, 0, 381, 721))
+        self.stackedWidget_2.setObjectName("stackedWidget_2")
+        self.page_5 = QtWidgets.QWidget()
+        self.page_5.setObjectName("page_5")
+        self.frame_2 = QtWidgets.QFrame(self.page_5)
+        self.frame_2.setGeometry(QtCore.QRect(0, 0, 381, 321))
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
 
         # MENUBARS
-        self.Menubars = QtWidgets.QWidget(self.Left_side)
+        self.Menubars = QtWidgets.QWidget(self.frame_2)
         self.Menubars.setGeometry(QtCore.QRect(-1, -1, 381, 330))
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
@@ -210,10 +223,17 @@ class Ui_mainInterface(object):
         self.Voicechanger_button.setIconSize(QtCore.QSize(40, 40))
         self.Voicechanger_button.setObjectName("Voicechanger_button")
         self.verticalLayout.addWidget(self.Voicechanger_button)
-        self.Device_settings = QtWidgets.QFrame(self.Left_side)
+        self.frame_3 = QtWidgets.QFrame(self.page_5)
+        self.frame_3.setGeometry(QtCore.QRect(0, 330, 381, 381))
+        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_3.setObjectName("frame_3")
+        self.Device_settings = QtWidgets.QFrame(self.frame_3)
+        self.Device_settings.setGeometry(QtCore.QRect(0, -10, 372, 391))
+        # self.Device_settings = QtWidgets.QFrame(self.Left_side)
 
         # Device settings
-        self.Device_settings.setGeometry(QtCore.QRect(0, 330, 372, 391))
+        # self.Device_settings.setGeometry(QtCore.QRect(0, 330, 372, 391))
 
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
@@ -396,7 +416,7 @@ class Ui_mainInterface(object):
         self.frame.setObjectName("frame")
 
         self.setting_Button = QtWidgets.QPushButton(self.frame)
-        self.setting_Button.setGeometry(QtCore.QRect(30, 50, 320, 70))
+        self.setting_Button.setGeometry(QtCore.QRect(30, 59, 320, 70))
         self.setting_Button.setMinimumSize(QtCore.QSize(320, 70))
         self.setting_Button.setMaximumSize(QtCore.QSize(320, 70))
         font = QtGui.QFont()
@@ -414,10 +434,116 @@ class Ui_mainInterface(object):
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/setting8.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setting_Button.setIcon(icon6)
+        # self.setting_Button.setIcon(icon6)
         self.setting_Button.setIconSize(QtCore.QSize(40, 40))
         self.setting_Button.setObjectName("setting_Button")
         self.verticalLayout_2.addWidget(self.frame)
+        self.stackedWidget_2.addWidget(self.page_5)
+        self.page_6 = QtWidgets.QWidget()
+        self.page_6.setObjectName("page_6")
+        self.frameSetting = QtWidgets.QFrame(self.page_6)
+        self.frameSetting.setGeometry(QtCore.QRect(0, 0, 371, 101))
+        self.frameSetting.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frameSetting.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frameSetting.setObjectName("frameSetting")
+        self.settingmain = QtWidgets.QPushButton(self.frameSetting)
+        self.settingmain.setGeometry(QtCore.QRect(20, 20, 320, 70))
+        self.settingmain.setMinimumSize(QtCore.QSize(320, 70))
+        self.settingmain.setMaximumSize(QtCore.QSize(320, 70))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(32)
+        self.settingmain.setFont(font)
+        self.settingmain.setStyleSheet("QPushButton { \n"
+"    color: #ffffff;\n"
+"}")
+        self.settingmain.setIconSize(QtCore.QSize(32, 32))
+        self.settingmain.setObjectName("settingmain")
+        self.framedefault = QtWidgets.QFrame(self.page_6)
+        self.framedefault.setGeometry(QtCore.QRect(0, 100, 371, 221))
+        self.framedefault.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.framedefault.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.framedefault.setObjectName("framedefault")
+        self.detaildefault = QtWidgets.QTextEdit(self.framedefault)
+        self.detaildefault.setGeometry(QtCore.QRect(30, 10, 321, 111))
+        self.detaildefault.setObjectName("detaildefault")
+        self.settodefault = QtWidgets.QPushButton(self.framedefault)
+        self.settodefault.setGeometry(QtCore.QRect(30, 140, 320, 54))
+        self.settodefault.setMinimumSize(QtCore.QSize(320, 54))
+        self.settodefault.setMaximumSize(QtCore.QSize(320, 54))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.settodefault.setFont(font)
+        self.settodefault.setStyleSheet("QPushButton { \n"
+"    background-color: #850021;\n"
+"    color: #ffffff;\n"
+"}")
+        self.settodefault.setObjectName("settodefault")
+        self.frameEquipment = QtWidgets.QFrame(self.page_6)
+        self.frameEquipment.setGeometry(QtCore.QRect(0, 320, 371, 151))
+        self.frameEquipment.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frameEquipment.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frameEquipment.setObjectName("frameEquipment")
+        self.detailequipment = QtWidgets.QTextEdit(self.frameEquipment)
+        self.detailequipment.setGeometry(QtCore.QRect(30, 10, 321, 61))
+        self.detailequipment.setObjectName("detailequipment")
+        self.Equipmentsetting = QtWidgets.QPushButton(self.frameEquipment)
+        self.Equipmentsetting.clicked.connect(self.open_device)
+        self.Equipmentsetting.setGeometry(QtCore.QRect(30, 80, 320, 54))
+        self.Equipmentsetting.setMinimumSize(QtCore.QSize(320, 54))
+        self.Equipmentsetting.setMaximumSize(QtCore.QSize(320, 54))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.Equipmentsetting.setFont(font)
+        self.Equipmentsetting.setStyleSheet("QPushButton { \n"
+"    background-color: #850021;\n"
+"    color: #ffffff;\n"
+"}")
+        self.Equipmentsetting.setObjectName("Equipmentsetting")
+        # self.Equipmentsetting.connect(self.open_device)
+        self.frametutorial = QtWidgets.QFrame(self.page_6)
+        self.frametutorial.setGeometry(QtCore.QRect(0, 470, 371, 121))
+        self.frametutorial.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frametutorial.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frametutorial.setObjectName("frametutorial")
+        self.Tutorial = QtWidgets.QPushButton(self.frametutorial)
+        self.Tutorial.setGeometry(QtCore.QRect(30, 50, 320, 54))
+        self.Tutorial.setMinimumSize(QtCore.QSize(320, 54))
+        self.Tutorial.setMaximumSize(QtCore.QSize(320, 54))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.Tutorial.setFont(font)
+        self.Tutorial.setStyleSheet("QPushButton { \n"
+"    background-color: #56B7C7;\n"
+"    color: #ffffff;\n"
+"}")
+        self.Tutorial.setObjectName("Tutorial")
+        self.frame_8 = QtWidgets.QFrame(self.page_6)
+        self.frame_8.setGeometry(QtCore.QRect(0, 590, 372, 130))
+        self.frame_8.setMinimumSize(QtCore.QSize(370, 0))
+        self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_8.setObjectName("frame_8")
+        self.settingButton = QtWidgets.QPushButton(self.frame_8)
+        self.settingButton.setGeometry(QtCore.QRect(30, 50, 320, 70))
+        self.settingButton.setMinimumSize(QtCore.QSize(320, 70))
+        self.settingButton.setMaximumSize(QtCore.QSize(320, 70))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(32)
+        self.settingButton.setFont(font)
+        self.settingButton.setStyleSheet("QPushButton { \n"
+"    color: #ffffff;\n"
+"}")
+        
+        
+        # self.settingButton.setIcon(icon6)
+        self.settingButton.setIconSize(QtCore.QSize(32, 32))
+        self.settingButton.setObjectName("settingButton")
+        self.stackedWidget_2.addWidget(self.page_6)
 
         # right side
         self.Right_side = QtWidgets.QFrame(ui_main)
@@ -702,6 +828,26 @@ class Ui_mainInterface(object):
         self.horizontalLayout_3.addWidget(self.audio_label)
         self.stackedWidget.addWidget(self.Audio_page)
 
+        #Dashbord Page
+        self.dashbord_page = QtWidgets.QWidget()
+        self.dashbord_page.setObjectName("dashbord")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.dashbord_page)
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.dashbord_label = QtWidgets.QLabel(self.Audio_page)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(36)
+        font.setBold(True)
+        font.setWeight(75)
+        self.dashbord_label.setFont(font)
+        self.dashbord_label.setStyleSheet("color: #66DAED")
+        self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.dashbord_label.setObjectName("dashbord_label")
+        self.horizontalLayout_6.addWidget(self.dashbord_label)
+        self.stackedWidget.addWidget(self.dashbord_page)
+
         # Soundpad Page
         self.filenames = []
         self.player = QMediaPlayer()
@@ -736,8 +882,11 @@ class Ui_mainInterface(object):
         self.SP_title.setObjectName("SP_title")
 
         # Soundpad Title Layout
-        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.SP_title)
-        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.SP_title)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        # self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.SP_title)
+        # self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        # self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.SP_title_label = QtWidgets.QLabel(self.SP_title)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
@@ -751,7 +900,24 @@ class Ui_mainInterface(object):
                                           "}")
         self.SP_title_label.setAlignment(QtCore.Qt.AlignCenter)
         self.SP_title_label.setObjectName("SP_title_label")
-        self.verticalLayout_7.addWidget(self.SP_title_label)
+        
+        self.horizontalLayout_6.addWidget(self.SP_title_label)
+        self.pushButton = QtWidgets.QPushButton(self.SP_title)
+        self.pushButton.setMinimumSize(QtCore.QSize(50, 50))
+        self.pushButton.setMaximumSize(QtCore.QSize(50, 50))
+        # self.pushButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.pushButton.setObjectName("pushButton")
+        icon_dash = QtGui.QIcon()
+        icon_dash.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-combo-chart-96.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+
+        # DAshboad button clicked
+        # self.pushButton.clicked.connect()
+
+        self.pushButton.setIcon(icon_dash)
+        self.pushButton.setIconSize(QtCore.QSize(40, 40))
+        self.horizontalLayout_6.addWidget(self.pushButton)
+        # self.verticalLayout_7.addWidget(self.SP_title_label)
         self.verticalLayout_6.addWidget(self.SP_title)
         self.SP_item = QtWidgets.QFrame(self.SP_body)
         self.SP_item.setStyleSheet("QFrame{\n"
@@ -769,8 +935,8 @@ class Ui_mainInterface(object):
 
         # Table Layout
         self.SP_table = QtWidgets.QFrame(self.SP_item)
-        self.SP_table.setMinimumSize(QtCore.QSize(900, 460))
-        self.SP_table.setMaximumSize(QtCore.QSize(900, 470))
+        self.SP_table.setMinimumSize(QtCore.QSize(880, 460))
+        self.SP_table.setMaximumSize(QtCore.QSize(880, 470))
         self.SP_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_table.setObjectName("SP_table")
@@ -781,11 +947,57 @@ class Ui_mainInterface(object):
         self.verticalLayout_9.setSpacing(0)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.SP_scrollArea = QtWidgets.QScrollArea(self.SP_table)
+        self.SP_scrollArea.setStyleSheet(
+                                        "QScrollBar:vertical {\n"
+                                            "border: none;\n"
+                                            "background: #244D54;\n"
+                                            "width: 14px;\n"
+                                            "margin: 15px 0 15px 0;\n"
+                                            "border-radius: 0px;\n"
+                                        " }\n"
+                                        "\n"
+                                        "/*  HANDLE BAR VERTICAL */\n"
+                                        "QScrollBar::handle:vertical {    \n"
+                                            "background-color: #56B7C7;\n"
+                                            "min-height: 80px;\n"
+                                            "border-radius: 7px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "/* BTN TOP - SCROLLBAR */\n"
+                                        "QScrollBar::sub-line:vertical {\n"
+                                            "border: none;\n"
+                                            "background-color: #244D54;\n"
+                                            "height: 15px;\n"
+                                            "border-top-left-radius: 7px;\n"
+                                            "border-top-right-radius: 7px;\n"
+                                            "subcontrol-position: top;\n"
+                                            "subcontrol-origin: margin;\n"
+                                        "}\n"
+                                        "\n"
+                                        "/* BTN BOTTOM - SCROLLBAR */\n"
+                                        "QScrollBar::add-line:vertical {\n"
+                                            "border: none;\n"
+                                            "background-color: #244D54;\n"
+                                            "height: 15px;\n"
+                                            "border-bottom-left-radius: 7px;\n"
+                                            "border-bottom-right-radius: 7px;\n"
+                                            "subcontrol-position: bottom;\n"
+                                            "subcontrol-origin: margin;\n"
+                                        "}\n"
+                                        "/* RESET ARROW */\n"
+                                        "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
+                                            "background: none;\n"
+                                        "}\n"
+                                        "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
+                                            "background: none;\n"
+                                        "}"
+                                                          )
         self.SP_scrollArea.setWidgetResizable(True)
         self.SP_scrollArea.setObjectName("SP_scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 900, 470))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 880, 470))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.SP_scrollArea.horizontalScrollBar().hide()
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(
             self.scrollAreaWidgetContents)
         self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
@@ -803,6 +1015,8 @@ class Ui_mainInterface(object):
         self.tableWidget.setHorizontalHeaderLabels(
             ['No.', 'Name', 'Duration', 'Hotkeys', '', 'Status', ''])
         self.tableWidget.verticalHeader().hide()
+        # effect = QGraphicsDropShadowEffect()
+        # self.tableWidget.setGraphicsEffect(effect)
         # self.tableWidget.setStyleSheet("QHeaderView {\n"
         #                                "color: #56B7C7;\n"
         #                             #    "text-style; bold\n"
@@ -813,11 +1027,39 @@ class Ui_mainInterface(object):
         #                             #    "background:  # f9f9f9;\n"
         #                                "}"
         #                                )
-        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView { font-size: 10pt;"
+        # self.Testmic_button.setStyleSheet("QPushButton{\n"
+        #                                   "    background-color: #244D54;\n"
+        #                                   "    border-style : outset;\n"
+        #                                   "    border-width : 0.5px;\n"
+        #                                   "    border-radius: 25px;\n"
+        #                                   "    border-color : black;\n"
+        #                                   "\n"
+        #                                   "    color: #686868;\n"
+        #                                   "    text-align : center;\n"
+        #                                   "}\n"
+        #                                   "QPushButton:hover{\n"
+        #                                   "    background-color: #35707A;    \n"
+        #                                   "    border-width : 0.5px;\n"
+        #                                   "    border-color :  rgb(1, 209, 158) ;\n"
+        #                                   "    color: rgb(204, 204, 204);\n"
+        #                                   "}\n"
+        #                                   )
+        self.tableWidget.setStyleSheet("QTableWidget::item {"
+                                                          "color: #d7d7d7;"
+                                                          "background-color: rgba(50, 75, 79, 140)"
+                                                        #   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(138, 138, 138, 50), stop:0.886364 rgba(102, 218, 237, 255));"
+                                                          "}"
+                                        "QTableWidget{"
+                                                          "gridline-color:  transparent;"
+                                                          "}"
+                                                          )
+        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView::section { font-size: 10pt;"
                                                           "font-weight: bold;"
                                                           "color: #56B7C7;"
                                                           "background-color: transparent;"
-                                                          "border: 0px;"
+                                                          "}"
+                                                          "QHeaderView {"
+                                                          "border-bottom: 1px solid #00FFF0;"
                                                           "}")
 
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
@@ -840,20 +1082,19 @@ class Ui_mainInterface(object):
                     row = self.tableWidget.rowCount()
                     self.tableWidget.insertRow(row)
                     self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
-                    media_content = QMediaContent(QUrl.fromLocalFile(fname))
-                    self.player.setMedia(media_content)
-                    self.player.setNotifyInterval(1000)
-                    self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
-                    self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))   
-                    # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
-                    self.tableWidget.setCellWidget(row, 4, self.SP_listen_item("Play", fname))     
-                    self.tableWidget.setCellWidget(row, 5, self.SP_listen_item("Listen", fname))
-                    # remove_button = QPushButton("Remove")
-                    # remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
-                    # self.table.setCellWidget(row, 3, remove_button)
-                    remove_button = QPushButton("Delete")
+
+                    duration = self.getDuration(fname)
+                    self.tableWidget.setItem(row, 2, QTableWidgetItem(duration))   
+
+                    self.tableWidget.setCellWidget(row, 4, self.play_button("", fname))
+
+                    self.tableWidget.setCellWidget(row, 5, self.listen_button("", fname))
+
+                    remove_button = self.remove_button(row, fname)
+
                     self.tableWidget.setCellWidget(row, 6, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+
                 print("audio load successfully")
 
         except Exception as e:
@@ -1019,6 +1260,10 @@ class Ui_mainInterface(object):
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         return cast(interface, POINTER(IAudioEndpointVolume))
     
+    def open_device(self):
+        subprocess.run(["control", "mmsys.cpl"])
+
+    
     def updatevolume(self,value):
         self.volume.SetMasterVolumeLevelScalar(self.horizontalSlider.value() / 100, None)
         if value == 0:
@@ -1050,8 +1295,24 @@ class Ui_mainInterface(object):
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
         self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
+        self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
 
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
+        self.settingmain.setText(_translate("ui_main", "Settings"))
+        self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Remove optimization from digital devices currently set as default. This will restore their original configurations.</span></p></body></html>"))
+        self.settodefault.setText(_translate("ui_main", "set to default"))
+        self.detailequipment.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Open control panel sound card setting.</span></p></body></html>"))
+        self.Equipmentsetting.setText(_translate("ui_main", "Equipment setting"))
+        self.Tutorial.setText(_translate("ui_main", "Tutorial"))
+        self.settingButton.setText(_translate("ui_main", "Setting"))
 
     # Side menu button clicked
     ##############################
@@ -1231,43 +1492,38 @@ class Ui_mainInterface(object):
     # add item
 
     def SP_add_item(self):
-        print("SP add item")
         options = QFileDialog.Options()
         folder = r""
-        # เห็นเฉพาะ .wav, .mp3
+
         fname, _ = QFileDialog.getOpenFileName(self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
         if fname:
             print("add file :", fname)
+
             row = self.tableWidget.rowCount()
             self.tableWidget.insertRow(row)
             self.tableWidget.setItem(row, 1, QTableWidgetItem(os.path.basename(fname)))
             # self.table.setItem(row, 1, QTableWidgetItem(""))
             # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
-            media_content = QMediaContent(QUrl.fromLocalFile(fname))
-            self.player.setMedia(media_content)
-            self.player.setNotifyInterval(1000)
-            self.player.mediaStatusChanged.connect(lambda: self.get_duration(QMediaPlayer.LoadedMedia, fname, row))
-            self.tableWidget.setItem(row, 3, QTableWidgetItem("Loading..."))    
-            self.tableWidget.setCellWidget(row, 4, self.SP_listen_item("Play", fname))      
-            self.tableWidget.setCellWidget(row, 5, self.SP_listen_item("Listen", fname))
-            remove_button = QPushButton("Delete")
-            remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
+
+            duration = self.getDuration(fname)
+            self.tableWidget.setItem(row, 2, QTableWidgetItem(duration)) 
+ 
+            self.tableWidget.setCellWidget(row, 4, self.play_button("", fname))
+
+            self.tableWidget.setCellWidget(row, 5, self.listen_button("", fname))
+
+            remove_button = self.remove_button(row, fname)
+
             self.tableWidget.setCellWidget(row, 6, remove_button)
+            remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+            
             self.filenames.append(fname)
             self.save_file()
 
     # play item
-    def SP_play_item(self, row):
-        print("SP play item", row)
 
-    # listen item button
-    def SP_listen_item(self, text, filename):
-        button = QPushButton(text)
-        button.clicked.connect(lambda: self.play_media(
-            filename, self.tableWidget.currentRow()))
-        return button
-
-    def play_media(self, filename, row):
+    # ========================================================================================================================================
+    def play_mic(self, row, filename):
         fname = filename
         # convert string to QUrl object using the QUrl constructor
         file = QUrl.fromLocalFile(fname)
@@ -1275,31 +1531,135 @@ class Ui_mainInterface(object):
         self.player.setMedia(media)
         # play the media
         self.player.play()
-        # self.player.mediaStatusChanged.connect(lambda status: self.get_duration(status, filename, row))
 
-    def get_duration(self, media_status, fname, row):
-        if media_status == QMediaPlayer.LoadedMedia:
-            duration = self.player.duration() / 1000.0
-            self.tableWidget.setItem(
-                row, 2, QTableWidgetItem("{:.2f} s".format(duration)))
+    def play_button(self, label, fname):
+        icon_play = QtGui.QIcon()
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        play_button = QPushButton(label)
+        play_button.setIcon(icon_play)
+        play_button.clicked.connect(lambda: self.play_media(play_button, fname))
+        return play_button
+
+    def play_media(self, btn, fname):
+        icon_pause = QtGui.QIcon()
+        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-pause-button-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_play = QtGui.QIcon()
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        media_content = QMediaContent(QUrl.fromLocalFile(fname))
+        if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
+            self.player.stop()
+            # play_button
+            btn.setIcon(icon_play)
+            # btn.setText("play")
+        else:
+            if self.player.state() == QMediaPlayer.PlayingState:
+                curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
+                curr_btn = self.get_play(curr_fname)
+                if curr_btn is not None:
+                    curr_btn.setIcon(icon_play)
+                    # curr_btn.setText("Play")
+                self.player.stop()
+
+            for row in range(self.tableWidget.rowCount()):
+                item = self.tableWidget.item(row, 1)
+                if item is not None and item.text() != os.path.basename(fname):
+                    play_btn = self.tableWidget.cellWidget(row, 4)
+                    if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
+                        self.player.stop()
+                        play_btn.setIcon(icon_play)
+                        # play_btn.setText("Play")
+
+            self.player.setMedia(media_content)
+            self.player.play()
+            btn.setIcon(icon_pause)
+            # btn.setText("Stop")
+
+
+    def get_play(self, fname):
+        for row in range(self.tableWidget.rowCount()):
+            item = self.tableWidget.item(row, 0)
+            if item is not None and item.text() == os.path.basename(fname):
+                return self.tableWidget.cellWidget(row, 4)
+            
+    # ========================================================================================================================================
+            
+    def listen_button(self, label, fname):
+        icon_listen = QtGui.QIcon()
+        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        listen_button = QPushButton(label)
+        listen_button.setIcon(icon_listen)
+        listen_button.clicked.connect(lambda: self.listen_media(listen_button, fname))
+        return listen_button
+
+    def listen_media(self, btn, fname):
+        icon_listen = QtGui.QIcon()
+        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_pause = QtGui.QIcon()
+        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-pause-button-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        media_content = QMediaContent(QUrl.fromLocalFile(fname))
+        if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
+            self.player.stop()
+            btn.setIcon(icon_listen)
+            # btn.setText("")
+        else:
+            if self.player.state() == QMediaPlayer.PlayingState:
+                curr_fname = self.player.currentMedia().canonicalUrl().toLocalFile()
+                curr_btn = self.get_listen(curr_fname)
+                if curr_btn is not None:
+                    curr_btn.setIcon(icon_listen)
+                    # curr_btn.setText("")
+                self.player.stop()
+
+            for row in range(self.tableWidget.rowCount()):
+                item = self.tableWidget.item(row, 1)
+                if item is not None and item.text() != os.path.basename(fname):
+                    play_btn = self.tableWidget.cellWidget(row, 5)
+                    if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
+                        self.player.stop()
+                        play_btn.setIcon(icon_listen)
+                        # play_btn.setText("")
+
+            self.player.setMedia(media_content)
+            self.player.play()
+            btn.setIcon(icon_pause)
+            # btn.setText("")
+
+    def get_listen(self, fname):
+        for row in range(self.tableWidget.rowCount()):
+            item = self.tableWidget.item(row, 0)
+            if item is not None and item.text() == os.path.basename(fname):
+                return self.tableWidget.cellWidget(row, 5)
+
+    def getDuration(self, fname):
+        if fname.endswith('.mp3'):
+            audio = MP3(fname)
+            duration = audio.info.length
+        elif fname.endswith('.wav'):
+            audio = WAVE(fname)
+            duration = audio.info.length
+        return time.strftime('%M:%S', time.gmtime(duration))
 
     # delete item button
-    def SP_del_item(self, row, fname):
-        button = QPushButton("Delete")
-        button.clicked.connect(lambda: self.remove_file(row, fname))
-        return button
+    def remove_button(self, row, fname):
+        icon_remove = QtGui.QIcon()
+        icon_remove.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-trash-can-48.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        remove_button = QPushButton()
+        remove_button.setIcon(icon_remove)
+        remove_button.clicked.connect(lambda: self.remove_file(row, fname))
+        return remove_button
 
     def remove_file(self, row, fname):
-        # Remove the selected row from the table
         if fname in self.filenames:
             self.filenames.remove(fname)
-        self.tableWidget.removeRow(row)
-        # os.remove()
-
-        # self.filenames.remove(fname)
-        # self.table.removeRow(row)
-
-        # Save the updated list of filenames
+            self.tableWidget.removeRow(row)
+        
         self.save_file()
 
         # Stop the player if it was playing the removed file
@@ -1312,13 +1672,7 @@ class Ui_mainInterface(object):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(self.filenames, file)
-
-    # def update_plot(self):
-    #     data = self.stream.read(self.CHUNK)
-    #     data_int = np.frombuffer(data, dtype=np.int16)
-    #     self.line.set_data(np.arange(len(data_int)), data_int)
-    #     self.canvas.draw()
-    
+            
     def normal_audio_callback(self,in_data, frame_count, time_info, status):
         # Convert byte stream to numpy array
         # print("normal_callback")
@@ -1349,12 +1703,6 @@ class Ui_mainInterface(object):
 
         return (None, pyaudio.paContinue)
     
-    # def audio_from_main(self):
-    #     # print(self.get_audio_data)
-    #     self.q.put(self.get_audio_data)
-    #     # print(self.q.get())
-    #     return None
-        
     def normal_update_plot(self):
         # Get all the available audio data from the queue
         # print(self.q.qsize())
@@ -1377,8 +1725,6 @@ class Ui_mainInterface(object):
             line.set_ydata(self.plot_data[:, column])
             line.set_color((1, 0, 0))
             self.canvas.draw()
-
-        # return self.lines
     
     def reduce_update_plot(self):
         if self.current_plot != 'reduce':
@@ -1402,6 +1748,5 @@ class Ui_mainInterface(object):
             line.set_color((0, 1, 0.29))
             self.canvas.draw()
 
-        # return self.lines
 
 
