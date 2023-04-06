@@ -18,6 +18,7 @@ from pydub import AudioSegment,generators
 from ui_main import *
 
 Noise_reduce_state = False
+Voice_changer_state = False
 Test_mic_state = False
 Mute_mic_state = False
 Boost_mic_volumeFactor = 1
@@ -51,6 +52,15 @@ def Toggle_MuteMic():
     else:
         Mute_mic_state = False
         print("Microphone mute state = ",Mute_mic_state)
+
+def Toggle_Voicechaneger():
+    global Voice_changer_state
+    if(Voice_changer_state==False):
+        Voice_changer_state = True
+        print("VoiceChange_main test state = ",Voice_changer_state)
+    else:
+        Voice_changer_state = False
+        print("VoiceChange_main test state = ",Voice_changer_state)
 
 def Boost_Mic(value):
     global Boost_mic_volumeFactor
@@ -189,6 +199,9 @@ class SoundSystem():
                 np.multiply(self.numpy_data, self.multiplier, out=self.numpy_data, casting="unsafe")
                 output_sound = self.numpy_data.tostring()
 
+            if(Voice_changer_state):
+                print('change')
+
             self.virtual_microphone_stream.write(output_sound)
 
             if(Test_mic_state):
@@ -257,6 +270,9 @@ class MainWindow(QMainWindow):
         #link button
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)
         self.ui.Testmic_button.clicked.connect(Toggle_TestMic)
+        self.ui.Test_VC.clicked.connect(Toggle_Voicechaneger)
+        self.ui.VC_Testmic_button.clicked.connect(Toggle_TestMic)
+        
         
         self.createSound_system = False
         try:
