@@ -23,7 +23,7 @@ class MicrophoneAudioWaveform:
                         frames_per_buffer=self.CHUNK)
 
         # create plot window
-        # self.app = QApplication([])
+        self.app = QApplication([])
         self.win = pg.GraphicsLayoutWidget(show = True)
         # self.win = pg.GraphicsLayoutWidget(show=False)
         self.plot = self.win.addPlot()
@@ -43,8 +43,8 @@ class MicrophoneAudioWaveform:
         QApplication.processEvents()
 
     # start Qt event loop
-    # def run(self):
-    #     self.app.exec_()
+    def run(self):
+        self.app.exec_()
 
     # stop audio stream and terminate pyaudio
     def stop(self):
@@ -52,8 +52,8 @@ class MicrophoneAudioWaveform:
         self.stream.close()
         self.p.terminate()  
 
-# if __name__ == '__main__':
-#     # create instance of MicrophoneAudioWaveform class
-#     waveform = MicrophoneAudioWaveform()
-#     waveform.run()
-#     waveform.stop()
+if __name__ == '__main__':
+    # create instance of MicrophoneAudioWaveform class
+    waveform = MicrophoneAudioWaveform()
+    waveform.run()
+    waveform.stop()
