@@ -5,7 +5,7 @@ import time
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog
-from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtCore import Qt, QUrl, QTimer
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
 
 from mutagen.mp3 import MP3
@@ -17,7 +17,6 @@ import wave
 import threading
 
 # IMPORT GUI FILE
-from main import *
 # from pages.soundpad_page import *
 # from PySide6 import QtMultimedia
 from PyQt5 import uic
@@ -25,16 +24,24 @@ from PyQt5 import uic
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-import main as Main
 import keyboard
-import subprocess
-
-
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import queue
+import sys
+from matplotlib.animation import FuncAnimation
+import matplotlib.pyplot as plt
+import numpy as np
+import sounddevice as sd
+import pyaudio
+from scipy.signal import butter, lfilter
+import scipy.signal as signal
 #import graph file
-from newgraph import MicrophoneAudioWaveform
+# from newgraph import MicrophoneAudioWaveform
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
 output_audio_deviceInfos = QAudioDeviceInfo.availableDevices(
     QAudio.AudioOutput)
+
 
 try:
     p = pyaudio.PyAudio()
@@ -65,7 +72,14 @@ class Ui_mainInterface(object):
     Mic_Side_menu = 0
     SP_Side_menu = 0
     VC_Side_menu = 0
-
+    
+    def __init__(self):
+        self.get_audio_data = np.zeros(1024)
+        self.q = queue.Queue()
+        self.q_normal = queue.Queue()
+        self.q_reduce = queue.Queue()
+        self.current_plot = 'normal'
+    
     def setupUi(self, ui_main):
         # Application size
         ui_main.setObjectName("ui_main")
@@ -186,6 +200,24 @@ class Ui_mainInterface(object):
         self.Microphone_button.setIconSize(QtCore.QSize(40, 40))
         self.Microphone_button.setObjectName("Microphone_button")
         self.verticalLayout.addWidget(self.Microphone_button)
+
+        # Alert button
+        self.Alert_button = QtWidgets.QPushButton(self.Menu_button)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(28)
+        self.Alert_button.setFont(font)
+        self.Alert_button.setStyleSheet("QPushButton{\n"
+                                        "    background-color: rgba(0, 0, 0, 0)\n"
+                                        "}\n"
+                                        "QPushButton:hover{\n"
+                                        "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
+                                        "}"
+                                        )
+
+        self.Alert_button.setIconSize(QtCore.QSize(40, 40))
+        self.Alert_button.setObjectName("Alert_button")
+        self.verticalLayout.addWidget(self.Alert_button)
 
         # Soundpad button
         self.Soundpad_button = QtWidgets.QPushButton(self.Menu_button)
@@ -440,7 +472,7 @@ class Ui_mainInterface(object):
                                           "{\n"
                                           " color: #FFFFFF;\n"
                                           "}")
-        
+
         # # เรียกใช้ ฟังก์ชั่น open_setting
         # self.setting_Button.clicked.connect(self.open_setting)
 
@@ -473,28 +505,23 @@ class Ui_mainInterface(object):
         self.settingmain.setIconSize(QtCore.QSize(32, 32))
         self.settingmain.setObjectName("settingmain")
         self.framedefault = QtWidgets.QFrame(self.page_6)
-        self.framedefault.setGeometry(QtCore.QRect(0, 100, 371, 221))
+        self.framedefault.setGeometry(QtCore.QRect(0, 100, 371, 180))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.framedefault.sizePolicy().hasHeightForWidth())
+        self.framedefault.setSizePolicy(sizePolicy)
+        self.framedefault.setMinimumSize(QtCore.QSize(0, 180))
+        self.framedefault.setMaximumSize(QtCore.QSize(16777215, 180))
         self.framedefault.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.framedefault.setFrameShadow(QtWidgets.QFrame.Raised)
         self.framedefault.setObjectName("framedefault")
         self.detaildefault = QtWidgets.QTextEdit(self.framedefault)
-        self.detaildefault.setGeometry(QtCore.QRect(30, 10, 321, 111))
+        self.detaildefault.setGeometry(QtCore.QRect(30, 20, 321, 121))
         self.detaildefault.setObjectName("detaildefault")
-        self.settodefault = QtWidgets.QPushButton(self.framedefault)
-        self.settodefault.setGeometry(QtCore.QRect(30, 140, 320, 54))
-        self.settodefault.setMinimumSize(QtCore.QSize(320, 54))
-        self.settodefault.setMaximumSize(QtCore.QSize(320, 54))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.settodefault.setFont(font)
-        self.settodefault.setStyleSheet("QPushButton { \n"
-"    background-color: #850021;\n"
-"    color: #ffffff;\n"
-"}")
-        self.settodefault.setObjectName("settodefault")
+        
         self.frameEquipment = QtWidgets.QFrame(self.page_6)
-        self.frameEquipment.setGeometry(QtCore.QRect(0, 320, 371, 151))
+        self.frameEquipment.setGeometry(QtCore.QRect(0, 280, 371, 191))
         self.frameEquipment.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frameEquipment.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frameEquipment.setObjectName("frameEquipment")
@@ -581,6 +608,8 @@ class Ui_mainInterface(object):
         self.Right_side.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Right_side.setObjectName("Right_side")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.Right_side)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
         # stacked widget
@@ -711,12 +740,60 @@ class Ui_mainInterface(object):
         self.Graph.setObjectName("Graph")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.Graph)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        # self.graph = MicrophoneAudioWaveform()
+        #######################################################################
+        # Audio parameters
+        self.FORMAT = pyaudio.paFloat32
+        self.CHANNELS = 1
+        self.RATE = 44100
+        self.CHUNK_SIZE = 1024
+        # self.CALLBACK = self.normal_audio_callback
+        self.PLOT = self.normal_update_plot
+        
+        # Plot parameters
+        self.WINDOW_SIZE = 1000  # ms
+        self.DOWN_SAMPLE = 1
+        self.CHANNELS_TO_PLOT = [0]
+        
+        # Initialize queue for incoming audio data
+        # self.q = queue.Queue()
 
-        self.label = QtWidgets.QLabel(self.Graph)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.verticalLayout_3.addWidget(self.label)
+        # Calculate number of samples to display in window
+        self.window_samples = int(self.WINDOW_SIZE * self.RATE / 1000 / self.DOWN_SAMPLE)
+
+        # Initialize plot data
+        self.plot_data = np.zeros((self.window_samples, len(self.CHANNELS_TO_PLOT)))
+        
+        #init plot
+        self.figure = Figure()
+        self.rect = plt.Rectangle((0.0017, 0.002), 0.995, 0.999, fill=False, color="black", lw=1, zorder=1000, transform=self.figure.transFigure, figure=self.figure)
+        self.figure.patches.extend([self.rect])
+        self.figure.patch.set_facecolor('#244D54')
+        self.canvas = FigureCanvas(self.figure)
+        self.ax = self.figure.add_subplot(111)
+        
+        #init lines
+        # self.lines = self.ax.plot(self.plot_data, color=(0, 1, 0.29))
+        self.lines = self.ax.plot(self.plot_data, color=(0, 0, 0))
+            
+        self.pa = pyaudio.PyAudio()
+        self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
+                frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.normal_audio_callback)
+        
+        # self.audio_from_main()
+            
+        self.ax.set_facecolor((0, 0, 0))
+        self.ax.set_yticks([0])
+        self.ax.yaxis.grid(True)
+        self.ax.set_ylim(-0.3, 0.3)
+        # self.ani = FuncAnimation(self.figure, self.normal_update_plot, interval=30, blit=True)
+        self.timer = QTimer()
+        # self.timer.stop()
+        # self.timer.timeout.disconnect()
+        self.timer.timeout.connect(self.PLOT)
+        self.timer.start(30)
+        
+        plt.show()
+        self.verticalLayout_3.addWidget(self.canvas)
         self.verticalLayout_2.addWidget(self.Graph)
 
         # Test Mic layout
@@ -771,25 +848,71 @@ class Ui_mainInterface(object):
         self.horizontalLayout_2.addWidget(self.frame)
         self.stackedWidget.addWidget(self.Microphone_page)
 
-        # Audio Page
-        self.Audio_page = QtWidgets.QWidget()
-        self.Audio_page.setObjectName("Audio_page")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.Audio_page)
+        # Alert Page
+        self.Alert_page = QtWidgets.QWidget()
+        self.Alert_page.setObjectName("Alert_page")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.Alert_page)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.audio_label = QtWidgets.QLabel(self.Audio_page)
+        self.Alert_Frame = QtWidgets.QFrame(self.Alert_page)
+        self.Alert_Frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Alert_Frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Alert_Frame.setObjectName("Alert_Frame")
+        self.verticalLayout_19 = QtWidgets.QVBoxLayout(self.Alert_Frame)
+        self.verticalLayout_19.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_19.setSpacing(0)
+        self.verticalLayout_19.setObjectName("verticalLayout_19")
+        self.frame_4 = QtWidgets.QFrame(self.Alert_Frame)
+        self.frame_4.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
+        self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_4.setObjectName("frame_4")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.frame_4)
+        self.verticalLayout_10.setObjectName("verticalLayout_10")
+        self.Alert_icon = QtWidgets.QPushButton(self.frame_4)
+        self.verticalLayout_10.setContentsMargins(300, 100, 50, 0)
+        self.verticalLayout_10.setSpacing(0)
+        self.Alert_icon.setMinimumSize(QtCore.QSize(300, 300))
+        self.Alert_icon.setMaximumSize(QtCore.QSize(300, 300))
+        self.Alert_icon.setObjectName("Alert_icon")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/alert.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Alert_icon.setIcon(icon)
+        self.Alert_icon.setIconSize(QtCore.QSize(250, 250))
+        self.verticalLayout_10.addWidget(self.Alert_icon)
+        self.verticalLayout_19.addWidget(self.frame_4)
+        self.Text_Frame = QtWidgets.QFrame(self.Alert_Frame)
         font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(36)
-        font.setBold(True)
-        font.setWeight(75)
-        self.audio_label.setFont(font)
-        self.audio_label.setStyleSheet("color: #66DAED")
-        self.audio_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.audio_label.setObjectName("audio_label")
-        self.horizontalLayout_3.addWidget(self.audio_label)
-        self.stackedWidget.addWidget(self.Audio_page)
+        font.setUnderline(True)
+        self.Text_Frame.setFont(font)
+        self.Text_Frame.setStyleSheet("background-color: rgba(0, 0, 0, 0);\n"
+                                      "color:#ffffff\n"
+                                      "")
+        self.Text_Frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Text_Frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Text_Frame.setObjectName("Text_Frame")
+        self.verticalLayout_20 = QtWidgets.QVBoxLayout(self.Text_Frame)
+        self.verticalLayout_20.setContentsMargins(50, 0, 50, 250)
+        self.verticalLayout_20.setObjectName("verticalLayout_20")
+        self.label = QtWidgets.QLabel(self.Text_Frame)
+        self.label.setObjectName("label")
+        self.verticalLayout_20.addWidget(self.label)
+        self.Alert_button_detail = QtWidgets.QPushButton(self.Text_Frame)
+
+        self.Alert_button_detail.clicked.connect(self.Alert_button_detail_clicked)
+
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setUnderline(True)
+        self.Alert_button_detail.setFont(font)
+        self.Alert_button_detail.setStyleSheet("")
+        self.Alert_button_detail.setObjectName("Alert_button_detail")
+        self.verticalLayout_20.addWidget(self.Alert_button_detail)
+        self.verticalLayout_19.addWidget(self.Text_Frame)
+        self.horizontalLayout_3.addWidget(self.Alert_Frame)
+        self.stackedWidget.addWidget(self.Alert_page)
 
         #Dashbord Page
         self.dashbord_page = QtWidgets.QWidget()
@@ -1043,6 +1166,7 @@ class Ui_mainInterface(object):
                 for fname in self.filenames:
                     row = self.tableWidget.rowCount()
                     self.tableWidget.insertRow(row)
+
                     self.tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
                     duration = self.getDuration(fname)
@@ -1052,6 +1176,7 @@ class Ui_mainInterface(object):
 
                     self.tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
 
+
                     remove_button = self.remove_button(row, fname)
 
                     self.tableWidget.setCellWidget(row, 5, remove_button)
@@ -1060,7 +1185,7 @@ class Ui_mainInterface(object):
                 print("audio load successfully")
 
         except Exception as e:
-            print("Error loading audio files:",e)
+            print("Error loading audio files:", e)
 
         # for index in range(self.tableWidget.rowCount()):
 
@@ -1175,7 +1300,7 @@ class Ui_mainInterface(object):
             icon_volume_mute.addPixmap(QtGui.QPixmap(
                 "Frontend/Pyqt6/icons/mutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_mute)
-            
+
         else:
             print("Volume UnMute")
             Ui_mainInterface.audio_mute = 0
@@ -1184,7 +1309,6 @@ class Ui_mainInterface(object):
             icon_volume_unmute.addPixmap(QtGui.QPixmap(
                 "Frontend/Pyqt6/icons/unmutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_unmute)
-            
 
     def mic_mute(self):
         if (Ui_mainInterface.microphone_mute == 0):
@@ -1194,7 +1318,7 @@ class Ui_mainInterface(object):
             icon_mic_mute.addPixmap(QtGui.QPixmap(
                 "Frontend/Pyqt6/icons/mutemic-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.micmute.setIcon(icon_mic_mute)
-            
+
         else:
             print("Mic UnMute")
             Ui_mainInterface.microphone_mute = 0
@@ -1202,7 +1326,7 @@ class Ui_mainInterface(object):
             icon_mic_unmute.addPixmap(QtGui.QPixmap(
                 "Frontend/Pyqt6/icons/mic-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.micmute.setIcon(icon_mic_unmute)
-            
+
     def updateboostmicl(self, value):
         if value == 0:
             Ui_mainInterface.microphone_mute = 1
@@ -1219,32 +1343,39 @@ class Ui_mainInterface(object):
 
     def get_volume(self):
         devices = AudioUtilities.GetSpeakers()
-        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        interface = devices.Activate(
+            IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         return cast(interface, POINTER(IAudioEndpointVolume))
-    
+
     def open_device(self):
         subprocess.run(["control", "mmsys.cpl"])
 
     
     def updatevolume(self,value):
         self.volume.SetMasterVolumeLevelScalar(self.horizontalSlider.value() / 100, None)
+
         if value == 0:
             Ui_mainInterface.audio_mute = 1
             icon_volume_mute = QtGui.QIcon()
-            icon_volume_mute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/mutespeaker-sai8.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_mute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/mutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_mute)
             self.volume.SetMute(1, None)
         else:
             Ui_mainInterface.audio_mute = 0
             icon_volume_unmute = QtGui.QIcon()
-            icon_volume_unmute.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/unmutespeaker-sai8.png"),QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon_volume_unmute.addPixmap(QtGui.QPixmap(
+                "Frontend/Pyqt6/icons/unmutespeaker-sai8.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.speakermute.setIcon(icon_volume_unmute)
-            self.volume.SetMute(0,None)
+            self.volume.SetMute(0, None)
 
     def retranslateUi(self, ui_main):
         _translate = QtCore.QCoreApplication.translate
         ui_main.setWindowTitle(_translate("ui_main", "EchoEcho"))
         self.Microphone_button.setText(_translate("ui_main", "Microphone"))
+        # Test
+        self.Alert_button.setText(_translate("ui_main", "Test"))
+
         self.Soundpad_button.setText(_translate("ui_main", "Soundpad"))
         self.Voicechanger_button.setText(_translate("ui_main", "VoiceChanger"))
         self.Mic_title_label.setText(_translate("ui_main", "Microphone"))
@@ -1253,20 +1384,39 @@ class Ui_mainInterface(object):
                                              "detecting the sound coming into the headset, and generating signals \n"
                                              "that are  out-of-phase with the  offending signals, canceling them out."))
         self.Noise_label.setText(_translate("ui_main", "Noise Suppression"))
-        self.label.setText(_translate("ui_main", "Graph_text"))
+        # self.label.setText(_translate("ui_main", "Graph_text"))
         self.Testmic_button.setText(_translate("ui_main", "Test Microphone"))
-        self.audio_label.setText(_translate("ui_main", "Audio"))
+        # self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
         self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
 
         self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
+
+    
+    # Alert button clicked function
+        # self.label.setText(_translate(
+        #     "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>")) #//TODO:
+        # self.Alert_button_detail.setText(_translate(
+        #     "ui_main", "Check your audio output device and try again")) #//TODO:
+        
+        self.label.setText(_translate(
+            "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No virtual cable found</span></p></body></html>")) #//TODO:
+        self.Alert_button_detail.setText(_translate(
+            "ui_main", "Check your virtual cable or install from vb-audio.com")) #//TODO:
+
+    # Alert button clicked function 
+    def Alert_button_detail_clicked(self):
+        print("Alert button clicked")
+
         self.settingmain.setText(_translate("ui_main", "Settings"))
         self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Remove optimization from digital devices currently set as default. This will restore their original configurations.</span></p></body></html>"))
-        self.settodefault.setText(_translate("ui_main", "set to default"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; color:#cccccc;\">CURRENT VERSION:</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt; font-weight:600; color:#cccccc;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">EchoEcho App: 1.0.1</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.detailequipment.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -1357,6 +1507,9 @@ class Ui_mainInterface(object):
         # print("Noise button clicked")
         if (Ui_mainInterface.noise_reduce == 0):
             Ui_mainInterface.noise_reduce = 1
+            self.current_plot = 'reduce'
+            print("current plot = ", self.current_plot)
+
             # ทำให้ปุ่มเปิด
             self.Noise_button.setStyleSheet("QPushButton{\n"
                                             "    border-radius: 40px;\n"
@@ -1368,8 +1521,18 @@ class Ui_mainInterface(object):
                                             "    color: #FFFFFF;\n"
                                             "}"
                                             )
+            self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
+                frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.reduce_audio_callback)
+            for line in self.lines:
+                line.remove()
+            self.lines = self.ax.plot(self.plot_data)
+            # self.CALLBACK = self.reduce_audio_callback
+            self.PLOT = self.reduce_update_plot 
         else:
             Ui_mainInterface.noise_reduce = 0
+            self.current_plot = 'normal'
+            
+            print("current plot = ", self.current_plot)
             # ทำปุ่มปิด
             self.Noise_button.setStyleSheet("QPushButton{\n"
                                             "    background-color: #244D54;\n"
@@ -1388,6 +1551,17 @@ class Ui_mainInterface(object):
                                             "    color: #B0B0B0;\n"
                                             "}"
                                             )
+            self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
+                frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.normal_audio_callback)
+            for line in self.lines:
+                line.remove()
+            self.lines = self.ax.plot(self.plot_data)
+            # self.CALLBACK = self.normal_audio_callback
+            self.PLOT = self.normal_update_plot 
+        self.timer.stop()
+        self.timer.timeout.disconnect()
+        self.timer.timeout.connect(self.PLOT)
+        self.timer.start(30)
     #############################################
 
     def TestMic_button_clicked(self):
@@ -1434,14 +1608,18 @@ class Ui_mainInterface(object):
         folder = r""
 
         fname, _ = QFileDialog.getOpenFileName(self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+
         if fname:
             print("add file :", fname)
 
             row = self.tableWidget.rowCount()
             self.tableWidget.insertRow(row)
+
             self.tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
+
             # self.table.setItem(row, 1, QTableWidgetItem(""))
             # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
+
 
             duration = self.getDuration(fname)
             self.tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
@@ -1626,7 +1804,7 @@ class Ui_mainInterface(object):
     def remove_file(self, row, fname):
         if fname in self.filenames:
             self.filenames.remove(fname)
-        self.tableWidget.removeRow(row)
+            self.tableWidget.removeRow(row)
         
         self.save_file()
 
@@ -1639,4 +1817,80 @@ class Ui_mainInterface(object):
     def save_file(self):
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
+
             pickle.dump(self.filenames, file)
+            
+    def normal_audio_callback(self,in_data, frame_count, time_info, status):
+        # Convert byte stream to numpy array
+        # print("normal_callback")
+        audio_data = np.frombuffer(in_data, dtype=np.float32)
+        # Add new audio data to queue
+        self.q_normal.put(audio_data)
+
+        return (None, pyaudio.paContinue)
+    
+    def reduce_audio_callback(self,in_data, frame_count, time_info, status):
+        # print("reduce_callback")
+        # Convert byte stream to numpy array
+        audio_data = np.frombuffer(in_data, dtype=np.float32)
+        cutoff_low = 8000
+        cutoff_high = 3000
+        nyquist_rate = 44100 / 2.0
+        pass_order = 5
+        pass_stop = 40
+        lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
+        highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
+        audio_frame = np.frombuffer(audio_data, dtype=np.float32)
+        audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
+        filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
+        filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
+        
+        # Add new audio data to queue
+        self.q_reduce.put(filtered_audio)
+
+        return (None, pyaudio.paContinue)
+    
+    def normal_update_plot(self):
+        # Get all the available audio data from the queue
+        # print(self.q.qsize())
+        if self.current_plot != 'normal':
+            return
+        while not self.q_normal.empty():
+            # print("normal queue not empty")
+            data = self.q_normal.get()
+            # Downsample the data if needed
+            # if self.DOWN_SAMPLE > 1:
+            data = data[::6]
+
+            # Update the plot data
+            shift = len(data)
+            self.plot_data = np.roll(self.plot_data, -shift, axis=0)
+            self.plot_data[-shift:, :] = data[:, np.newaxis]
+
+        # Update the plot lines with the new data
+        for column, line in enumerate(self.lines):
+            line.set_ydata(self.plot_data[:, column])
+            line.set_color((1, 0, 0))
+            self.canvas.draw()
+    
+    def reduce_update_plot(self):
+        if self.current_plot != 'reduce':
+            return
+        # Get all the available audio data from the queue
+        while not self.q_reduce.empty():
+            # print("reduce queue not empty")
+            data = self.q_reduce.get()
+            # Downsample the data if needed
+            # if self.DOWN_SAMPLE > 1:
+            data = data[::self.DOWN_SAMPLE]
+
+            # Update the plot data
+            shift = len(data)
+            self.plot_data = np.roll(self.plot_data, -shift, axis=0)
+            self.plot_data[-shift:, :] = data[:, np.newaxis]
+
+        # Update the plot lines with the new data
+        for column, line in enumerate(self.lines):
+            line.set_ydata(self.plot_data[:, column])
+            line.set_color((0, 1, 0.29))
+            self.canvas.draw()
