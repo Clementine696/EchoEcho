@@ -1152,6 +1152,8 @@ class Ui_mainInterface(object):
         self.VC_Eq_label_H.setObjectName("VC_Eq_label_H")
         self.horizontalLayout_7.addWidget(self.VC_Eq_label_H)
         self.verticalLayout_17.addWidget(self.VC_Eq_labe_Ti)
+
+        # Voice Changer Eq Setting 1 Slider
         self.VC_slider_frame = QtWidgets.QFrame(self.VC_Eq_1)
         self.VC_slider_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.VC_slider_frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -1160,8 +1162,14 @@ class Ui_mainInterface(object):
         self.verticalLayout_18.setContentsMargins(10, 0, 10, 0)
         self.verticalLayout_18.setSpacing(0)
         self.verticalLayout_18.setObjectName("verticalLayout_18")
+
         self.horizontalSlider_VC_Eq1 = QtWidgets.QSlider(self.VC_slider_frame)
         self.horizontalSlider_VC_Eq1.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider_VC_Eq1.setMaximum(20)
+        self.horizontalSlider_VC_Eq1.setMinimum(0)
+        self.horizontalSlider_VC_Eq1.setValue(10)
+        self.horizontalSlider_VC_Eq1.setPageStep(1)
+        self.horizontalSlider_VC_Eq1.valueChanged.connect(self.VC_Eq_Slider1)
         self.horizontalSlider_VC_Eq1.setObjectName("horizontalSlider_VC_Eq1")
         self.verticalLayout_18.addWidget(self.horizontalSlider_VC_Eq1)
 
@@ -1239,43 +1247,46 @@ class Ui_mainInterface(object):
         self.verticalLayout_34.setObjectName("verticalLayout_34")
         self.horizontalSlider_VC_Eq2 = QtWidgets.QSlider(self.VC_slider_frame_6)
         self.horizontalSlider_VC_Eq2.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider_VC_Eq2.setMaximum(20)
+        self.horizontalSlider_VC_Eq2.setMinimum(0)
+        self.horizontalSlider_VC_Eq2.setValue(10)
+        self.horizontalSlider_VC_Eq2.setPageStep(1)
+        self.horizontalSlider_VC_Eq2.valueChanged.connect(self.VC_Eq_Slider2)
         self.horizontalSlider_VC_Eq2.setObjectName("horizontalSlider_VC_Eq2")
         self.verticalLayout_34.addWidget(self.horizontalSlider_VC_Eq2)
         self.verticalLayout_32.addWidget(self.VC_slider_frame_6)
         self.verticalLayout_16.addWidget(self.VC_Eq_2)
 
         # Voice Changer Eq Setting 5
-        # self.VC_Eq_5 = QtWidgets.QFrame(self.VC_Eq_setting)
-        # self.VC_Eq_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        # self.VC_Eq_5.setFrameShadow(QtWidgets.QFrame.Raised)
-        # self.VC_Eq_5.setObjectName("VC_Eq_5")
-        # self.verticalLayout_50 = QtWidgets.QVBoxLayout(self.VC_Eq_5)
-        # self.verticalLayout_50.setContentsMargins(0, 0, 0, 0)
-        # self.verticalLayout_50.setSpacing(0)
-        # self.verticalLayout_50.setObjectName("verticalLayout_50")
-        # self.VC_Eq_name_12 = QtWidgets.QFrame(self.VC_Eq_5)
-        # self.VC_Eq_name_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        # self.VC_Eq_name_12.setFrameShadow(QtWidgets.QFrame.Raised)
-        # self.VC_Eq_name_12.setObjectName("VC_Eq_name_12")
-        # self.verticalLayout_51 = QtWidgets.QVBoxLayout(self.VC_Eq_name_12)
-        # self.verticalLayout_51.setContentsMargins(0, 0, 0, 0)
-        # self.verticalLayout_51.setSpacing(0)
-        # self.verticalLayout_51.setObjectName("verticalLayout_51")
-        # self.VC_Eq_p1_12 = QtWidgets.QLabel(self.VC_Eq_name_12)
-        # font = QtGui.QFont()
-        # font.setFamily("Segoe UI")
-        # font.setPointSize(14)
-        # self.VC_Eq_p1_12.setFont(font)
-        # self.VC_Eq_p1_12.setStyleSheet("QLabel{\n"
-        #                                "    color: #FFFFFF\n"
-        #                                "}")
-        # self.VC_Eq_p1_12.setAlignment(QtCore.Qt.AlignCenter)
-        # self.VC_Eq_p1_12.setObjectName("VC_Eq_p1_12")
-        # self.verticalLayout_51.addWidget(self.VC_Eq_p1_12)
-        # self.verticalLayout_50.addWidget(self.VC_Eq_name_12)
-        # self.VC_Eq_labe_Ti_12 = QtWidgets.QFrame(self.VC_Eq_5)
-
-
+        self.VC_Eq_5 = QtWidgets.QFrame(self.VC_Eq_setting)
+        self.VC_Eq_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.VC_Eq_5.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.VC_Eq_5.setObjectName("VC_Eq_5")
+        self.verticalLayout_50 = QtWidgets.QVBoxLayout(self.VC_Eq_5)
+        self.verticalLayout_50.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_50.setSpacing(0)
+        self.verticalLayout_50.setObjectName("verticalLayout_50")
+        self.VC_Eq_name_12 = QtWidgets.QFrame(self.VC_Eq_5)
+        self.VC_Eq_name_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.VC_Eq_name_12.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.VC_Eq_name_12.setObjectName("VC_Eq_name_12")
+        self.verticalLayout_51 = QtWidgets.QVBoxLayout(self.VC_Eq_name_12)
+        self.verticalLayout_51.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_51.setSpacing(0)
+        self.verticalLayout_51.setObjectName("verticalLayout_51")
+        self.VC_Eq_p1_12 = QtWidgets.QLabel(self.VC_Eq_name_12)
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.VC_Eq_p1_12.setFont(font)
+        self.VC_Eq_p1_12.setStyleSheet("QLabel{\n"
+                                       "    color: #FFFFFF\n"
+                                       "}")
+        self.VC_Eq_p1_12.setAlignment(QtCore.Qt.AlignCenter)
+        self.VC_Eq_p1_12.setObjectName("VC_Eq_p1_12")
+        self.verticalLayout_51.addWidget(self.VC_Eq_p1_12)
+        self.verticalLayout_50.addWidget(self.VC_Eq_name_12)
+        self.VC_Eq_labe_Ti_12 = QtWidgets.QFrame(self.VC_Eq_5)
         self.VC_Eq_labe_Ti_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.VC_Eq_labe_Ti_12.setFrameShadow(QtWidgets.QFrame.Raised)
         self.VC_Eq_labe_Ti_12.setObjectName("VC_Eq_labe_Ti_12")
@@ -1317,6 +1328,11 @@ class Ui_mainInterface(object):
         self.verticalLayout_52.setObjectName("verticalLayout_52")
         self.horizontalSlider_VC_Eq3 = QtWidgets.QSlider(self.VC_slider_frame_12)
         self.horizontalSlider_VC_Eq3.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider_VC_Eq3.setMaximum(20)
+        self.horizontalSlider_VC_Eq3.setMinimum(0)
+        self.horizontalSlider_VC_Eq3.setValue(10)
+        self.horizontalSlider_VC_Eq3.setPageStep(1)
+        self.horizontalSlider_VC_Eq3.valueChanged.connect(self.VC_Eq_Slider3)
         self.horizontalSlider_VC_Eq3.setObjectName("horizontalSlider_VC_Eq3")
         self.verticalLayout_52.addWidget(self.horizontalSlider_VC_Eq3)
         self.verticalLayout_50.addWidget(self.VC_slider_frame_12)
@@ -1975,3 +1991,12 @@ class Ui_mainInterface(object):
                                               "    color: rgb(204, 204, 204);\n"
                                               "}"
                                               )
+            
+    def VC_Eq_Slider1(self, value):
+        print("VC Eq Slider1", value)
+
+    def VC_Eq_Slider2(self, value):
+        print("VC Eq Slider2", value)
+
+    def VC_Eq_Slider3(self, value):
+        print("VC Eq Slider3", value)
