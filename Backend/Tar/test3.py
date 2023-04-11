@@ -20,9 +20,10 @@ class App(QWidget):
 
         super().__init__()
 
-        self.filenames = []
-        # self.hotkeys = {}
-        self.count = []
+        # self.filenames = []
+        # # self.hotkeys = {}
+        # self.count = []
+        self.data = []
         self.player = QMediaPlayer()
         self.table = QTableWidget()
         self.table.setColumnCount(5)
@@ -60,79 +61,88 @@ class App(QWidget):
         self.load_file()
 
     def load_file(self):
+        # options = QFileDialog.Options()
+        # folder = r""
+      
+        # เห็นเฉพาะ .wav, .mp3
+        # fname, _ = QFileDialog.getOpenFileName(self, 'Open file', '.', 'Pickle files(*.pickle)')
+        
         # read file in pickle
         try:
             with open("soundpad.pickle", "rb") as file:
                 data = pickle.load(file)
-                for row, (fname, count) in enumerate(data):
-                    self.filenames.append(fname)
-                    if len(self.count) <= row:
-                        self.count.append(0)  # initialize count to 0 for each file if necessary
-                    self.count[row] = count
+            self.table.setRowCount(len(data))
+                # self.filenames = pickle.load(file)
+            for row, item in enumerate(data):
+                fname = QTableWidgetItem(item[0])
+                play_count = QTableWidgetItem(str(item[1]))
 
-                    row = self.table.rowCount()
-                    self.table.insertRow(row)
+                row = self.table.rowCount()
+                self.table.insertRow(row)
+                    
+                self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
+                    
+                duration = self.getDuration(fname)
+                self.table.setItem(row, 1, QTableWidgetItem(duration))
 
-                    self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
+                self.table.setCellWidget(row, 2, self.play_button("Play", fname))
 
-                    duration = self.getDuration(fname)
-                    self.table.setItem(row, 1, QTableWidgetItem(duration))
+                remove_button = self.remove_button(row, fname)
+                self.table.setCellWidget(row, 3, remove_button)
+                remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+                
+                self.table.setItem(row, 4, play_count)
 
-                    play_button = QPushButton("Play")
-                    self.table.setCellWidget(row, 2, play_button)
-                    play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
+                self.data.append((fname, int(play_count.text())))
 
-                    remove_button = QPushButton("Remove")
-                    remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
-                    self.table.setCellWidget(row, 3, remove_button)
-
-                    play_count = QTableWidgetItem(str(count))
-                    self.table.setItem(row, 4, play_count)
-
-                print("audio load successfully")
+            print("audio load successfully")
 
         except Exception as e:
-            print("Error loading audio files:",e)
+            print("Error loading audio files:", e)
 
     def add_file(self, file_path):
         options = QFileDialog.Options()
         folder = r""
-      
+
         # เห็นเฉพาะ .wav, .mp3
         fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
         if fname:
             print("add file :", fname)
 
             row = self.table.rowCount()
+            self.table.setRowCount(row + 1)
             self.table.insertRow(row)
             self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
             duration = self.getDuration(fname)
             self.table.setItem(row, 1, QTableWidgetItem(duration))
-            
-            play_button = QPushButton("Play")
-            self.table.setCellWidget(row, 2, play_button)
-            play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname))
+
+            self.table.setCellWidget(row, 2, self.play_button("Play", fname))
 
             remove_button = QPushButton("Remove")
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
             self.table.setCellWidget(row, 3, remove_button)
 
-            play_count = QTableWidgetItem("0")
-            self.table.setItem(row, 4, play_count)
+            play_count_item = QTableWidgetItem('0')
+            self.table.setItem(row, 4, play_count_item)
 
-            self.filenames.append(fname)
+            # self.filenames.append(fname)
             self.save_file()
 
     def save_file(self):
-        data = {}
-        for fname, count in zip(self.filenames, self.count):
-            data[fname] = count
         # save file in pickle
+        # options = QFileDialog.Options()
+        # folder = r""
+
+        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        data = []
+        
+        for row in range(self.table.rowCount()):
+            fname = self.table.item(row, 0)
+            play_count = int(self.table.item(row, 4).text())
+            data.append([fname, play_count])
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(data, file)
-
-        print("save success")
 
     def remove_button(self, row, fname):
         button = QPushButton("Remove")
@@ -144,7 +154,7 @@ class App(QWidget):
         if fname in self.filenames:
             self.filenames.remove(fname)
         self.table.removeRow(row)
-        
+
         self.save_file()
 
         # Stop the player if it was playing the removed file
@@ -171,16 +181,11 @@ class App(QWidget):
                 curr_btn.setText("Play")
                 self.player.stop()
 
-            self.player.setMedia(media_content)
-            self.player.play()
-            btn.setText("Stop")
-            # index = self.filenames.index(fname)
-            # self.count[index] += 1
-            # self.table.item(index, 4).setText(str(self.count[index]))
-            current_count = int(self.table.item(self.table.currentRow(), 4).text())
-            self.table.item(self.table.currentRow(), 4).setText(str(current_count + 1))
-
-            self.save_file()
+            # self.player.setMedia(media_content)
+            # self.player.play()
+            # btn.setText("...")
+            # current_count = int(self.table.item(self.table.currnteRow(), 4).text())
+            # self.table.item(self.table.currentRow(), 4).setText(str(current_count + 1))
 
             self.player.setMedia(media_content)
             self.player.play()
@@ -190,6 +195,15 @@ class App(QWidget):
         for row in range(self.table.rowCount()):
             if self.table.item(row, 0).text() == os.path.basename(fname):
                 return self.table.cellWidget(row, 2)
+
+    def update_play_count(self):
+        row = self.table.currentRow()
+        column = self.table.currentColumn()
+
+        if column == 1:
+            play_count_item = self.table.item(row, column)
+            play_count = int(play_count_item.text()) + 1
+            play_count_item.setText(str(play_count))
         
     def getDuration(self, fname):
         if fname.endswith('.mp3'):
