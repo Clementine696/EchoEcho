@@ -1,1 +1,0 @@
-#device setting TODO: dream
