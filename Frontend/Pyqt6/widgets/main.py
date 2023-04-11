@@ -364,11 +364,12 @@ class MainWindow(QMainWindow):
             #boostmic
             self.ui.horizontalSlider_2.valueChanged.connect(Boost_Mic)
 
-
             self.ui.horizontalSlider_VC_Eq1.valueChanged.connect(main_pitch_eq) #//TODO:
             self.ui.horizontalSlider_VC_Eq2.valueChanged.connect(main_bins_eq)
             self.ui.horizontalSlider_VC_Eq3.valueChanged.connect(main_hz_eq)
 
+            #soundpad
+            # self.ui.play_button.clicked.connect(play_mic())
 
         except:
             print("init in main error")

@@ -1102,21 +1102,19 @@ class Ui_mainInterface(object):
         # Table Widget
         self.SP_tableWidget = QtWidgets.QTableWidget(
             self.scrollAreaWidgetContents)
-        self.tableWidget = QtWidgets.QTableWidget(
-            self.scrollAreaWidgetContents)
-        self.tableWidget.setStyleSheet("")
-        self.tableWidget.setObjectName("tableWidget")
-        # self.tableWidget.setColumnCount(5)
-        # self.tableWidget.setRowCount(9)
+        self.SP_tableWidget.setStyleSheet("")
+        self.SP_tableWidget.setObjectName("SP_tableWidget")
+        # self.SP_tableWidget.setColumnCount(5)
+        # self.SP_tableWidget.setRowCount(9)
 
-        # self.tableWidget.setRowCount(3)
-        self.tableWidget.setColumnCount(6)
-        self.tableWidget.setHorizontalHeaderLabels(
+        # self.SP_tableWidget.setRowCount(3)
+        self.SP_tableWidget.setColumnCount(6)
+        self.SP_tableWidget.setHorizontalHeaderLabels(
             ['Name', 'Duration', 'Hotkeys', '', 'Status', ''])
-        self.tableWidget.verticalHeader().hide()
+        self.SP_tableWidget.verticalHeader().hide()
         # effect = QGraphicsDropShadowEffect()
-        # self.tableWidget.setGraphicsEffect(effect)
-        # self.tableWidget.setStyleSheet("QHeaderView {\n"
+        # self.SP_tableWidget.setGraphicsEffect(effect)
+        # self.SP_tableWidget.setStyleSheet("QHeaderView {\n"
         #                                "color: #56B7C7;\n"
         #                             #    "text-style; bold\n"
         #                             #    "text-shadow: 2px 2px;\n"
@@ -1143,7 +1141,7 @@ class Ui_mainInterface(object):
         #                                   "    color: rgb(204, 204, 204);\n"
         #                                   "}\n"
         #                                   )
-        self.tableWidget.setStyleSheet("QTableWidget::item {"
+        self.SP_tableWidget.setStyleSheet("QTableWidget::item {"
                                                           "color: #d7d7d7;"
                                                           "background-color: rgba(50, 75, 79, 140)"
                                                         #   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(138, 138, 138, 50), stop:0.886364 rgba(102, 218, 237, 255));"
@@ -1152,7 +1150,7 @@ class Ui_mainInterface(object):
                                                           "gridline-color:  transparent;"
                                                           "}"
                                                           )
-        self.tableWidget.horizontalHeader().setStyleSheet("QHeaderView::section { font-size: 10pt;"
+        self.SP_tableWidget.horizontalHeader().setStyleSheet("QHeaderView::section { font-size: 10pt;"
                                                           "font-weight: bold;"
                                                           "color: #56B7C7;"
                                                           "background-color: transparent;"
@@ -1161,38 +1159,38 @@ class Ui_mainInterface(object):
                                                           "border-bottom: 1px solid #00FFF0;"
                                                           "}")
 
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
-        self.tableWidget.horizontalHeader().setDisabled(True)
-        self.tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
+        self.SP_tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.SP_tableWidget.horizontalHeader().setDisabled(True)
+        self.SP_tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
 
-        self.tableWidget.autofit = False
-        self.tableWidget.setColumnWidth(0, 400)
-        self.tableWidget.setColumnWidth(1, 130)
-        self.tableWidget.setColumnWidth(2, 110)
-        self.tableWidget.setColumnWidth(3, 80)
-        self.tableWidget.setColumnWidth(4, 80)
-        self.tableWidget.setColumnWidth(5, 80)
+        self.SP_tableWidget.autofit = False
+        self.SP_tableWidget.setColumnWidth(0, 400)
+        self.SP_tableWidget.setColumnWidth(1, 130)
+        self.SP_tableWidget.setColumnWidth(2, 110)
+        self.SP_tableWidget.setColumnWidth(3, 80)
+        self.SP_tableWidget.setColumnWidth(4, 80)
+        self.SP_tableWidget.setColumnWidth(5, 80)
 
         try:
             with open("soundpad.pickle", "rb") as file:
                 self.filenames = pickle.load(file)
                 for fname in self.filenames:
-                    row = self.tableWidget.rowCount()
-                    self.tableWidget.insertRow(row)
+                    row = self.SP_tableWidget.rowCount()
+                    self.SP_tableWidget.insertRow(row)
 
-                    self.tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
+                    self.SP_tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
                     duration = self.getDuration(fname)
-                    self.tableWidget.setItem(row, 1, QTableWidgetItem(duration))   
+                    self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))   
 
-                    self.tableWidget.setCellWidget(row, 3, self.play_button("", fname))
+                    self.SP_tableWidget.setCellWidget(row, 3, self.play_button("", fname))
 
-                    self.tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
+                    self.SP_tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
 
 
                     remove_button = self.remove_button(row, fname)
 
-                    self.tableWidget.setCellWidget(row, 5, remove_button)
+                    self.SP_tableWidget.setCellWidget(row, 5, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
 
                 print("audio load successfully")
@@ -1200,28 +1198,28 @@ class Ui_mainInterface(object):
         except Exception as e:
             print("Error loading audio files:", e)
 
-        # for index in range(self.tableWidget.rowCount()):
+        # for index in range(self.SP_tableWidget.rowCount()):
 
         #     # play button
-        #     self.btn_play = QPushButton(self.tableWidget)
+        #     self.btn_play = QPushButton(self.SP_tableWidget)
         #     self.btn_play.setText('Play')
-        #     self.tableWidget.setCellWidget(index, 4, self.btn_play)
+        #     self.SP_tableWidget.setCellWidget(index, 4, self.btn_play)
         #     self.btn_play.clicked.connect(
-        #         lambda: self.SP_play_item(self.tableWidget.currentRow()))
+        #         lambda: self.SP_play_item(self.SP_tableWidget.currentRow()))
 
         #     # listen button
-        #     self.btn_listen = QPushButton(self.tableWidget)
+        #     self.btn_listen = QPushButton(self.SP_tableWidget)
         #     self.btn_listen.setText('Listen')
-        #     self.tableWidget.setCellWidget(index, 5, self.btn_listen)
+        #     self.SP_tableWidget.setCellWidget(index, 5, self.btn_listen)
         #     self.btn_listen.clicked.connect(
-        #         lambda: self.SP_listen_item(self.tableWidget.currentRow()))
+        #         lambda: self.SP_listen_item(self.SP_tableWidget.currentRow()))
 
         #     # delete button
-        #     self.btn_delete = QPushButton(self.tableWidget)
+        #     self.btn_delete = QPushButton(self.SP_tableWidget)
         #     self.btn_delete.setText('delete')
-        #     self.tableWidget.setCellWidget(index, 6, self.btn_delete)
+        #     self.SP_tableWidget.setCellWidget(index, 6, self.btn_delete)
         #     self.btn_delete.clicked.connect(
-        #         lambda: self.remove_file(self.tableWidget.currentRow()))
+        #         lambda: self.remove_file(self.SP_tableWidget.currentRow()))
 
         self.verticalLayout_15.addWidget(self.SP_tableWidget)
         self.SP_scrollArea.setWidget(self.scrollAreaWidgetContents)
@@ -2332,25 +2330,25 @@ class Ui_mainInterface(object):
         if fname:
             print("add file :", fname)
 
-            row = self.tableWidget.rowCount()
-            self.tableWidget.insertRow(row)
+            row = self.SP_tableWidget.rowCount()
+            self.SP_tableWidget.insertRow(row)
 
-            self.tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
+            self.SP_tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
             # self.table.setItem(row, 1, QTableWidgetItem(""))
             # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
 
 
             duration = self.getDuration(fname)
-            self.tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
+            self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
  
-            self.tableWidget.setCellWidget(row, 3, self.play_button("", fname))
+            self.SP_tableWidget.setCellWidget(row, 3, self.play_button("", fname))
 
-            self.tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
+            self.SP_tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
 
             remove_button = self.remove_button(row, fname)
 
-            self.tableWidget.setCellWidget(row, 5, remove_button)
+            self.SP_tableWidget.setCellWidget(row, 5, remove_button)
             remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
             
             self.filenames.append(fname)
@@ -2406,10 +2404,10 @@ class Ui_mainInterface(object):
                 micplay = False
                 stop_threads = True
 
-            for row in range(self.tableWidget.rowCount()):
-                item = self.tableWidget.item(row, 0)
+            for row in range(self.SP_tableWidget.rowCount()):
+                item = self.SP_tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.tableWidget.cellWidget(row, 3)
+                    play_btn = self.SP_tableWidget.cellWidget(row, 3)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         # self.player.stop()
                         micplay = False
@@ -2445,10 +2443,10 @@ class Ui_mainInterface(object):
             # btn.setText("Stop")
 
     def get_play(self, fname):
-        for row in range(self.tableWidget.rowCount()):
-            item = self.tableWidget.item(row, 0)
+        for row in range(self.SP_tableWidget.rowCount()):
+            item = self.SP_tableWidget.item(row, 0)
             if item is not None and item.text() == os.path.basename(fname):
-                return self.tableWidget.cellWidget(row, 3)
+                return self.SP_tableWidget.cellWidget(row, 3)
             
             
     # ========================================================================================================================================
@@ -2484,10 +2482,10 @@ class Ui_mainInterface(object):
                     # curr_btn.setText("")
                 self.player.stop()
 
-            for row in range(self.tableWidget.rowCount()):
-                item = self.tableWidget.item(row, 0)
+            for row in range(self.SP_tableWidget.rowCount()):
+                item = self.SP_tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.tableWidget.cellWidget(row, 4)
+                    play_btn = self.SP_tableWidget.cellWidget(row, 4)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         self.player.stop()
                         play_btn.setIcon(icon_listen)
@@ -2499,10 +2497,10 @@ class Ui_mainInterface(object):
             # btn.setText("")
 
     def get_listen(self, fname):
-        for row in range(self.tableWidget.rowCount()):
-            item = self.tableWidget.item(row, 0)
+        for row in range(self.SP_tableWidget.rowCount()):
+            item = self.SP_tableWidget.item(row, 0)
             if item is not None and item.text() == os.path.basename(fname):
-                return self.tableWidget.cellWidget(row, 4)
+                return self.SP_tableWidget.cellWidget(row, 4)
 
     def getDuration(self, fname):
         if fname.endswith('.mp3'):
@@ -2527,7 +2525,7 @@ class Ui_mainInterface(object):
     def remove_file(self, row, fname):
         if fname in self.filenames:
             self.filenames.remove(fname)
-            self.tableWidget.removeRow(row)
+            self.SP_tableWidget.removeRow(row)
         
         self.save_file()
 

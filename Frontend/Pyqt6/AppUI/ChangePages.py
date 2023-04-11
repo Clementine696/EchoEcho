@@ -1228,7 +1228,7 @@ class Ui_ui_main(object):
 
         self.retranslateUi(ui_main)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(1)
 
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
@@ -1281,6 +1281,7 @@ class Ui_ui_main(object):
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
         self.tableWidget.setSortingEnabled(__sortingEnabled)
+
         self.VC_title_label_2.setText(_translate("ui_main", "Voice Changer"))
         item = self.tableWidget_3.verticalHeaderItem(0)
         item.setText(_translate("ui_main", "1"))
@@ -1328,3 +1329,4 @@ class Ui_ui_main(object):
         self.VC_Eq_label_L_9.setText(_translate("ui_main", "Low"))
         self.VC_Eq_label_H_9.setText(_translate("ui_main", "High"))
         self.VC_Test_Mic.setText(_translate("ui_main", "Test Microphone"))
+
