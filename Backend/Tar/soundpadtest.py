@@ -21,11 +21,12 @@ class App(QWidget):
         super().__init__()
 
         self.filenames = []
-        self.hotkeys = {}
+        # self.hotkeys = {}
+        self.count = []
         self.player = QMediaPlayer()
         self.table = QTableWidget()
         self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(["Filename", "Duration", "Play", "Remove", "SetHotkey"])
+        self.table.setHorizontalHeaderLabels(["Filename", "Duration", "Play", "Remove", "count"])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.cellClicked.connect(self.play_button)
 
@@ -78,10 +79,9 @@ class App(QWidget):
                     self.table.setCellWidget(row, 3, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
                 
-                    hotkey_edit = QLineEdit()
-                    self.table.setCellWidget(row, 4, hotkey_edit)
-                    hotkey_edit.returnPressed.connect(lambda _, r=row, f=fname: self.set_hotkey(r, f, hotkey_edit.text()))
-                
+                    play_count = QTableWidgetItem("0")
+                    self.table.setItem(row, 4, play_count)
+
                 print("audio load successfully")
 
         except Exception as e:
@@ -109,7 +109,8 @@ class App(QWidget):
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
             self.table.setCellWidget(row, 3, remove_button)
 
-            self.table.setCellWidget(row, 4, self.set_hotkey(row, fname))
+            play_count = QTableWidgetItem("0")
+            self.table.setItem(row, 4, play_count)
 
             self.filenames.append(fname)
             self.save_file()
@@ -143,18 +144,6 @@ class App(QWidget):
         button.clicked.connect(lambda: self.play_media(button, fname))
         return button
 
-    # def play_media(self, btn, fname):
-    #     media_content = QMediaContent(QUrl.fromLocalFile(fname))
-    #     if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
-    #         self.player.stop()
-    #         btn.setText("Play")
-    #     else:
-    #         self.player.setMedia(media_content)
-    #         self.player.play()
-    #         btn.setText("Stop")
-
-        #Kod jeng loey nong Yah
-
     def play_media(self, btn, fname):
         media_content = QMediaContent(QUrl.fromLocalFile(fname))
         if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
@@ -167,6 +156,12 @@ class App(QWidget):
                 curr_btn = self.get_play_button_by_fname(curr_fname)
                 curr_btn.setText("Play")
                 self.player.stop()
+
+            self.player.setMedia(media_content)
+            self.player.play()
+            btn.setText("...")
+            current_count = int(self.table.item(self.table.currentRow(), 4).text())
+            self.table.item(self.table.currentRow(), 4).setText(str(current_count + 1))
 
             self.player.setMedia(media_content)
             self.player.play()
@@ -185,30 +180,6 @@ class App(QWidget):
             audio = WAVE(fname)
             duration = audio.info.length
         return time.strftime('%H:%M:%S', time.gmtime(duration))
-    
-    def set_hotkey(self, row, fname, hotkey):
-    # add hotkey for the given file
-        if hotkey:
-        # remove any previous hotkey for the same file
-            for key, val in self.hotkeys.items():
-                if val == fname:
-                    del self.hotkeys[key]
-
-            self.hotkeys[hotkey] = fname
-
-        # register the hotkey with QShortcut
-            shortcut = QShortcut(QtGui.QKeySequence(hotkey), self)
-            shortcut.activated.connect(lambda _, fname=fname: self.play_media(None, fname))
-
-        else:
-        # remove any previous hotkey for the same file
-            for key, val in self.hotkeys.items():
-                if val == fname:
-                    del self.hotkeys[key]
-
-    # save the hotkeys
-        with open("hotkeys.pickle", "wb") as file:
-            pickle.dump(self.hotkeys, file)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
