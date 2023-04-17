@@ -1951,7 +1951,7 @@ class Ui_mainInterface(object):
         self.horizontalLayout.addWidget(self.stackedWidget)
 
         self.retranslateUi(ui_main)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
     def updateInput_now(self, value):
