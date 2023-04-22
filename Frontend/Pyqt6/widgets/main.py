@@ -302,6 +302,17 @@ class SoundSystem():
                 print(i['index'])
                 self.update_input(i['index'])
                 break
+
+#voicechanger
+    # def Toggle_VC_Item():
+    # global Test_item_VC_state
+    # if(Test_mic_state==False):
+    #     Test_mic_state = True
+    #     print("Microphone test state = ",Test_mic_state)
+    # else:
+    #     Test_mic_state = False
+    #     print("Microphone test state = ",Test_mic_state)
+
 ###
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -341,8 +352,8 @@ class MainWindow(QMainWindow):
         #link button
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)
         self.ui.Testmic_button.clicked.connect(Toggle_TestMic)
-        self.ui.Test_VC.clicked.connect(Toggle_Voicechaneger)
-        self.ui.VC_Testmic_button.clicked.connect(Toggle_TestMic)
+        # self.ui.pushButton_1.clicked.connect(VC_item_1)
+        self.ui.VC_Testmi_button.clicked.connect(Toggle_TestMic)
         
         
         self.createSound_system = False
