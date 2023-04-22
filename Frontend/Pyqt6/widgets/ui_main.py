@@ -1188,7 +1188,7 @@ class Ui_mainInterface(object):
                     duration = self.getDuration(fname)
                     self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))   
 
-                    play_button = QPushButton("Play")
+                    play_button = self.play_button("", fname)
                     self.SP_tableWidget.setCellWidget(row, 3, play_button)
                     play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
 
@@ -1201,8 +1201,8 @@ class Ui_mainInterface(object):
 
                     # for i in range(self.SP_tableWidget.rowCount()):
                     #     fname = self.filenames[i]
-                    #     if fname in self.play_counts:
-                    #         play_count = QTableWidgetItem(str(self.play_counts[fname]))
+                        # if fname in self.play_counts:
+                        #     play_count = QTableWidgetItem(str(self.play_counts[fname]))
                     #         self.SP_tableWidget.setItem(i, 4, play_count)
 
                 print("audio load successfully")
@@ -2310,7 +2310,7 @@ class Ui_mainInterface(object):
     # Soundpad Page Function
     # add item
 
-    def SP_add_item(self):
+    def SP_add_item(self, file_path):
         options = QFileDialog.Options()
         folder = r""
 
@@ -2331,7 +2331,8 @@ class Ui_mainInterface(object):
             duration = self.getDuration(fname)
             self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
  
-            play_button = QPushButton("Play")
+            # icon_play = QtGui.QIcon("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png")
+            play_button = self.play_button("", fname)
             self.SP_tableWidget.setCellWidget(row, 3, play_button)
             play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
 
@@ -2343,23 +2344,41 @@ class Ui_mainInterface(object):
             remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
             
             self.filenames.append(fname)
+
+            # if fname not in self.play_counts:
+            #     self.play_counts[fname] = 0
+
             self.save_file()
 
+    def save_file(self):
+        sp_data = {}
+        for fname in self.filenames:
+            sp_data[fname] = self.play_counts[fname]
+        # save file in pickle
+        with open("soundpad.pickle", "wb") as file:
+            pickle.dump(sp_data, file)
+        
+        # self.play_counts[fname] = count
+        
+        print("save success")
+
+        print(sp_data)
+
     # play item
-    
     
     # ========================================================================================================================================
     #//TODO:
     
-    def play_button(self, label, fname):
+    def play_button(self, fname, index):
         icon_play = QtGui.QIcon()
         icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        play_button = QPushButton(label)
-        play_button.setIcon(icon_play)
-        play_button.setIconSize(QtCore.QSize(30, 30))
-        play_button.clicked.connect(lambda: self.play_media(play_button, fname))
-        return play_button
+        # play_button = QPushButton(text=str(label))
+        # play_button.setIcon(icon_play)
+        button = QPushButton(icon_play, "")
+        button.setIconSize(QtCore.QSize(30, 30))
+        button.clicked.connect(lambda: self.play_media(button, fname, index))
+        return button
 
     def play_media(self, btn, fname, index):
         icon_pause = QtGui.QIcon()
@@ -2407,12 +2426,14 @@ class Ui_mainInterface(object):
                         # play_btn.setText("Play")
 
 #==========================================================================
-            current_count = int(self.SP_tableWidget.item(self.SP_tableWidget.currentRow(), 4).text())
-            self.play_counts[fname] = current_count + 1  # บันทึกค่าเพิ่ม
-            self.save_file() 
-            self.SP_tableWidget.item(self.SP_tableWidget.currentRow(), 4).setText(str(current_count + 1))
+            # current_count = int(self.SP_tableWidget.item(self.SP_tableWidget.currentRow(), 4).text())
+            # self.play_counts[fname] = current_count + 1  # บันทึกค่าเพิ่ม
+            # current_count = int(self.play_counts.get(fname, 0)) + 1
+            # self.play_counts[fname] = current_count
+            # self.save_file() 
+            # self.SP_tableWidget.item(self.SP_tableWidget.currentRow(), 4).setText(str(current_count + 1))
 
-            self.save_file()
+            # self.save_file()
             
             # self.player.setMedia(media_content)
             # self.player.play()
@@ -2439,6 +2460,9 @@ class Ui_mainInterface(object):
 #==========================================================================
             btn.setIcon(icon_pause)
             # btn.setText("Stop")
+            current_count = int(self.play_counts.get(fname, 0)) + 1
+            self.play_counts[fname] = current_count
+            self.save_file() 
 
     def get_play(self, fname):
         for row in range(self.SP_tableWidget.rowCount()):
@@ -2530,18 +2554,6 @@ class Ui_mainInterface(object):
             self.player.stop()
 
         print("File removed successfully.")
-
-    def save_file(self):
-        sp_data = {}
-        for fname in self.filenames:
-            sp_data[fname] = self.play_counts[fname]
-        # save file in pickle
-        with open("soundpad.pickle", "wb") as file:
-            pickle.dump(sp_data, file)
-        
-        print("save success")
-
-        print(sp_data)
             
     def normal_audio_callback(self,in_data, frame_count, time_info, status):
         # Convert byte stream to numpy array
