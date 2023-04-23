@@ -1117,9 +1117,9 @@ class Ui_mainInterface(object):
         # self.SP_tableWidget.setRowCount(9)
 
         # self.SP_tableWidget.setRowCount(3)
-        self.SP_tableWidget.setColumnCount(6)
+        self.SP_tableWidget.setColumnCount(5)
         self.SP_tableWidget.setHorizontalHeaderLabels(
-            ['Name', 'Duration', 'Hotkeys', '', 'Status', ''])
+            ['Name', 'Duration', '', 'Status', ''])
         self.SP_tableWidget.verticalHeader().hide()
         # effect = QGraphicsDropShadowEffect()
         # self.SP_tableWidget.setGraphicsEffect(effect)
@@ -1157,6 +1157,7 @@ class Ui_mainInterface(object):
                                           "}"
                                           "QTableWidget{"
                                           "gridline-color:  transparent;"
+                                          "padding-left: 56px;\n"
                                           "}"
                                           )
         self.SP_tableWidget.horizontalHeader().setStyleSheet("QHeaderView::section { font-size: 10pt;"
@@ -1175,10 +1176,9 @@ class Ui_mainInterface(object):
         self.SP_tableWidget.autofit = False
         self.SP_tableWidget.setColumnWidth(0, 400)
         self.SP_tableWidget.setColumnWidth(1, 130)
-        self.SP_tableWidget.setColumnWidth(2, 110)
+        self.SP_tableWidget.setColumnWidth(2, 80)
         self.SP_tableWidget.setColumnWidth(3, 80)
         self.SP_tableWidget.setColumnWidth(4, 80)
-        self.SP_tableWidget.setColumnWidth(5, 80)
 
         try:
             with open("soundpad.pickle", "rb") as file:
@@ -1195,14 +1195,14 @@ class Ui_mainInterface(object):
                         row, 1, QTableWidgetItem(duration))
 
                     self.SP_tableWidget.setCellWidget(
-                        row, 3, self.play_button("", fname))
+                        row, 2, self.play_button("", fname))
 
                     self.SP_tableWidget.setCellWidget(
-                        row, 4, self.listen_button("", fname))
+                        row, 3, self.listen_button("", fname))
 
                     remove_button = self.remove_button(row, fname)
 
-                    self.SP_tableWidget.setCellWidget(row, 5, remove_button)
+                    self.SP_tableWidget.setCellWidget(row, 4, remove_button)
                     remove_button.clicked.connect(
                         lambda _, r=row, f=fname: self.remove_file(r, f))
 
@@ -1971,21 +1971,21 @@ class Ui_mainInterface(object):
 
     def play_button(self, label, fname):
         icon_play = QtGui.QIcon()
-        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_play_icon.png"),
                             QtGui.QIcon.Normal, QtGui.QIcon.Off)
         play_button = QPushButton(label)
         play_button.setIcon(icon_play)
-        play_button.setIconSize(QtCore.QSize(30, 30))
+        play_button.setIconSize(QtCore.QSize(24, 24))
         play_button.clicked.connect(
             lambda: self.play_media(play_button, fname))
         return play_button
 
     def play_media(self, btn, fname):
         icon_pause = QtGui.QIcon()
-        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-pause-button-48.png"),
+        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_pause_icon.png"),
                              QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon_play = QtGui.QIcon()
-        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_play_icon.png"),
                             QtGui.QIcon.Normal, QtGui.QIcon.Off)
         # media_content = QMediaContent(QUrl.fromLocalFile(fname))
         media_content = fname
@@ -2063,21 +2063,21 @@ class Ui_mainInterface(object):
 
     def listen_button(self, label, fname):
         icon_listen = QtGui.QIcon()
-        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),
+        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_HP_icon.png"),
                               QtGui.QIcon.Normal, QtGui.QIcon.Off)
         listen_button = QPushButton(label)
         listen_button.setIcon(icon_listen)
-        listen_button.setIconSize(QtCore.QSize(30, 30))
+        listen_button.setIconSize(QtCore.QSize(24, 24))
         listen_button.clicked.connect(
             lambda: self.listen_media(listen_button, fname))
         return listen_button
 
     def listen_media(self, btn, fname):
         icon_listen = QtGui.QIcon()
-        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),
+        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_HP_icon.png"),
                               QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon_pause = QtGui.QIcon()
-        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-pause-button-48.png"),
+        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_pause_icon.png"),
                              QtGui.QIcon.Normal, QtGui.QIcon.Off)
         media_content = QMediaContent(QUrl.fromLocalFile(fname))
         if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
@@ -2125,11 +2125,11 @@ class Ui_mainInterface(object):
     # delete item button
     def remove_button(self, row, fname):
         icon_remove = QtGui.QIcon()
-        icon_remove.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-trash-can-48.png"),
+        icon_remove.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_trash_icon.png"),
                               QtGui.QIcon.Normal, QtGui.QIcon.Off)
         remove_button = QPushButton()
         remove_button.setIcon(icon_remove)
-        remove_button.setIconSize(QtCore.QSize(30, 30))
+        remove_button.setIconSize(QtCore.QSize(24, 24))
         remove_button.clicked.connect(lambda: self.remove_file(row, fname))
         return remove_button
 
