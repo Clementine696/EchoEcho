@@ -183,10 +183,10 @@ class Ui_mainInterface(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.Microphone_button = QtWidgets.QPushButton(self.Menu_button)
-        self.Microphone_button.setEnabled(True)
 
         # Microphone button
+        self.Microphone_button = QtWidgets.QPushButton(self.Menu_button)
+        self.Microphone_button.setEnabled(True)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(28)
@@ -1366,116 +1366,113 @@ class Ui_mainInterface(object):
         self.gridLayout.setObjectName("gridLayout")
 
         # Voice Changer button 2
-        self.pushButton_2 = QtWidgets.QPushButton(self.VC_item)
+        self.Voicechange_2 = QtWidgets.QPushButton(self.VC_item)
+
+        self.Voicechange_2.setMinimumSize(QtCore.QSize(170, 140))
+        self.Voicechange_2.setMaximumSize(QtCore.QSize(170, 140))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.Voicechange_2.setFont(font)
+        self.Voicechange_2.setStyleSheet("QPushButton {\n"
+                                        "    background-color: #56B7C7;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    \n"
+                                        "    color: #000000;\n"
+                                        "    text-align: center;\n"
+                                        "    text:24px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "QPushButton:hover{\n"
+                                        "    color : #FFFFFF;\n"
+                                        "    background-color : #4593A0 ;\n"
+                                        "    border-width: 0.5px;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    border-color:#00D19D ;\n"
+                                        "    border-width : 2px;\n"
+                                        "    border-style: outset;\n"
+                                        "}")
+        self.Voicechange_2.setObjectName("Voicechange_2")
+        self.gridLayout.addWidget(self.Voicechange_2, 0, 1, 1, 1)
 
         # Voice Changer button 2 function
-        self.pushButton_2.clicked.connect(self.VC_item_2)
-
-        self.pushButton_2.setMinimumSize(QtCore.QSize(170, 140))
-        self.pushButton_2.setMaximumSize(QtCore.QSize(170, 140))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setStyleSheet("QPushButton {\n"
-                                        "    background-color: #56B7C7;\n"
-                                        "    border-radius: 20px;\n"
-                                        "    \n"
-                                        "    color: #000000;\n"
-                                        "    text-align: center;\n"
-                                        "    text:24px;\n"
-                                        "}\n"
-                                        "\n"
-                                        "QPushButton:hover{\n"
-                                        "    color : #FFFFFF;\n"
-                                        "    background-color : #4593A0 ;\n"
-                                        "    border-width: 0.5px;\n"
-                                        "    border-radius: 20px;\n"
-                                        "    border-color:#00D19D ;\n"
-                                        "    border-width : 2px;\n"
-                                        "    border-style: outset;\n"
-                                        "}")
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout.addWidget(self.pushButton_2, 0, 1, 1, 1)
+        self.Voicechange_2.clicked.connect(self.VC_item_2_clicked)
 
         # Voice Changer button 4
-        self.pushButton_4 = QtWidgets.QPushButton(self.VC_item)
+        self.Voicechange_4 = QtWidgets.QPushButton(self.VC_item)
+
+        self.Voicechange_4.setMinimumSize(QtCore.QSize(170, 140))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.Voicechange_4.setFont(font)
+        self.Voicechange_4.setStyleSheet("QPushButton {\n"
+                                        "    background-color: #56B7C7;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    \n"
+                                        "    color: #000000;\n"
+                                        "    text-align: center;\n"
+                                        "    text:24px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "QPushButton:hover{\n"
+                                        "    color : #FFFFFF;\n"
+                                        "    background-color : #4593A0 ;\n"
+                                        "    border-width: 0.5px;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    border-color:#00D19D ;\n"
+                                        "    border-width : 2px;\n"
+                                        "    border-style: outset;\n"
+                                        "}")
+        self.Voicechange_4.setObjectName("Voicechange_4")
+        self.gridLayout.addWidget(self.Voicechange_4, 1, 0, 1, 1)
 
         # Voice Changer button 4 function
-        self.pushButton_4.clicked.connect(self.VC_item_4)
-
-        self.pushButton_4.setMinimumSize(QtCore.QSize(170, 140))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.pushButton_4.setFont(font)
-        self.pushButton_4.setStyleSheet("QPushButton {\n"
-                                        "    background-color: #56B7C7;\n"
-                                        "    border-radius: 20px;\n"
-                                        "    \n"
-                                        "    color: #000000;\n"
-                                        "    text-align: center;\n"
-                                        "    text:24px;\n"
-                                        "}\n"
-                                        "\n"
-                                        "QPushButton:hover{\n"
-                                        "    color : #FFFFFF;\n"
-                                        "    background-color : #4593A0 ;\n"
-                                        "    border-width: 0.5px;\n"
-                                        "    border-radius: 20px;\n"
-                                        "    border-color:#00D19D ;\n"
-                                        "    border-width : 2px;\n"
-                                        "    border-style: outset;\n"
-                                        "}")
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.gridLayout.addWidget(self.pushButton_4, 1, 0, 1, 1)
+        self.Voicechange_4.clicked.connect(self.VC_item_4_clicked)
 
         # Voice Changer button 1
-        self.pushButton_1 = QtWidgets.QPushButton(self.VC_item)
-        self.pushButton_1.setMinimumSize(QtCore.QSize(170, 140))
-        self.pushButton_1.setMaximumSize(QtCore.QSize(170, 140))
+        self.Voicechange_1 = QtWidgets.QPushButton(self.VC_item)
+        self.Voicechange_1.setMinimumSize(QtCore.QSize(170, 140))
+        self.Voicechange_1.setMaximumSize(QtCore.QSize(170, 140))
+
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(14)
+        self.Voicechange_1.setFont(font)
+        self.Voicechange_1.setStyleSheet("QPushButton {\n"
+                                        "    background-color: #56B7C7;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    \n"
+                                        "    color: #000000;\n"
+                                        "    text-align: center;\n"
+                                        "    text:24px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "QPushButton:hover{\n"
+                                        "    color : #FFFFFF;\n"
+                                        "    background-color : #4593A0 ;\n"
+                                        "    border-width: 0.5px;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    border-color:#00D19D ;\n"
+                                        "    border-width : 2px;\n"
+                                        "    border-style: outset;\n"
+                                        "}")
+        self.Voicechange_1.setObjectName("Voicechange_1")
+        self.gridLayout.addWidget(self.Voicechange_1, 0, 0, 1, 1)
 
         # Voice Changer button function
-        self.pushButton_1.clicked.connect(self.VC_item_1)
-
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.pushButton_1.setFont(font)
-        self.pushButton_1.setStyleSheet("QPushButton {\n"
-                                        "    background-color: #56B7C7;\n"
-                                        "    border-radius: 20px;\n"
-                                        "    \n"
-                                        "    color: #000000;\n"
-                                        "    text-align: center;\n"
-                                        "    text:24px;\n"
-                                        "}\n"
-                                        "\n"
-                                        "QPushButton:hover{\n"
-                                        "    color : #FFFFFF;\n"
-                                        "    background-color : #4593A0 ;\n"
-                                        "    border-width: 0.5px;\n"
-                                        "    border-radius: 20px;\n"
-                                        "    border-color:#00D19D ;\n"
-                                        "    border-width : 2px;\n"
-                                        "    border-style: outset;\n"
-                                        "}")
-        self.pushButton_1.setObjectName("pushButton_1")
-        self.gridLayout.addWidget(self.pushButton_1, 0, 0, 1, 1)
+        self.Voicechange_1.clicked.connect(self.VC_item_1_clicked)
 
         # Voice Changer button 3
-        self.pushButton_3 = QtWidgets.QPushButton(self.VC_item)
+        self.Voicechange_3 = QtWidgets.QPushButton(self.VC_item)
 
-        # Voice Changer button 3 function
-        self.pushButton_3.clicked.connect(self.VC_item_3)
-
-        self.pushButton_3.setMinimumSize(QtCore.QSize(170, 140))
-        self.pushButton_3.setMaximumSize(QtCore.QSize(170, 140))
+        self.Voicechange_3.setMinimumSize(QtCore.QSize(170, 140))
+        self.Voicechange_3.setMaximumSize(QtCore.QSize(170, 140))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(14)
-        self.pushButton_3.setFont(font)
-        self.pushButton_3.setStyleSheet("QPushButton {\n"
+        self.Voicechange_3.setFont(font)
+        self.Voicechange_3.setStyleSheet("QPushButton {\n"
                                         "    background-color: #56B7C7;\n"
                                         "    border-radius: 20px;\n"
                                         "    \n"
@@ -1493,8 +1490,12 @@ class Ui_mainInterface(object):
                                         "    border-width : 2px;\n"
                                         "    border-style: outset;\n"
                                         "}")
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.gridLayout.addWidget(self.pushButton_3, 0, 2, 1, 1)
+        self.Voicechange_3.setObjectName("Voicechange_3")
+        self.gridLayout.addWidget(self.Voicechange_3, 0, 2, 1, 1)
+
+        # Voice Changer button 3 function
+        self.Voicechange_3.clicked.connect(self.VC_item_3_clicked)
+
         self.verticalLayout_54.addWidget(self.VC_item)
 
         # Test Mic Button
@@ -1688,10 +1689,10 @@ class Ui_mainInterface(object):
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
 
         self.VC_title_label_2.setText(_translate("ui_main", "Voice Changer"))
-        self.pushButton_2.setText(_translate("ui_main", "Button2"))
-        self.pushButton_4.setText(_translate("ui_main", "Button4"))
-        self.pushButton_1.setText(_translate("ui_main", "Button1"))
-        self.pushButton_3.setText(_translate("ui_main", "Button3"))
+        self.Voicechange_2.setText(_translate("ui_main", "Button2"))
+        self.Voicechange_4.setText(_translate("ui_main", "Button4"))
+        self.Voicechange_1.setText(_translate("ui_main", "Button1"))
+        self.Voicechange_3.setText(_translate("ui_main", "Button3"))
         self.VC_Testmi_button.setText(_translate("ui_main", "Test Microphone"))
 
         self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
@@ -1966,7 +1967,6 @@ class Ui_mainInterface(object):
     # play item
 
     # ========================================================================================================================================
-    # //TODO:
 
     def play_button(self, label, fname):
         icon_play = QtGui.QIcon()
@@ -2267,46 +2267,243 @@ class Ui_mainInterface(object):
             line.set_color((0, 1, 0.29))
             self.canvas.draw()
 
-    def VC_item_1(self):
-        print("VC item clicked")
-        if (Ui_mainInterface.Test_VC_1 == 0):
-            Ui_mainInterface.Test_VC_1 = 1
-            Ui_mainInterface.Test_VC_2 = 0
-            Ui_mainInterface.Test_VC_3 = 0
-            Ui_mainInterface.Test_VC_4 = 0
-            self.VC_item_1.setStyleSheet("QPushButton {\n"
-                                                 "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-                                                 "}")
-            self.VC_item_2.setStyleSheet("QPushButton{\n"
-                                               "background-color: #56B7C7;\n"
-                                               "border-radius: 20px;\n"
-                                               "color: #000000;\n"
-                                               "text-align: center;\n"
-                                               "}\n"
-                                               "QPushButton:hover{\n"
-                                               "color : #FFFFFF;\n"
-                                               "background-color : #4593A0;\n"
-                                               "border-width: 0.5px;\n"
-                                               "border-radius: 20px;\n"
-                                               "border-color:#00D19D;\n"
-                                               "border-width : 2px;\n"
-                                               "border-style: outset;\n"
-                                               "}")
-            self.VC_item_3.setStyleSheet("QPushButton{\n"
-                                                   "    background-color: rgba(0, 0, 0, 0)\n"
-                                                   "}\n"
-                                                   "QPushButton:hover{\n"
-                                                   "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 218, 237, 255), stop:0.886364 rgba(31, 167, 160, 0));\n"
-                                                   "}")
+    def VC_item_1_clicked(self):
+        if (Ui_mainInterface.VC_item_1 == 0):
+            print("VC item 1 clicked")
+            Ui_mainInterface.VC_item_1 = 1
+            Ui_mainInterface.VC_item_2 = 0
+            Ui_mainInterface.VC_item_3 = 0
+            Ui_mainInterface.VC_item_4 = 0
+            self.Voicechange_1.setStyleSheet("QPushButton {\n"
+                                         "background-color: #4593A0;\n"
+                                         "border-radius: 20px;\n"
+                                         "}")
+            self.Voicechange_2.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_3.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
 
-    def VC_item_1(self):
-        print("VC item 1 clicked")
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_4.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
 
-    def VC_item_2(self):
-        print("VC item 2 clicked")
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            
+    def VC_item_2_clicked(self):
+        if (Ui_mainInterface.VC_item_2 == 0):
+            print("VC item 2 clicked")
+            Ui_mainInterface.VC_item_1 = 0
+            Ui_mainInterface.VC_item_2 = 1
+            Ui_mainInterface.VC_item_3 = 0
+            Ui_mainInterface.VC_item_4 = 0
+            self.Voicechange_2.setStyleSheet("QPushButton {\n"
+                                         "background-color: #4593A0;\n"
+                                         "border-radius: 20px;\n"
+                                         "}")
+            self.Voicechange_1.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_3.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
 
-    def VC_item_3(self):
-        print("VC item 3 clicked")
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_4.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
 
-    def VC_item_4(self):
-        print("VC item 4 clicked")
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+    
+    def VC_item_3_clicked(self):
+        if (Ui_mainInterface.VC_item_3 == 0):
+            print("VC item 3 clicked")
+            Ui_mainInterface.VC_item_1 = 0
+            Ui_mainInterface.VC_item_2 = 0
+            Ui_mainInterface.VC_item_3 = 1
+            Ui_mainInterface.VC_item_4 = 0
+            self.Voicechange_3.setStyleSheet("QPushButton {\n"
+                                         "background-color: #4593A0;\n"
+                                         "border-radius: 20px;\n"
+                                         "}")
+            self.Voicechange_1.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_2.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_4.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+    
+    def VC_item_4_clicked(self):
+        if (Ui_mainInterface.VC_item_4 == 0):
+            print("VC item 3 clicked")
+            Ui_mainInterface.VC_item_1 = 0
+            Ui_mainInterface.VC_item_2 = 0
+            Ui_mainInterface.VC_item_3 = 0
+            Ui_mainInterface.VC_item_4 = 1
+            self.Voicechange_4.setStyleSheet("QPushButton {\n"
+                                         "background-color: #4593A0;\n"
+                                         "border-radius: 20px;\n"
+                                         "}")
+            self.Voicechange_1.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_2.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_3.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+    
