@@ -1368,11 +1368,11 @@ class Ui_mainInterface(object):
         # Voice Changer button 2
         self.Voicechange_2 = QtWidgets.QPushButton(self.VC_item)
 
-        self.Voicechange_2.setMinimumSize(QtCore.QSize(170, 140))
-        self.Voicechange_2.setMaximumSize(QtCore.QSize(170, 140))
+        self.Voicechange_2.setMinimumSize(QtCore.QSize(200, 170))
+        self.Voicechange_2.setMaximumSize(QtCore.QSize(200, 170))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(14)
+        font.setPointSize(16)
         self.Voicechange_2.setFont(font)
         self.Voicechange_2.setStyleSheet("QPushButton {\n"
                                         "    background-color: #56B7C7;\n"
@@ -1401,10 +1401,11 @@ class Ui_mainInterface(object):
         # Voice Changer button 4
         self.Voicechange_4 = QtWidgets.QPushButton(self.VC_item)
 
-        self.Voicechange_4.setMinimumSize(QtCore.QSize(170, 140))
+        self.Voicechange_4.setMinimumSize(QtCore.QSize(200, 170))
+        self.Voicechange_4.setMaximumSize(QtCore.QSize(200, 170))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(14)
+        font.setPointSize(16)
         self.Voicechange_4.setFont(font)
         self.Voicechange_4.setStyleSheet("QPushButton {\n"
                                         "    background-color: #56B7C7;\n"
@@ -1432,12 +1433,12 @@ class Ui_mainInterface(object):
 
         # Voice Changer button 1
         self.Voicechange_1 = QtWidgets.QPushButton(self.VC_item)
-        self.Voicechange_1.setMinimumSize(QtCore.QSize(170, 140))
-        self.Voicechange_1.setMaximumSize(QtCore.QSize(170, 140))
+        self.Voicechange_1.setMinimumSize(QtCore.QSize(200, 170))
+        self.Voicechange_1.setMaximumSize(QtCore.QSize(200, 170))
 
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(14)
+        font.setPointSize(16)
         self.Voicechange_1.setFont(font)
         self.Voicechange_1.setStyleSheet("QPushButton {\n"
                                         "    background-color: #56B7C7;\n"
@@ -1466,11 +1467,11 @@ class Ui_mainInterface(object):
         # Voice Changer button 3
         self.Voicechange_3 = QtWidgets.QPushButton(self.VC_item)
 
-        self.Voicechange_3.setMinimumSize(QtCore.QSize(170, 140))
-        self.Voicechange_3.setMaximumSize(QtCore.QSize(170, 140))
+        self.Voicechange_3.setMinimumSize(QtCore.QSize(200, 170))
+        self.Voicechange_3.setMaximumSize(QtCore.QSize(200, 170))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(14)
+        font.setPointSize(16)
         self.Voicechange_3.setFont(font)
         self.Voicechange_3.setStyleSheet("QPushButton {\n"
                                         "    background-color: #56B7C7;\n"
