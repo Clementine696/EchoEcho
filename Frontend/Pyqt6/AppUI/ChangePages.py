@@ -521,7 +521,10 @@ class Ui_ui_main(object):
         font.setWeight(75)
         font.setStrikeOut(False)
         self.tableWidget.setFont(font)
-        self.tableWidget.setStyleSheet("")
+        self.tableWidget.setStyleSheet("QTableWidget {\n"
+"    padding-left: 200px;\n"
+"\n"
+"}")
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(5)
         self.tableWidget.setRowCount(9)
@@ -591,15 +594,12 @@ class Ui_ui_main(object):
         self.verticalLayout_6.addWidget(self.SP_item)
         self.horizontalLayout_4.addWidget(self.SP_body)
         self.stackedWidget.addWidget(self.Soundpad_page)
-
         self.Voicechanger_page = QtWidgets.QWidget()
         self.Voicechanger_page.setObjectName("Voicechanger_page")
-
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.Voicechanger_page)
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setSpacing(0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-
         self.VC_frame = QtWidgets.QFrame(self.Voicechanger_page)
         self.VC_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.VC_frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -608,7 +608,6 @@ class Ui_ui_main(object):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-
         self.VC_item_frame = QtWidgets.QFrame(self.VC_frame)
         self.VC_item_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.VC_item_frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -617,7 +616,6 @@ class Ui_ui_main(object):
         self.verticalLayout_53.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_53.setSpacing(0)
         self.verticalLayout_53.setObjectName("verticalLayout_53")
-
         self.VC_item_body = QtWidgets.QFrame(self.VC_item_frame)
         self.VC_item_body.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.VC_item_body.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -636,7 +634,6 @@ class Ui_ui_main(object):
         self.VC_title_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.VC_title_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.VC_title_2.setObjectName("VC_title_2")
-
         self.verticalLayout_55 = QtWidgets.QVBoxLayout(self.VC_title_2)
         self.verticalLayout_55.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_55.setSpacing(0)
@@ -658,22 +655,20 @@ class Ui_ui_main(object):
         self.VC_title_label_2.setObjectName("VC_title_label_2")
         self.verticalLayout_55.addWidget(self.VC_title_label_2)
         self.verticalLayout_54.addWidget(self.VC_title_2)
-
         self.VC_item = QtWidgets.QFrame(self.VC_item_body)
         self.VC_item.setMinimumSize(QtCore.QSize(900, 470))
         self.VC_item.setMaximumSize(QtCore.QSize(900, 470))
         self.VC_item.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.VC_item.setFrameShadow(QtWidgets.QFrame.Raised)
         self.VC_item.setObjectName("VC_item")
-
         self.gridLayout = QtWidgets.QGridLayout(self.VC_item)
         self.gridLayout.setContentsMargins(16, 8, 16, 8)
         self.gridLayout.setHorizontalSpacing(32)
         self.gridLayout.setVerticalSpacing(8)
         self.gridLayout.setObjectName("gridLayout")
         self.pushButton_2 = QtWidgets.QPushButton(self.VC_item)
-        self.pushButton_2.setMinimumSize(QtCore.QSize(170, 140))
-        self.pushButton_2.setMaximumSize(QtCore.QSize(170, 140))
+        self.pushButton_2.setMinimumSize(QtCore.QSize(200, 170))
+        self.pushButton_2.setMaximumSize(QtCore.QSize(200, 170))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(14)
@@ -699,7 +694,8 @@ class Ui_ui_main(object):
         self.pushButton_2.setObjectName("pushButton_2")
         self.gridLayout.addWidget(self.pushButton_2, 0, 1, 1, 1)
         self.pushButton_4 = QtWidgets.QPushButton(self.VC_item)
-        self.pushButton_4.setMinimumSize(QtCore.QSize(170, 140))
+        self.pushButton_4.setMinimumSize(QtCore.QSize(200, 170))
+        self.pushButton_4.setMaximumSize(QtCore.QSize(200, 170))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(14)
@@ -725,8 +721,8 @@ class Ui_ui_main(object):
         self.pushButton_4.setObjectName("pushButton_4")
         self.gridLayout.addWidget(self.pushButton_4, 1, 0, 1, 1)
         self.pushButton_1 = QtWidgets.QPushButton(self.VC_item)
-        self.pushButton_1.setMinimumSize(QtCore.QSize(170, 140))
-        self.pushButton_1.setMaximumSize(QtCore.QSize(0, 140))
+        self.pushButton_1.setMinimumSize(QtCore.QSize(200, 170))
+        self.pushButton_1.setMaximumSize(QtCore.QSize(200, 170))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(14)
@@ -737,7 +733,6 @@ class Ui_ui_main(object):
 "    \n"
 "    color: #000000;\n"
 "    text-align: center;\n"
-"    text:24px;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -752,8 +747,8 @@ class Ui_ui_main(object):
         self.pushButton_1.setObjectName("pushButton_1")
         self.gridLayout.addWidget(self.pushButton_1, 0, 0, 1, 1)
         self.pushButton_3 = QtWidgets.QPushButton(self.VC_item)
-        self.pushButton_3.setMinimumSize(QtCore.QSize(170, 140))
-        self.pushButton_3.setMaximumSize(QtCore.QSize(170, 140))
+        self.pushButton_3.setMinimumSize(QtCore.QSize(200, 170))
+        self.pushButton_3.setMaximumSize(QtCore.QSize(200, 170))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(14)
@@ -790,7 +785,6 @@ class Ui_ui_main(object):
 "    padding-top: 0px;\n"
 "    padding-bottom: 20px;\n"
 "}")
-
         self.VC_Testmic.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.VC_Testmic.setFrameShadow(QtWidgets.QFrame.Raised)
         self.VC_Testmic.setObjectName("VC_Testmic")
@@ -798,14 +792,14 @@ class Ui_ui_main(object):
         self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
-        self.VC_Testmi_button = QtWidgets.QPushButton(self.VC_Testmic)
-        self.VC_Testmi_button.setMinimumSize(QtCore.QSize(780, 80))
-        self.VC_Testmi_button.setMaximumSize(QtCore.QSize(780, 80))
+        self.z = QtWidgets.QPushButton(self.VC_Testmic)
+        self.z.setMinimumSize(QtCore.QSize(780, 80))
+        self.z.setMaximumSize(QtCore.QSize(780, 80))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(20)
-        self.VC_Testmi_button.setFont(font)
-        self.VC_Testmi_button.setStyleSheet("QPushButton {\n"
+        self.z.setFont(font)
+        self.z.setStyleSheet("QPushButton {\n"
 "    background-color: #244D54;\n"
 "    border-style: outset;\n"
 "    border-width: 0.5px;\n"
@@ -830,8 +824,8 @@ class Ui_ui_main(object):
 "    border-color : #00D19D;\n"
 "    color: #FFFFFF;\n"
 "}")
-        self.VC_Testmi_button.setObjectName("VC_Testmi_button")
-        self.verticalLayout_12.addWidget(self.VC_Testmi_button)
+        self.z.setObjectName("z")
+        self.verticalLayout_12.addWidget(self.z)
         self.verticalLayout_54.addWidget(self.VC_Testmic)
         self.verticalLayout_53.addWidget(self.VC_item_body)
         self.horizontalLayout_6.addWidget(self.VC_item_frame)
@@ -848,7 +842,7 @@ class Ui_ui_main(object):
         self.horizontalLayout.addWidget(self.stackedWidget)
 
         self.retranslateUi(ui_main)
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
     def retranslateUi(self, ui_main):
@@ -904,4 +898,4 @@ class Ui_ui_main(object):
         self.pushButton_4.setText(_translate("ui_main", "Button4"))
         self.pushButton_1.setText(_translate("ui_main", "Button1"))
         self.pushButton_3.setText(_translate("ui_main", "Button3"))
-        self.VC_Testmi_button.setText(_translate("ui_main", "Test Microphone"))
+        self.z.setText(_translate("ui_main", "Test Microphone"))
