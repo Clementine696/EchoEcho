@@ -2330,11 +2330,11 @@ class Ui_mainInterface(object):
 
             duration = self.getDuration(fname)
             self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
- 
-            # icon_play = QtGui.QIcon("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png")
-            play_button = self.play_button("", fname)
+
+            
+            play_button = self.play_button(fname, row)
             self.SP_tableWidget.setCellWidget(row, 3, play_button)
-            play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
+            # play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
 
             self.SP_tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
 
@@ -2345,10 +2345,13 @@ class Ui_mainInterface(object):
             
             self.filenames.append(fname)
 
-            # if fname not in self.play_counts:
-            #     self.play_counts[fname] = 0
+            if fname not in self.play_counts:
+                self.play_counts[fname] = 0
 
             self.save_file()
+
+        else:
+            print("No file selected.")
 
     def save_file(self):
         sp_data = {}
@@ -2377,7 +2380,12 @@ class Ui_mainInterface(object):
         # play_button.setIcon(icon_play)
         button = QPushButton(icon_play, "")
         button.setIconSize(QtCore.QSize(30, 30))
-        button.clicked.connect(lambda: self.play_media(button, fname, index))
+        # button.clicked.connect(lambda: self.play_media(button, fname, index))
+        button.clicked.connect(lambda _, button=button: self.play_media(button, fname, index))
+        
+        # print("=====================================================")
+        # print("show fname:", fname, "index: ", index)
+        # print("=====================================================")
         return button
 
     def play_media(self, btn, fname, index):
@@ -2389,9 +2397,10 @@ class Ui_mainInterface(object):
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         # media_content = QMediaContent(QUrl.fromLocalFile(fname))
         media_content = fname
+        # print("show fname:", fname)
         # if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
         #     self.player.stop()
-        #     # play_button
+        #     # play_button 
         #     btn.setIcon(icon_play)
         #     # btn.setText("play")
         global micplay
@@ -2403,6 +2412,7 @@ class Ui_mainInterface(object):
             # play_button
             btn.setIcon(icon_play)
             # btn.setText("play")
+            # print(micplay_file, " state : ", micplay)
         else:
             if micplay == True:
                 curr_fname = micplay_file
