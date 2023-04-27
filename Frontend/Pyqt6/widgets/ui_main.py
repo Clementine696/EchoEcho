@@ -928,17 +928,111 @@ class Ui_mainInterface(object):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.dashbord_label = QtWidgets.QLabel(self.dashbord_page)
+        # self.dashbord_label = QtWidgets.QLabel(self.Audio_page)
+        self.frame_dash_page = QtWidgets.QFrame(self.dashbord_page)
+        self.frame_dash_page.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_dash_page.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_dash_page.setObjectName("frame_dash_page")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.frame_dash_page)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_7.setSpacing(0)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.frame_dash_title = QtWidgets.QFrame(self.frame_dash_page)
+        self.frame_dash_title.setMinimumSize(QtCore.QSize(900, 120))
+        self.frame_dash_title.setMaximumSize(QtCore.QSize(900, 120))
+        self.frame_dash_title.setStyleSheet("QFrame{\n"
+"    background-color: rgba(0, 0, 0, 0);\n"
+"}")
+        self.frame_dash_title.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_dash_title.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_dash_title.setObjectName("frame_dash_title")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.frame_dash_title)
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_11.setSpacing(0)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.dash_label = QtWidgets.QLabel(self.frame_dash_title)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(36)
         font.setBold(True)
         font.setWeight(75)
-        self.dashbord_label.setFont(font)
-        self.dashbord_label.setStyleSheet("color: #66DAED")
-        self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.dashbord_label.setObjectName("dashbord_label")
-        self.horizontalLayout_6.addWidget(self.dashbord_label)
+        # self.dashbord_label.setFont(font)
+        # self.dashbord_label.setStyleSheet("color: #66DAED")
+        # self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
+        # self.dashbord_label.setObjectName("dashbord_label")
+        # self.horizontalLayout_6.addWidget(self.dashbord_label)
+        self.dash_label.setFont(font)
+        self.dash_label.setStyleSheet("QLabel \n"
+"{\n"
+" color: #FFFFFF;\n"
+"}")
+        self.dash_label.setObjectName("dash_label")
+        self.verticalLayout_11.addWidget(self.dash_label, 0, QtCore.Qt.AlignHCenter)
+        self.verticalLayout_7.addWidget(self.frame_dash_title)
+        self.frame_7 = QtWidgets.QFrame(self.frame_dash_page)
+        self.frame_7.setStyleSheet("QFrame{\n"
+"    background-color: rgba(0, 0, 0, 0);\n"
+"}")
+        self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_7.setObjectName("frame_7")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.frame_7)
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_12.setSpacing(0)
+        self.verticalLayout_12.setObjectName("verticalLayout_12")
+        self.frame_9 = QtWidgets.QFrame(self.frame_7)
+        self.frame_9.setMinimumSize(QtCore.QSize(900, 150))
+        self.frame_9.setMaximumSize(QtCore.QSize(900, 150))
+        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_9.setObjectName("frame_9")
+        # frame_9 ใส่อันดับ
+        self.verticalLayout_12.addWidget(self.frame_9)
+        self.frame_10 = QtWidgets.QFrame(self.frame_7)
+        self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_10.setObjectName("frame_10")
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame_10)
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        self.widget_2 = QtWidgets.QWidget(self.frame_10)
+        self.widget_2.setObjectName("widget_2")
+
+        fig = Figure()
+        ax = fig.add_subplot(111)
+        # fig, ax = plt.subplots()
+        # ax.axis('equal')
+
+        # define data for the donut plot
+        data = [10, 20, 30, 40]
+        labels = ['A', 'B', 'C', 'D']
+        colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7']
+        explode = (0, 0, 0, 0)
+
+        # create the donut plot
+        wedges, texts, autotexts = ax.pie(data, colors=colors, labels=labels,
+                                        autopct='%d%%', startangle=90,
+                                        pctdistance=0.85, explode=explode)
+
+        # add a circle to create a donut chart
+        centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+        # plt.axis('equal')
+        # plt.legend(loc='upper left')
+        ax.add_artist(centre_circle)
+        canvas = FigureCanvas(fig)
+        # canvas.setStyleSheet("background-color: red;")
+        # self.canvas.patch.set_facecolor('#244D54')
+        fig.patch.set_facecolor('none')
+
+        # add the canvas to the PyQt5 widget
+        layout = QtWidgets.QVBoxLayout(self.widget_2)
+        layout.addWidget(canvas)
+        # self.create_donutchart()
+        self.horizontalLayout_7.addWidget(self.widget_2)
+        self.verticalLayout_12.addWidget(self.frame_10)
+        self.verticalLayout_7.addWidget(self.frame_7)
+        self.horizontalLayout_6.addWidget(self.frame_dash_page)
         self.stackedWidget.addWidget(self.dashbord_page)
 
         # Soundpad Page
@@ -2078,7 +2172,7 @@ class Ui_mainInterface(object):
         # self.VC_Eq_label_H_9.setText(_translate("ui_main", "High"))
         self.VC_Testmic_button.setText(
             _translate("ui_main", "Test Microphone"))
-        self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
+        self.dash_label.setText(_translate("ui_main", "Dashbord"))
         # self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
         self.settingmain.setText(_translate("ui_main", "Settings"))
         self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -2356,6 +2450,8 @@ class Ui_mainInterface(object):
         sp_data = {}
         for fname in self.filenames:
             sp_data[fname] = self.play_counts[fname]
+            # sp_data[fname.split("/")[-1].split(".")[0]] = self.play_counts[fname]
+
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(sp_data, file)
@@ -2363,8 +2459,14 @@ class Ui_mainInterface(object):
         # self.play_counts[fname] = count
         
         print("save success")
-
         print(sp_data)
+
+        sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
+        with open("sort_counts.txt", "w") as file:
+            for item in sort_counts:
+                file.write(os.path.basename(item[0]) + "," + str(item[1]) + "\n")
+    
+        print("sort success")
 
     # play item
     

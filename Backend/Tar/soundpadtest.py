@@ -109,6 +109,12 @@ class App(QWidget):
       
         # เห็นเฉพาะ .wav, .mp3
         fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+    
+        # new_fname = self.check_filename(fname)
+        # if new_fname != fname:
+        #     print("file name exists, renamed to", new_fname)
+        #     fname = new_fname
+
         if fname:
             print("add file :", fname)
             
@@ -138,17 +144,40 @@ class App(QWidget):
             #     self.filenames = [f for f in self.filenames if os.path.exists(f)]
             #     self.save_file()
 
+    def check_filename(self, filename):
+        new_filename = filename
+        count = 1
+        while os.path.exists(new_filename):
+            basename, ext = os.path.splitext(filename)
+            new_basename = f"{basename}({count})"
+            new_filename = f"{new_basename}{ext}"
+            count += 1
+        return new_filename
+
     def save_file(self):
         data = {}
         for fname in self.filenames:
+            # data[fname.split("/")[-1].split(".")[0]] = self.play_counts[fname]
             data[fname] = self.play_counts[fname]
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
             pickle.dump(data, file)
         
         print("save success")
-
         print(data)
+
+        # data = dict(sorted(data.items(), key=lambda x: x[1], reverse=True))
+        # # data[fname.split("/")[-1].split(".")[0]] = self.play_counts[fname]
+        # with open('sort_counts.txt', 'w') as f:
+        #     for fname, count in data.items():
+        #         f.write(f"{fname}: {count}\n")
+
+        sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
+        with open("sort_counts.txt", "w") as file:
+            for item in sort_counts:
+                file.write(os.path.basename(item[0]) + "," + str(item[1]) + "\n")
+    
+        print("sort success")
 
     def remove_button(self, row, fname):
         button = QPushButton("Remove")
@@ -156,19 +185,6 @@ class App(QWidget):
         return button
 
     def remove_file(self, row, fname):
-        # # Remove the selected row from the table
-        # if fname in self.filenames:
-        #     self.filenames.remove(fname)
-        # self.table.removeRow(row)
-        
-        # self.save_file()
-
-        # # Stop the player if it was playing the removed file
-        # if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
-        #     self.player.stop()
-
-        # print("File removed successfully.")
-
         try:
             self.filenames.remove(fname)
             self.play_counts.pop(fname)
