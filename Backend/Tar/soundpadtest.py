@@ -93,6 +93,10 @@ class App(QWidget):
                         if fname in self.play_counts:
                             play_count = QTableWidgetItem(str(self.play_counts[fname]))
                             self.table.setItem(i, 4, play_count)
+
+                    # if not all(os.path.exists(f) for f in self.filenames):
+                    #     self.filenames = [f for f in self.filenames if os.path.exists(f)]
+                    #     self.save_file()
                 
                 print("audio load successfully")
 
@@ -130,6 +134,10 @@ class App(QWidget):
             self.filenames.append(fname)
             self.save_file()
 
+            # if not all(os.path.exists(f) for f in self.filenames):
+            #     self.filenames = [f for f in self.filenames if os.path.exists(f)]
+            #     self.save_file()
+
     def save_file(self):
         data = {}
         for fname in self.filenames:
@@ -148,18 +156,35 @@ class App(QWidget):
         return button
 
     def remove_file(self, row, fname):
-        # Remove the selected row from the table
-        if fname in self.filenames:
-            self.filenames.remove(fname)
-        self.table.removeRow(row)
+        # # Remove the selected row from the table
+        # if fname in self.filenames:
+        #     self.filenames.remove(fname)
+        # self.table.removeRow(row)
         
-        self.save_file()
+        # self.save_file()
 
-        # Stop the player if it was playing the removed file
-        if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
-            self.player.stop()
+        # # Stop the player if it was playing the removed file
+        # if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
+        #     self.player.stop()
 
-        print("File removed successfully.")
+        # print("File removed successfully.")
+
+        try:
+            self.filenames.remove(fname)
+            self.play_counts.pop(fname)
+            for i in range(self.table.rowCount()):
+                if self.table.item(i, 0).text() == os.path.basename(fname):
+                    self.table.removeRow(i)
+                    break
+            self.save_file()
+
+            if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
+                self.player.stop()
+
+            print("File removed successfully.")
+
+        except Exception as e:
+            print("Error removing file:", e)
 
     def play_button(self, label, fname):
         button = QPushButton(label)

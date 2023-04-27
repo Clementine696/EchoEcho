@@ -1188,9 +1188,8 @@ class Ui_mainInterface(object):
                     duration = self.getDuration(fname)
                     self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))   
 
-                    play_button = self.play_button("", fname)
+                    play_button = self.play_button(fname, row)
                     self.SP_tableWidget.setCellWidget(row, 3, play_button)
-                    play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
 
                     self.SP_tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
 
@@ -2553,17 +2552,22 @@ class Ui_mainInterface(object):
         return remove_button
 
     def remove_file(self, row, fname):
-        if fname in self.filenames:
+        try:
             self.filenames.remove(fname)
-            self.SP_tableWidget.removeRow(row)
-        
-        self.save_file()
+            self.play_counts.pop(fname)
+            for i in range(self.SP_tableWidget.rowCount()):
+                if self.SP_tableWidget.item(i, 0).text() == os.path.basename(fname):
+                    self.SP_tableWidget.removeRow(i)
+                    break
+            self.save_file()
 
-        # Stop the player if it was playing the removed file
-        if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
-            self.player.stop()
+            if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
+                self.player.stop()
 
-        print("File removed successfully.")
+            print("File removed successfully.")
+
+        except Exception as e:
+            print("Error removing file:", e)
             
     def normal_audio_callback(self,in_data, frame_count, time_info, status):
         # Convert byte stream to numpy array
@@ -2677,7 +2681,6 @@ class Ui_mainInterface(object):
     def VC_Eq_Slider3(self, value):
         print("VC Eq Slider3", value)
         
-    
     def normal_update_plot(self):
         # Get all the available audio data from the queue
         # print(self.q.qsize())
