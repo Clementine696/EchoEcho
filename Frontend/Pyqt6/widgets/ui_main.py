@@ -5,7 +5,7 @@ import subprocess
 
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog, QMessageBox
 from PyQt5.QtCore import Qt, QUrl, QTimer
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
 
@@ -29,6 +29,7 @@ import keyboard
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from random import randint
 import queue
 import sys
 from matplotlib.animation import FuncAnimation
@@ -1004,16 +1005,33 @@ class Ui_mainInterface(object):
         # fig, ax = plt.subplots()
         # ax.axis('equal')
 
-        # define data for the donut plot
-        data = [10, 20, 30, 40]
-        labels = ['A', 'B', 'C', 'D']
-        colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7']
-        explode = (0, 0, 0, 0)
+        # # define data for the donut plot
+        # data = [10, 20, 30, 40]
+        # labels = ['A', 'B', 'C', 'D']
+        # colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7']
+        # explode = (0, 0, 0, 0)
 
+        # อ่านไฟล์ sort_counts.txt เพื่อใช้ในการสร้างกราฟ
+        file_path = 'sort_counts.txt'
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+
+        data = {}
+        texts = []
+        for line in lines:
+            line = line.strip()
+            parts = line.split(',')
+            text = parts[0]
+            number = int(parts[1])
+            data[text] = number
+        colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9', '#F8B195', '#F67280', '#C06C84']
+        explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)    
+        labels = list(data.keys())[:10]
+        values = list(data.values())[:10]
         # create the donut plot
-        wedges, texts, autotexts = ax.pie(data, colors=colors, labels=labels,
-                                        autopct='%d%%', startangle=90,
-                                        pctdistance=0.85, explode=explode)
+        wedges, texts, autotexts = ax.pie(values, colors=colors, labels=labels,
+                                        autopct='%.2f%%', startangle=90,
+                                        pctdistance=0.85, explode=explode[:len(values)])
 
         # add a circle to create a donut chart
         centre_circle = plt.Circle((0, 0), 0.70, fc='none')
@@ -2410,6 +2428,12 @@ class Ui_mainInterface(object):
         fname, _ = QFileDialog.getOpenFileName(self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
 
         if fname:
+            if self.check_duplicate_file(fname):
+                msg_box = QMessageBox()
+                msg_box.setText("File name already exists.\nPlease select another file or change file name.")
+                msg_box.exec_()
+                return
+            
             print("add file :", fname)
 
             row = self.SP_tableWidget.rowCount()
@@ -2445,6 +2469,12 @@ class Ui_mainInterface(object):
 
         else:
             print("No file selected.")
+
+    def check_duplicate_file(self, file_path):
+        file_name = os.path.basename(file_path)
+        if file_name in set([os.path.basename(fname) for fname in self.filenames]):
+            return True
+        return False
 
     def save_file(self):
         sp_data = {}
