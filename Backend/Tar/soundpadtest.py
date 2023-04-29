@@ -108,8 +108,8 @@ class App(QWidget):
         folder = r""
       
         # เห็นเฉพาะ .wav, .mp3
-        fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options) 
-
+        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options) 
+        fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV or MP3 (*.wav *.mp3)", options=options) 
         if fname:
             if self.check_duplicate_file(fname):
                 msg_box = QMessageBox()
@@ -160,7 +160,7 @@ class App(QWidget):
         print(data)
 
         sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
-        with open("sort_counts.txt", "w") as file:
+        with open("sort_counts.txt", "w", encoding="utf-8") as file:
             for item in sort_counts:
                 file.write(os.path.basename(item[0]) + "," + str(item[1]) + "\n")
     

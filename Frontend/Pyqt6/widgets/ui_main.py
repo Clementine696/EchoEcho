@@ -5,7 +5,7 @@ import subprocess
 
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog, QMessageBox, QDialog
 from PyQt5.QtCore import Qt, QUrl, QTimer
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
 
@@ -988,6 +988,14 @@ class Ui_mainInterface(object):
         self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_9.setObjectName("frame_9")
         # frame_9 ใส่อันดับ
+        self.text_edit = QtWidgets.QTextEdit(self.frame_9)
+        self.text_edit.setGeometry(QtCore.QRect(10, 10, 880, 130))
+        self.text_edit.setObjectName("text_edit")
+        self.verticalLayout_d = QtWidgets.QVBoxLayout(self.frame_9)
+        self.verticalLayout_d.addWidget(self.text_edit, alignment=QtCore.Qt.AlignCenter)
+
+        self.show_data()
+
         self.verticalLayout_12.addWidget(self.frame_9)
         self.frame_10 = QtWidgets.QFrame(self.frame_7)
         self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -1035,7 +1043,7 @@ class Ui_mainInterface(object):
 
         # add a circle to create a donut chart
         centre_circle = plt.Circle((0, 0), 0.70, fc='none')
-        # plt.axis('equal')
+        # plt.axis('equal')    
         # plt.legend(loc='upper left')
         ax.add_artist(centre_circle)
         canvas = FigureCanvas(fig)
@@ -2426,6 +2434,7 @@ class Ui_mainInterface(object):
         folder = r""
 
         fname, _ = QFileDialog.getOpenFileName(self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV or MP3 (*.wav *.mp3)", options=options) 
 
         if fname:
             if self.check_duplicate_file(fname):
@@ -2492,7 +2501,7 @@ class Ui_mainInterface(object):
         print(sp_data)
 
         sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
-        with open("sort_counts.txt", "w") as file:
+        with open("sort_counts.txt", "w", encoding="utf-8") as file:
             for item in sort_counts:
                 file.write(os.path.basename(item[0]) + "," + str(item[1]) + "\n")
     
@@ -2857,3 +2866,12 @@ class Ui_mainInterface(object):
             line.set_ydata(self.plot_data[:, column])
             line.set_color((0, 1, 0.29))
             self.canvas.draw()
+
+    # Dashboard
+    def show_data(self):
+        # โหลดข้อมูลจากไฟล์ .txt และแสดงผลใน QTextEdit ของ frame_9
+        with open('sort_counts.txt', 'r') as f:
+            sort_data = f.readlines()
+            sort_data = ''.join(sort_data[:10]).split('\n')
+            sort_data = '\n'.join(sort_data)
+            self.text_edit.setText(sort_data)
