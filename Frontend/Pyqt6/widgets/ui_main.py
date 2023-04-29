@@ -2327,6 +2327,15 @@ class Ui_mainInterface(object):
                                          "border-width : 2px;\n"
                                          "border-style: outset;\n"
                                          "}")
+        else :
+            print("VC item 1 unclicked")
+            Ui_mainInterface.VC_item_1 = 0
+            self.Voicechange_1.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n")
             
     def VC_item_2_clicked(self):
         if (Ui_mainInterface.VC_item_2 == 0):
@@ -2387,6 +2396,14 @@ class Ui_mainInterface(object):
                                          "border-width : 2px;\n"
                                          "border-style: outset;\n"
                                          "}")
+        else :
+            Ui_mainInterface.VC_item_2 = 0
+            self.Voicechange_2.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n")
     
     def VC_item_3_clicked(self):
         if (Ui_mainInterface.VC_item_3 == 0):
@@ -2447,6 +2464,14 @@ class Ui_mainInterface(object):
                                          "border-width : 2px;\n"
                                          "border-style: outset;\n"
                                          "}")
+        else :
+            Ui_mainInterface.VC_item_3 = 0
+            self.Voicechange_3.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n")
     
     def VC_item_4_clicked(self):
         if (Ui_mainInterface.VC_item_4 == 0):
@@ -2507,4 +2532,12 @@ class Ui_mainInterface(object):
                                          "border-width : 2px;\n"
                                          "border-style: outset;\n"
                                          "}")
+        else :
+            Ui_mainInterface.VC_item_4 = 0
+            self.Voicechange_4.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n")
     
