@@ -1366,7 +1366,7 @@ class Ui_mainInterface(object):
         self.gridLayout.setObjectName("gridLayout")
 
         # Voice Changer button 2
-        self.Voicechange_2 = QtWidgets.QPushButton(self.VC_item)
+        self.Voicechange_2 = QtWidgets.QPushButton(self.VC_item) #//TODO:
 
         self.Voicechange_2.setMinimumSize(QtCore.QSize(200, 170))
         self.Voicechange_2.setMaximumSize(QtCore.QSize(200, 170))
@@ -1721,12 +1721,12 @@ class Ui_mainInterface(object):
         # self.label.setText(_translate(
         #     "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>")) #//TODO:
         # self.Alert_button_detail.setText(_translate(
-        #     "ui_main", "Check your audio output device and try again")) #//TODO:
+        #     "ui_main", "Check your audio output device and try again")) 
 
         self.label.setText(_translate(
             "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No virtual cable found</span></p></body></html>"))  # //TODO:
         self.Alert_button_detail.setText(_translate(
-            "ui_main", "Check your virtual cable or install from vb-audio.com"))  # //TODO:
+            "ui_main", "Check your virtual cable or install from vb-audio.com"))
 
     # Alert button clicked function
     def Alert_button_detail_clicked(self):
@@ -2475,7 +2475,7 @@ class Ui_mainInterface(object):
     
     def VC_item_4_clicked(self):
         if (Ui_mainInterface.VC_item_4 == 0):
-            print("VC item 3 clicked")
+            print("VC item 4 clicked")
             Ui_mainInterface.VC_item_1 = 0
             Ui_mainInterface.VC_item_2 = 0
             Ui_mainInterface.VC_item_3 = 0
