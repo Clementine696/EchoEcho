@@ -63,23 +63,30 @@ class App(QWidget):
         # read file in pickle
         try:
             with open("soundpad.pickle", "rb") as file:
-                self.filenames = pickle.load(file)
-                for fname in self.filenames:
+                data = pickle.load(file)
+                for row, (fname, count) in enumerate(data):
+                    self.filenames.append(fname)
+                    if len(self.count) <= row:
+                        self.count.append(0)  # initialize count to 0 for each file if necessary
+                    self.count[row] = count
+
                     row = self.table.rowCount()
                     self.table.insertRow(row)
-                    
+
                     self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
-                    
+
                     duration = self.getDuration(fname)
                     self.table.setItem(row, 1, QTableWidgetItem(duration))
-                    
-                    self.table.setCellWidget(row, 2, self.play_button("Play", fname))
-                    
-                    remove_button = self.remove_button(row, fname)
+
+                    play_button = QPushButton("Play")
+                    self.table.setCellWidget(row, 2, play_button)
+                    play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
+
+                    remove_button = QPushButton("Remove")
+                    remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
                     self.table.setCellWidget(row, 3, remove_button)
-                    remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
-                
-                    play_count = QTableWidgetItem("0")
+
+                    play_count = QTableWidgetItem(str(count))
                     self.table.setItem(row, 4, play_count)
 
                 print("audio load successfully")
@@ -103,7 +110,9 @@ class App(QWidget):
             duration = self.getDuration(fname)
             self.table.setItem(row, 1, QTableWidgetItem(duration))
             
-            self.table.setCellWidget(row, 2, self.play_button("Play", fname))
+            play_button = QPushButton("Play")
+            self.table.setCellWidget(row, 2, play_button)
+            play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname))
 
             remove_button = QPushButton("Remove")
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
@@ -116,9 +125,14 @@ class App(QWidget):
             self.save_file()
 
     def save_file(self):
+        data = {}
+        for fname, count in zip(self.filenames, self.count):
+            data[fname] = count
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
-            pickle.dump(self.filenames, file)
+            pickle.dump(data, file)
+
+        print("save success")
 
     def remove_button(self, row, fname):
         button = QPushButton("Remove")
@@ -159,9 +173,14 @@ class App(QWidget):
 
             self.player.setMedia(media_content)
             self.player.play()
-            btn.setText("...")
+            btn.setText("Stop")
+            # index = self.filenames.index(fname)
+            # self.count[index] += 1
+            # self.table.item(index, 4).setText(str(self.count[index]))
             current_count = int(self.table.item(self.table.currentRow(), 4).text())
             self.table.item(self.table.currentRow(), 4).setText(str(current_count + 1))
+
+            self.save_file()
 
             self.player.setMedia(media_content)
             self.player.play()
