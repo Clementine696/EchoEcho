@@ -778,10 +778,10 @@ class Ui_mainInterface(object):
 
         # init plot
         self.figure = Figure()
-        self.rect = plt.Rectangle((0.0017, 0.002), 0.995, 0.999, fill=False, color="black",
-                                  lw=1, zorder=1000, transform=self.figure.transFigure, figure=self.figure)
-        self.figure.patches.extend([self.rect])
-        self.figure.patch.set_facecolor('#244D54')
+        # self.rect = plt.Rectangle((0.0017, 0.002), 0.995, 0.999, fill=False, color="#62949C",
+        #                           lw=1, zorder=1000, transform=self.figure.transFigure, figure=self.figure)
+        # self.figure.patches.extend([self.rect])
+        self.figure.patch.set_facecolor('none')
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
 
@@ -1036,8 +1036,8 @@ class Ui_mainInterface(object):
 
         # Table Layout
         self.SP_table = QtWidgets.QFrame(self.SP_item)
-        self.SP_table.setMinimumSize(QtCore.QSize(880, 470))
-        self.SP_table.setMaximumSize(QtCore.QSize(880, 470))
+        self.SP_table.setMinimumSize(QtCore.QSize(827, 470))
+        self.SP_table.setMaximumSize(QtCore.QSize(827, 470))
         self.SP_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_table.setObjectName("SP_table")
@@ -1099,7 +1099,7 @@ class Ui_mainInterface(object):
         self.SP_scrollArea.setWidgetResizable(True)
         self.SP_scrollArea.setObjectName("SP_scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 880, 470))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 826, 470))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.SP_scrollArea.horizontalScrollBar().hide()
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(
@@ -1113,48 +1113,15 @@ class Ui_mainInterface(object):
             self.scrollAreaWidgetContents)
         self.SP_tableWidget.setStyleSheet("")
         self.SP_tableWidget.setObjectName("SP_tableWidget")
-        # self.SP_tableWidget.setColumnCount(5)
-        # self.SP_tableWidget.setRowCount(9)
-
-        # self.SP_tableWidget.setRowCount(3)
         self.SP_tableWidget.setColumnCount(5)
         self.SP_tableWidget.setHorizontalHeaderLabels(
             ['Name', 'Duration', '', 'Status', ''])
         self.SP_tableWidget.verticalHeader().hide()
-        # effect = QGraphicsDropShadowEffect()
-        # self.SP_tableWidget.setGraphicsEffect(effect)
-        # self.SP_tableWidget.setStyleSheet("QHeaderView {\n"
-        #                                "color: #56B7C7;\n"
-        #                             #    "text-style; bold\n"
-        #                             #    "text-shadow: 2px 2px;\n"
-        #                             #    "border: 0px solid  # 567dbc;\n"
-        #                             #    "border-left: 0px;\n"
-        #                             #    "border-right: 0px;\n"
-        #                             #    "background:  # f9f9f9;\n"
-        #                                "}"
-        #                                )
-        # self.Testmic_button.setStyleSheet("QPushButton{\n"
-        #                                   "    background-color: #244D54;\n"
-        #                                   "    border-style : outset;\n"
-        #                                   "    border-width : 0.5px;\n"
-        #                                   "    border-radius: 25px;\n"
-        #                                   "    border-color : black;\n"
-        #                                   "\n"
-        #                                   "    color: #686868;\n"
-        #                                   "    text-align : center;\n"
-        #                                   "}\n"
-        #                                   "QPushButton:hover{\n"
-        #                                   "    background-color: #35707A;    \n"
-        #                                   "    border-width : 0.5px;\n"
-        #                                   "    border-color :  rgb(1, 209, 158) ;\n"
-        #                                   "    color: rgb(204, 204, 204);\n"
-        #                                   "}\n"
-        #                                   )
         self.SP_tableWidget.setStyleSheet("QTableWidget::item {"
                                           "color: #d7d7d7;"
                                           "background-color: rgba(50, 75, 79, 140)"
-                                          #   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(138, 138, 138, 50), stop:0.886364 rgba(102, 218, 237, 255));"
                                           "}"
+                                          
                                           "QTableWidget{"
                                           "gridline-color:  transparent;"
                                           "padding-left: 56px;\n"
@@ -1174,7 +1141,7 @@ class Ui_mainInterface(object):
         self.SP_tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
 
         self.SP_tableWidget.autofit = False
-        self.SP_tableWidget.setColumnWidth(0, 400)
+        self.SP_tableWidget.setColumnWidth(0, 401)
         self.SP_tableWidget.setColumnWidth(1, 130)
         self.SP_tableWidget.setColumnWidth(2, 80)
         self.SP_tableWidget.setColumnWidth(3, 80)
@@ -1211,29 +1178,36 @@ class Ui_mainInterface(object):
         except Exception as e:
             print("Error loading audio files:", e)
 
-        # for index in range(self.SP_tableWidget.rowCount()):
-
-        #     # play button
-        #     self.btn_play = QPushButton(self.SP_tableWidget)
-        #     self.btn_play.setText('Play')
-        #     self.SP_tableWidget.setCellWidget(index, 4, self.btn_play)
-        #     self.btn_play.clicked.connect(
-        #         lambda: self.SP_play_item(self.SP_tableWidget.currentRow()))
-
-        #     # listen button
-        #     self.btn_listen = QPushButton(self.SP_tableWidget)
-        #     self.btn_listen.setText('Listen')
-        #     self.SP_tableWidget.setCellWidget(index, 5, self.btn_listen)
-        #     self.btn_listen.clicked.connect(
-        #         lambda: self.SP_listen_item(self.SP_tableWidget.currentRow()))
-
-        #     # delete button
-        #     self.btn_delete = QPushButton(self.SP_tableWidget)
-        #     self.btn_delete.setText('delete')
-        #     self.SP_tableWidget.setCellWidget(index, 6, self.btn_delete)
-        #     self.btn_delete.clicked.connect(
-        #         lambda: self.remove_file(self.SP_tableWidget.currentRow()))
-
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(0, 1, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(1, 1, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(2, 1, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(3, 1, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(4, 1, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(5, 1, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(6, 1, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(7, 1, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(8, 1, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # item.setTextAlignment(QtCore.Qt.AlignCenter)
+        # self.tableWidget.setItem(9, 1, item)
         self.verticalLayout_15.addWidget(self.SP_tableWidget)
         self.SP_scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout_9.addWidget(self.SP_scrollArea)
@@ -2335,7 +2309,17 @@ class Ui_mainInterface(object):
                                          "border-radius: 20px;\n"
                                          "color: #000000;\n"
                                          "text-align: center;\n"
-                                         "}\n")
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
             
     def VC_item_2_clicked(self):
         if (Ui_mainInterface.VC_item_2 == 0):
@@ -2403,7 +2387,17 @@ class Ui_mainInterface(object):
                                          "border-radius: 20px;\n"
                                          "color: #000000;\n"
                                          "text-align: center;\n"
-                                         "}\n")
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
     
     def VC_item_3_clicked(self):
         if (Ui_mainInterface.VC_item_3 == 0):
@@ -2471,7 +2465,17 @@ class Ui_mainInterface(object):
                                          "border-radius: 20px;\n"
                                          "color: #000000;\n"
                                          "text-align: center;\n"
-                                         "}\n")
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
     
     def VC_item_4_clicked(self):
         if (Ui_mainInterface.VC_item_4 == 0):
@@ -2539,5 +2543,25 @@ class Ui_mainInterface(object):
                                          "border-radius: 20px;\n"
                                          "color: #000000;\n"
                                          "text-align: center;\n"
-                                         "}\n")
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
     
