@@ -5,7 +5,7 @@ import subprocess
 
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog, QMessageBox
 from PyQt5.QtCore import Qt, QUrl, QTimer
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
 
@@ -1070,6 +1070,7 @@ class Ui_mainInterface(object):
 
         # Soundpad Page
         self.filenames = []
+        self.play_counts = {}
         self.player = QMediaPlayer()
         self.ui_main = ui_main
 
@@ -2051,27 +2052,38 @@ class Ui_mainInterface(object):
     # Soundpad Page Function
     # add item
 
-    def SP_add_item(self):
+    def SP_add_item(self, file_path):
         options = QFileDialog.Options()
         folder = r""
 
-        fname, _ = QFileDialog.getOpenFileName(
-            self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        fname, _ = QFileDialog.getOpenFileName(self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV or MP3 (*.wav *.mp3)", options=options) 
 
         if fname:
+            if self.check_duplicate_file(fname):
+                msg_box = QMessageBox()
+                msg_box.setText("File name already exists.\nPlease select another file or change file name.")
+                msg_box.exec_()
+                return
+            
             print("add file :", fname)
 
             row = self.SP_tableWidget.rowCount()
             self.SP_tableWidget.insertRow(row)
 
-            self.SP_tableWidget.setItem(
-                row, 0, QTableWidgetItem(os.path.basename(fname)))
+            self.SP_tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
+
+            # self.table.setItem(row, 1, QTableWidgetItem(""))
+            # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
+
 
             duration = self.getDuration(fname)
-            self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))
+            self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
+
             
             play_button = self.play_button(fname, row)
             self.SP_tableWidget.setCellWidget(row, 2, play_button)
+            # play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
 
             self.SP_tableWidget.setCellWidget(row, 3, self.listen_button("", fname))
 
@@ -2085,36 +2097,73 @@ class Ui_mainInterface(object):
             if fname not in self.play_counts:
                 self.play_counts[fname] = 0
 
-            self.filenames.append(fname)
             self.save_file()
 
+        else:
+            print("No file selected.")
+
+    def check_duplicate_file(self, file_path):
+        file_name = os.path.basename(file_path)
+        if file_name in set([os.path.basename(fname) for fname in self.filenames]):
+            return True
+        return False
+
+    def save_file(self):
+        sp_data = {}
+        for fname in self.filenames:
+            sp_data[fname] = self.play_counts[fname]
+            # sp_data[fname.split("/")[-1].split(".")[0]] = self.play_counts[fname]
+
+        # save file in pickle
+        with open("soundpad.pickle", "wb") as file:
+            pickle.dump(sp_data, file)
+        
+        # self.play_counts[fname] = count
+        
+        print("save success")
+        print(sp_data)
+
+        sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
+        with open("sort_counts.txt", "w", encoding="utf-8") as file:
+            for item in sort_counts:
+                file.write(os.path.basename(item[0]) + "," + str(item[1]) + "\n")
+    
+        print("sort success")
+
     # play item
-
+    
     # ========================================================================================================================================
-
-    def play_button(self, label, fname):
+    #//TODO:
+    
+    def play_button(self, fname, index):
         icon_play = QtGui.QIcon()
         icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_play_icon.png"),
-                            QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        play_button = QPushButton(label)
-        play_button.setIcon(icon_play)
-        play_button.setIconSize(QtCore.QSize(24, 24))
-        play_button.clicked.connect(
-            lambda: self.play_media(play_button, fname))
-        return play_button
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        # play_button = QPushButton(text=str(label))
+        # play_button.setIcon(icon_play)
+        button = QPushButton(icon_play, "")
+        button.setIconSize(QtCore.QSize(30, 30))
+        # button.clicked.connect(lambda: self.play_media(button, fname, index))
+        button.clicked.connect(lambda _, button=button: self.play_media(button, fname, index))
+        
+        # print("=====================================================")
+        # print("show fname:", fname, "index: ", index)
+        # print("=====================================================")
+        return button
 
-    def play_media(self, btn, fname):
+    def play_media(self, btn, fname, index):
         icon_pause = QtGui.QIcon()
         icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_pause_icon.png"),
-                             QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon_play = QtGui.QIcon()
         icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_play_icon.png"),
-                            QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         # media_content = QMediaContent(QUrl.fromLocalFile(fname))
         media_content = fname
+        # print("show fname:", fname)
         # if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
         #     self.player.stop()
-        #     # play_button
+        #     # play_button 
         #     btn.setIcon(icon_play)
         #     # btn.setText("play")
         global micplay
@@ -2126,6 +2175,7 @@ class Ui_mainInterface(object):
             # play_button
             btn.setIcon(icon_play)
             # btn.setText("play")
+            # print(micplay_file, " state : ", micplay)
         else:
             if micplay == True:
                 curr_fname = micplay_file
@@ -2148,33 +2198,44 @@ class Ui_mainInterface(object):
                         play_btn.setIcon(icon_play)
                         # play_btn.setText("Play")
 
-# ==========================================================================
+#==========================================================================
+            # current_count = int(self.SP_tableWidget.item(self.SP_tableWidget.currentRow(), 4).text())
+            # self.play_counts[fname] = current_count + 1  # บันทึกค่าเพิ่ม
+            # current_count = int(self.play_counts.get(fname, 0)) + 1
+            # self.play_counts[fname] = current_count
+            # self.save_file() 
+            # self.SP_tableWidget.item(self.SP_tableWidget.currentRow(), 4).setText(str(current_count + 1))
+
+            # self.save_file()
+            
             # self.player.setMedia(media_content)
             # self.player.play()
 
             micplay = True
             stop_threads = False
             micplay_file = media_content
-
             def runsound():
                 wf = wave.open(media_content, "rb")
-                data = wf.readframes(1024)
-                while len(data) != 0:
-                    ui_virtual_microphone_stream.write(data)
-                    data = wf.readframes(1024)
+                sp_data = wf.readframes(1024)
+                while len(sp_data) != 0:
+                    ui_virtual_microphone_stream.write(sp_data)
+                    sp_data = wf.readframes(1024)
                     if stop_threads:
                         break
-            t1 = threading.Thread(target=runsound)
+            t1 = threading.Thread(target = runsound)
             t1.daemon = True
             t1.start()
-
+            
             # while len(data) != 0:
             #     ui_virtual_microphone_stream.write(data)
             #     data = wf.readframes(1024)
 
-# ==========================================================================
+#==========================================================================
             btn.setIcon(icon_pause)
             # btn.setText("Stop")
+            current_count = int(self.play_counts.get(fname, 0)) + 1
+            self.play_counts[fname] = current_count
+            self.save_file() 
 
     def get_play(self, fname):
         for row in range(self.SP_tableWidget.rowCount()):
@@ -2182,25 +2243,24 @@ class Ui_mainInterface(object):
                 return self.SP_tableWidget.cellWidget(row, 2)
             
     # ========================================================================================================================================
-
+            
     def listen_button(self, label, fname):
         icon_listen = QtGui.QIcon()
         icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_HP_icon.png"),
-                              QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         listen_button = QPushButton(label)
         listen_button.setIcon(icon_listen)
-        listen_button.setIconSize(QtCore.QSize(24, 24))
-        listen_button.clicked.connect(
-            lambda: self.listen_media(listen_button, fname))
+        listen_button.setIconSize(QtCore.QSize(30, 30))
+        listen_button.clicked.connect(lambda: self.listen_media(listen_button, fname))
         return listen_button
 
     def listen_media(self, btn, fname):
         icon_listen = QtGui.QIcon()
         icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_HP_icon.png"),
-                              QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon_pause = QtGui.QIcon()
         icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_pause_icon.png"),
-                             QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         media_content = QMediaContent(QUrl.fromLocalFile(fname))
         if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
             self.player.stop()
@@ -2248,31 +2308,30 @@ class Ui_mainInterface(object):
     def remove_button(self, row, fname):
         icon_remove = QtGui.QIcon()
         icon_remove.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_trash_icon.png"),
-                              QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         remove_button = QPushButton()
         remove_button.setIcon(icon_remove)
-        remove_button.setIconSize(QtCore.QSize(24, 24))
+        remove_button.setIconSize(QtCore.QSize(30, 30))
         remove_button.clicked.connect(lambda: self.remove_file(row, fname))
         return remove_button
 
     def remove_file(self, row, fname):
-        if fname in self.filenames:
+        try:
             self.filenames.remove(fname)
-            self.SP_tableWidget.removeRow(row)
+            self.play_counts.pop(fname)
+            for i in range(self.SP_tableWidget.rowCount()):
+                if self.SP_tableWidget.item(i, 0).text() == os.path.basename(fname):
+                    self.SP_tableWidget.removeRow(i)
+                    break
+            self.save_file()
 
-        self.save_file()
+            if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
+                self.player.stop()
 
-        # Stop the player if it was playing the removed file
-        if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
-            self.player.stop()
+            print("File removed successfully.")
 
-        print("File removed successfully.")
-
-    def save_file(self):
-        # save file in pickle
-        with open("soundpad.pickle", "wb") as file:
-
-            pickle.dump(self.filenames, file)
+        except Exception as e:
+            print("Error removing file:", e)
 
     def normal_audio_callback(self, in_data, frame_count, time_info, status):
         # Convert byte stream to numpy array
