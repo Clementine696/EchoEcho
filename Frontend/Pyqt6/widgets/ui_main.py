@@ -39,7 +39,7 @@ import sounddevice as sd
 import pyaudio
 from scipy.signal import butter, lfilter
 import scipy.signal as signal
-#import graph file
+# import graph file
 
 # from newgraph import MicrophoneAudioWaveform
 input_audio_deviceInfos = QAudioDeviceInfo.availableDevices(QAudio.AudioInput)
@@ -56,11 +56,11 @@ try:
             vb_index = i['index']
             break
     ui_virtual_microphone_stream = p.open(format=pyaudio.paInt16,
-                    channels=1,
-                    rate=44100,
-                    output=True,
-                    frames_per_buffer=1024,
-                    output_device_index=vb_index)
+                                          channels=1,
+                                          rate=44100,
+                                          output=True,
+                                          frames_per_buffer=1024,
+                                          output_device_index=vb_index)
 except:
     print("Cannot detect virtual microphone _ ui")
 
@@ -68,24 +68,28 @@ micplay = False
 micplay_file = "none"
 stop_threads = False
 
+
 class Ui_mainInterface(object):
     noise_reduce = 0
     test_microphone = 0
     VC_test_microphone = 0
-    Test_VC = 0
+    VC_item_1 = 0
+    VC_item_2 = 0
+    VC_item_3 = 0
+    VC_item_4 = 0
     microphone_mute = 0
     audio_mute = 0
     Mic_Side_menu = 0
     SP_Side_menu = 0
     VC_Side_menu = 0
-    
+
     def __init__(self):
         self.get_audio_data = np.zeros(1024)
         self.q = queue.Queue()
         self.q_normal = queue.Queue()
         self.q_reduce = queue.Queue()
         self.current_plot = 'normal'
-    
+
     def setupUi(self, ui_main):
         # Application size
         ui_main.setObjectName("ui_main")
@@ -180,10 +184,10 @@ class Ui_mainInterface(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.Microphone_button = QtWidgets.QPushButton(self.Menu_button)
-        self.Microphone_button.setEnabled(True)
 
         # Microphone button
+        self.Microphone_button = QtWidgets.QPushButton(self.Menu_button)
+        self.Microphone_button.setEnabled(True)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(28)
@@ -506,16 +510,18 @@ class Ui_mainInterface(object):
         font.setPointSize(32)
         self.settingmain.setFont(font)
         self.settingmain.setStyleSheet("QPushButton { \n"
-"    color: #ffffff;\n"
-"}")
+                                       "    color: #ffffff;\n"
+                                       "}")
         self.settingmain.setIconSize(QtCore.QSize(32, 32))
         self.settingmain.setObjectName("settingmain")
         self.framedefault = QtWidgets.QFrame(self.page_6)
         self.framedefault.setGeometry(QtCore.QRect(0, 100, 371, 180))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.framedefault.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.framedefault.sizePolicy().hasHeightForWidth())
         self.framedefault.setSizePolicy(sizePolicy)
         self.framedefault.setMinimumSize(QtCore.QSize(0, 180))
         self.framedefault.setMaximumSize(QtCore.QSize(16777215, 180))
@@ -525,7 +531,7 @@ class Ui_mainInterface(object):
         self.detaildefault = QtWidgets.QTextEdit(self.framedefault)
         self.detaildefault.setGeometry(QtCore.QRect(30, 20, 321, 121))
         self.detaildefault.setObjectName("detaildefault")
-        
+
         self.frameEquipment = QtWidgets.QFrame(self.page_6)
         self.frameEquipment.setGeometry(QtCore.QRect(0, 280, 371, 191))
         self.frameEquipment.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -544,9 +550,9 @@ class Ui_mainInterface(object):
         font.setPointSize(14)
         self.Equipmentsetting.setFont(font)
         self.Equipmentsetting.setStyleSheet("QPushButton { \n"
-"    background-color: #850021;\n"
-"    color: #ffffff;\n"
-"}")
+                                            "    background-color: #850021;\n"
+                                            "    color: #ffffff;\n"
+                                            "}")
         self.Equipmentsetting.setObjectName("Equipmentsetting")
         # self.Equipmentsetting.connect(self.open_device)
         self.frametutorial = QtWidgets.QFrame(self.page_6)
@@ -563,9 +569,9 @@ class Ui_mainInterface(object):
         font.setPointSize(14)
         self.Tutorial.setFont(font)
         self.Tutorial.setStyleSheet("QPushButton { \n"
-"    background-color: #56B7C7;\n"
-"    color: #ffffff;\n"
-"}")
+                                    "    background-color: #56B7C7;\n"
+                                    "    color: #ffffff;\n"
+                                    "}")
         self.Tutorial.setObjectName("Tutorial")
         self.frame_8 = QtWidgets.QFrame(self.page_6)
         self.frame_8.setGeometry(QtCore.QRect(0, 590, 372, 130))
@@ -582,10 +588,9 @@ class Ui_mainInterface(object):
         font.setPointSize(32)
         self.settingButton.setFont(font)
         self.settingButton.setStyleSheet("QPushButton { \n"
-"    color: #ffffff;\n"
-"}")
-        
-        
+                                         "    color: #ffffff;\n"
+                                         "}")
+
         # self.settingButton.setIcon(icon6)
         self.settingButton.setIconSize(QtCore.QSize(32, 32))
         self.settingButton.setObjectName("settingButton")
@@ -755,41 +760,43 @@ class Ui_mainInterface(object):
         self.CHUNK_SIZE = 1024
         # self.CALLBACK = self.normal_audio_callback
         self.PLOT = self.normal_update_plot
-        
+
         # Plot parameters
         self.WINDOW_SIZE = 1000  # ms
         self.DOWN_SAMPLE = 1
         self.CHANNELS_TO_PLOT = [0]
-        
+
         # Initialize queue for incoming audio data
         # self.q = queue.Queue()
 
-
         # Calculate number of samples to display in window
-        self.window_samples = int(self.WINDOW_SIZE * self.RATE / 1000 / self.DOWN_SAMPLE)
+        self.window_samples = int(
+            self.WINDOW_SIZE * self.RATE / 1000 / self.DOWN_SAMPLE)
 
         # Initialize plot data
-        self.plot_data = np.zeros((self.window_samples, len(self.CHANNELS_TO_PLOT)))
-        
-        #init plot
+        self.plot_data = np.zeros(
+            (self.window_samples, len(self.CHANNELS_TO_PLOT)))
+
+        # init plot
         self.figure = Figure()
-        self.rect = plt.Rectangle((0.0017, 0.002), 0.995, 0.999, fill=False, color="black", lw=1, zorder=1000, transform=self.figure.transFigure, figure=self.figure)
+        self.rect = plt.Rectangle((0.0017, 0.002), 0.995, 0.999, fill=False, color="black",
+                                  lw=1, zorder=1000, transform=self.figure.transFigure, figure=self.figure)
         self.figure.patches.extend([self.rect])
         self.figure.patch.set_facecolor('#244D54')
         self.canvas = FigureCanvas(self.figure)
         self.canvas_d = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
-        
-        #init lines
+
+        # init lines
         # self.lines = self.ax.plot(self.plot_data, color=(0, 1, 0.29))
         self.lines = self.ax.plot(self.plot_data, color=(0, 0, 0))
-            
+
         self.pa = pyaudio.PyAudio()
         self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
-                frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.normal_audio_callback)
-        
+                                   frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.normal_audio_callback)
+
         # self.audio_from_main()
-            
+
         self.ax.set_facecolor((0, 0, 0))
         self.ax.set_yticks([0])
         self.ax.yaxis.grid(True)
@@ -800,7 +807,7 @@ class Ui_mainInterface(object):
         # self.timer.timeout.disconnect()
         self.timer.timeout.connect(self.PLOT)
         self.timer.start(30)
-        
+
         plt.show()
         self.verticalLayout_3.addWidget(self.canvas)
         self.verticalLayout_2.addWidget(self.Graph)
@@ -910,7 +917,8 @@ class Ui_mainInterface(object):
         self.verticalLayout_20.addWidget(self.label)
         self.Alert_button_detail = QtWidgets.QPushButton(self.Text_Frame)
 
-        self.Alert_button_detail.clicked.connect(self.Alert_button_detail_clicked)
+        self.Alert_button_detail.clicked.connect(
+            self.Alert_button_detail_clicked)
 
         font = QtGui.QFont()
         font.setPointSize(16)
@@ -923,7 +931,7 @@ class Ui_mainInterface(object):
         self.horizontalLayout_3.addWidget(self.Alert_Frame)
         self.stackedWidget.addWidget(self.Alert_page)
 
-        #Dashbord Page
+        # Dashbord Page
         self.dashbord_page = QtWidgets.QWidget()
         self.dashbord_page.setObjectName("dashbord")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.dashbord_page)
@@ -1120,7 +1128,7 @@ class Ui_mainInterface(object):
                                           "}")
         self.SP_title_label.setAlignment(QtCore.Qt.AlignCenter)
         self.SP_title_label.setObjectName("SP_title_label")
-        
+
         self.horizontalLayout_6.addWidget(self.SP_title_label)
         self.pushButton = QtWidgets.QPushButton(self.SP_title)
         self.pushButton.setMinimumSize(QtCore.QSize(50, 50))
@@ -1129,7 +1137,7 @@ class Ui_mainInterface(object):
         self.pushButton.setObjectName("pushButton")
         icon_dash = QtGui.QIcon()
         icon_dash.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-combo-chart-96.png"),
-                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                            QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
         # DAshboad button clicked
         # self.pushButton.clicked.connect()
@@ -1161,8 +1169,8 @@ class Ui_mainInterface(object):
         self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_table.setObjectName("SP_table")
         self.SP_table.setStyleSheet("QFrame{\n"
-                                   "    background-color: rgba(0, 0, 0, 0);\n"
-                                   "}")
+                                    "    background-color: rgba(0, 0, 0, 0);\n"
+                                    "}")
 
         # Soundpad Table Layout
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.SP_table)
@@ -1171,50 +1179,50 @@ class Ui_mainInterface(object):
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.SP_scrollArea = QtWidgets.QScrollArea(self.SP_table)
         self.SP_scrollArea.setStyleSheet(
-                                        "QScrollBar:vertical {\n"
-                                            "border: none;\n"
-                                            "background: #244D54;\n"
-                                            "width: 14px;\n"
-                                            "margin: 15px 0 15px 0;\n"
-                                            "border-radius: 0px;\n"
-                                        " }\n"
-                                        "\n"
-                                        "/*  HANDLE BAR VERTICAL */\n"
-                                        "QScrollBar::handle:vertical {    \n"
-                                            "background-color: #56B7C7;\n"
-                                            "min-height: 80px;\n"
-                                            "border-radius: 7px;\n"
-                                        "}\n"
-                                        "\n"
-                                        "/* BTN TOP - SCROLLBAR */\n"
-                                        "QScrollBar::sub-line:vertical {\n"
-                                            "border: none;\n"
-                                            "background-color: #244D54;\n"
-                                            "height: 15px;\n"
-                                            "border-top-left-radius: 7px;\n"
-                                            "border-top-right-radius: 7px;\n"
-                                            "subcontrol-position: top;\n"
-                                            "subcontrol-origin: margin;\n"
-                                        "}\n"
-                                        "\n"
-                                        "/* BTN BOTTOM - SCROLLBAR */\n"
-                                        "QScrollBar::add-line:vertical {\n"
-                                            "border: none;\n"
-                                            "background-color: #244D54;\n"
-                                            "height: 15px;\n"
-                                            "border-bottom-left-radius: 7px;\n"
-                                            "border-bottom-right-radius: 7px;\n"
-                                            "subcontrol-position: bottom;\n"
-                                            "subcontrol-origin: margin;\n"
-                                        "}\n"
-                                        "/* RESET ARROW */\n"
-                                        "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
-                                            "background: none;\n"
-                                        "}\n"
-                                        "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
-                                            "background: none;\n"
-                                        "}"
-                                                          )
+            "QScrollBar:vertical {\n"
+            "border: none;\n"
+            "background: #244D54;\n"
+            "width: 14px;\n"
+            "margin: 15px 0 15px 0;\n"
+            "border-radius: 0px;\n"
+            " }\n"
+            "\n"
+            "/*  HANDLE BAR VERTICAL */\n"
+            "QScrollBar::handle:vertical {    \n"
+            "background-color: #56B7C7;\n"
+            "min-height: 80px;\n"
+            "border-radius: 7px;\n"
+            "}\n"
+            "\n"
+            "/* BTN TOP - SCROLLBAR */\n"
+            "QScrollBar::sub-line:vertical {\n"
+            "border: none;\n"
+            "background-color: #244D54;\n"
+            "height: 15px;\n"
+            "border-top-left-radius: 7px;\n"
+            "border-top-right-radius: 7px;\n"
+            "subcontrol-position: top;\n"
+            "subcontrol-origin: margin;\n"
+            "}\n"
+            "\n"
+            "/* BTN BOTTOM - SCROLLBAR */\n"
+            "QScrollBar::add-line:vertical {\n"
+            "border: none;\n"
+            "background-color: #244D54;\n"
+            "height: 15px;\n"
+            "border-bottom-left-radius: 7px;\n"
+            "border-bottom-right-radius: 7px;\n"
+            "subcontrol-position: bottom;\n"
+            "subcontrol-origin: margin;\n"
+            "}\n"
+            "/* RESET ARROW */\n"
+            "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
+            "background: none;\n"
+            "}\n"
+            "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
+            "background: none;\n"
+            "}"
+        )
         self.SP_scrollArea.setWidgetResizable(True)
         self.SP_scrollArea.setObjectName("SP_scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
@@ -1236,9 +1244,11 @@ class Ui_mainInterface(object):
         # self.SP_tableWidget.setRowCount(9)
 
         # self.SP_tableWidget.setRowCount(3)
-        self.SP_tableWidget.setColumnCount(6)
+
+        self.SP_tableWidget.setColumnCount(5)
         self.SP_tableWidget.setHorizontalHeaderLabels(
-            ['Name', 'Duration', 'Hotkeys', '', 'Status', ''])
+            ['Name', 'Duration', '', 'Status', ''])
+
         self.SP_tableWidget.verticalHeader().hide()
         # effect = QGraphicsDropShadowEffect()
         # self.SP_tableWidget.setGraphicsEffect(effect)
@@ -1270,22 +1280,24 @@ class Ui_mainInterface(object):
         #                                   "}\n"
         #                                   )
         self.SP_tableWidget.setStyleSheet("QTableWidget::item {"
-                                                          "color: #d7d7d7;"
-                                                          "background-color: rgba(50, 75, 79, 140)"
-                                                        #   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(138, 138, 138, 50), stop:0.886364 rgba(102, 218, 237, 255));"
-                                                          "}"
-                                        "QTableWidget{"
-                                                          "gridline-color:  transparent;"
-                                                          "}"
-                                                          )
+
+                                          "color: #d7d7d7;"
+                                          "background-color: rgba(50, 75, 79, 140)"
+                                          #   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(138, 138, 138, 50), stop:0.886364 rgba(102, 218, 237, 255));"
+                                          "}"
+                                          "QTableWidget{"
+                                          "gridline-color:  transparent;"
+                                          "padding-left: 56px;\n"
+                                          "}"
+                                          )
         self.SP_tableWidget.horizontalHeader().setStyleSheet("QHeaderView::section { font-size: 10pt;"
-                                                          "font-weight: bold;"
-                                                          "color: #56B7C7;"
-                                                          "background-color: transparent;"
-                                                          "}"
-                                                          "QHeaderView {"
-                                                          "border-bottom: 1px solid #00FFF0;"
-                                                          "}")
+                                                             "font-weight: bold;"
+                                                             "color: #56B7C7;"
+                                                             "background-color: transparent;"
+                                                             "}"
+                                                             "QHeaderView {"
+                                                             "border-bottom: 1px solid #00FFF0;"
+                                                             "}")
 
         self.SP_tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.SP_tableWidget.horizontalHeader().setDisabled(True)
@@ -1294,10 +1306,9 @@ class Ui_mainInterface(object):
         self.SP_tableWidget.autofit = False
         self.SP_tableWidget.setColumnWidth(0, 400)
         self.SP_tableWidget.setColumnWidth(1, 130)
-        self.SP_tableWidget.setColumnWidth(2, 110)
+        self.SP_tableWidget.setColumnWidth(2, 80)
         self.SP_tableWidget.setColumnWidth(3, 80)
         self.SP_tableWidget.setColumnWidth(4, 80)
-        self.SP_tableWidget.setColumnWidth(5, 80)
 
         try:
             with open("soundpad.pickle", "rb") as file:
@@ -1306,22 +1317,19 @@ class Ui_mainInterface(object):
                     self.filenames.append(fname)
                     self.play_counts[fname] = count
 
-                    row = self.SP_tableWidget.rowCount()
-                    self.SP_tableWidget.insertRow(row)
-
                     self.SP_tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
                     duration = self.getDuration(fname)
-                    self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))   
-
+                    self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))
+                    
                     play_button = self.play_button(fname, row)
-                    self.SP_tableWidget.setCellWidget(row, 3, play_button)
+                    self.SP_tableWidget.setCellWidget(row, 2, play_button)
 
-                    self.SP_tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
+                    self.SP_tableWidget.setCellWidget(row, 3, self.listen_button("", fname))
 
                     remove_button = self.remove_button(row, fname)
 
-                    self.SP_tableWidget.setCellWidget(row, 5, remove_button)
+                    self.SP_tableWidget.setCellWidget(row, 4, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
 
                     # for i in range(self.SP_tableWidget.rowCount()):
@@ -1388,6 +1396,8 @@ class Ui_mainInterface(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setSpacing(0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+
+        self.VC_frame = QtWidgets.QFrame(self.Voicechanger_page)
         self.VC_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.VC_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.VC_frame.setObjectName("VC_frame")
@@ -1397,17 +1407,17 @@ class Ui_mainInterface(object):
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
 
         # Voice Changer Body
-        self.VC_item = QtWidgets.QFrame(self.VC_frame)
-        self.VC_item.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_item.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_item.setObjectName("VC_item")
-        self.verticalLayout_53 = QtWidgets.QVBoxLayout(self.VC_item)
+        self.VC_item_frame = QtWidgets.QFrame(self.VC_frame)
+        self.VC_item_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.VC_item_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.VC_item_frame.setObjectName("VC_item_frame")
+        self.verticalLayout_53 = QtWidgets.QVBoxLayout(self.VC_item_frame)
         self.verticalLayout_53.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_53.setSpacing(0)
         self.verticalLayout_53.setObjectName("verticalLayout_53")
 
         # Voice Changer Title
-        self.VC_item_body = QtWidgets.QFrame(self.VC_item)
+        self.VC_item_body = QtWidgets.QFrame(self.VC_item_frame)
         self.VC_item_body.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.VC_item_body.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.VC_item_body.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -1417,8 +1427,8 @@ class Ui_mainInterface(object):
         self.verticalLayout_54.setSpacing(0)
         self.verticalLayout_54.setObjectName("verticalLayout_54")
         self.VC_title_2 = QtWidgets.QFrame(self.VC_item_body)
-        self.VC_title_2.setMinimumSize(QtCore.QSize(675, 120))
-        self.VC_title_2.setMaximumSize(QtCore.QSize(675, 120))
+        self.VC_title_2.setMinimumSize(QtCore.QSize(900, 120))
+        self.VC_title_2.setMaximumSize(QtCore.QSize(900, 120))
         self.VC_title_2.setStyleSheet("QFrame{\n"
                                       "    background-color: rgba(0, 0, 0, 0);\n"
                                       "}")
@@ -1432,6 +1442,8 @@ class Ui_mainInterface(object):
         self.verticalLayout_55.setSpacing(0)
         self.verticalLayout_55.setObjectName("verticalLayout_55")
         self.VC_title_label_2 = QtWidgets.QLabel(self.VC_title_2)
+        self.VC_title_label_2.setMinimumSize(QtCore.QSize(900, 0))
+        self.VC_title_label_2.setMaximumSize(QtCore.QSize(900, 16777215))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(40)
@@ -1447,624 +1459,231 @@ class Ui_mainInterface(object):
         self.verticalLayout_55.addWidget(self.VC_title_label_2)
         self.verticalLayout_54.addWidget(self.VC_title_2)
 
-        # Voice Changer Table
-        self.VC_table = QtWidgets.QFrame(self.VC_item_body)
-        self.VC_table.setMinimumSize(QtCore.QSize(900, 600))
-        self.VC_table.setMaximumSize(QtCore.QSize(900, 600))
-        self.VC_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_table.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_table.setObjectName("VC_table")
+        # Voice Changer item
+        self.VC_item = QtWidgets.QFrame(self.VC_item_body)
+        self.VC_item.setMinimumSize(QtCore.QSize(900, 470))
+        self.VC_item.setMaximumSize(QtCore.QSize(900, 470))
+        self.VC_item.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.VC_item.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.VC_item.setObjectName("VC_item")
 
-        # Voice Changer Table Layout
-        self.verticalLayout_20 = QtWidgets.QVBoxLayout(self.VC_table)
-        self.verticalLayout_20.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_20.setSpacing(0)
-        self.verticalLayout_20.setObjectName("verticalLayout_20")
-        self.VC_scrollArea = QtWidgets.QScrollArea(self.VC_table)
-        self.VC_scrollArea.setMinimumSize(QtCore.QSize(675, 600))
-        self.VC_scrollArea.setMaximumSize(QtCore.QSize(675, 600))
-        self.VC_scrollArea.setWidgetResizable(True)
-        self.VC_scrollArea.setObjectName("VC_scrollArea")
+        # Voice Changer button
+        self.gridLayout = QtWidgets.QGridLayout(self.VC_item)
+        self.gridLayout.setContentsMargins(16, 8, 16, 8)
+        self.gridLayout.setHorizontalSpacing(32)
+        self.gridLayout.setVerticalSpacing(8)
+        self.gridLayout.setObjectName("gridLayout")
 
-        # Voice Changer Table Scroll Area
-        self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(
-            QtCore.QRect(0, 0, 675, 600))
-        self.scrollAreaWidgetContents_3.setMinimumSize(QtCore.QSize(675, 600))
-        self.scrollAreaWidgetContents_3.setMaximumSize(QtCore.QSize(675, 600))
-        self.scrollAreaWidgetContents_3.setObjectName(
-            "scrollAreaWidgetContents_3")
-        self.verticalLayout_23 = QtWidgets.QVBoxLayout(
-            self.scrollAreaWidgetContents_3)
-        self.verticalLayout_23.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_23.setSpacing(0)
-        self.verticalLayout_23.setObjectName("verticalLayout_23")
+        # Voice Changer button 2
+        self.Voicechange_2 = QtWidgets.QPushButton(self.VC_item) #//TODO:
 
-        # Voice Changer Table Widget
-        self.VC_tableWidget = QtWidgets.QTableWidget(
-            self.scrollAreaWidgetContents_3)
-        # self.tableWidget_3.setMinimumSize(QtCore.QSize(675, 600))
-        # self.tableWidget_3.setMaximumSize(QtCore.QSize(675, 600))
-        self.VC_tableWidget.setStyleSheet("")
-        self.VC_tableWidget.setObjectName("VC_tableWidget")
-        self.VC_tableWidget.setColumnCount(4)
-        self.VC_tableWidget.setHorizontalHeaderLabels(
-            ['No.', 'Name', 'Status', ''])
-        self.VC_tableWidget.verticalHeader().hide()
-        self.VC_tableWidget.horizontalHeader().setStyleSheet("QHeaderView { font-size: 10pt;"
-                                                             "font-weight: bold;"
-                                                             "color: #56B7C7;"
-                                                             "background-color: transparent;"
-                                                             "border: 0px;"
-                                                             "}")
-
-        self.VC_tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
-        self.VC_tableWidget.horizontalHeader().setDisabled(True)
-        self.VC_tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
-
-        self.VC_tableWidget.autofit = False
-        self.VC_tableWidget.setColumnWidth(0, 60)
-        self.VC_tableWidget.setColumnWidth(1, 400)
-        self.VC_tableWidget.setColumnWidth(2, 130)
-        self.VC_tableWidget.setColumnWidth(3, 110)
-        self.VC_tableWidget.setColumnWidth(4, 60)
-        self.VC_tableWidget.setColumnWidth(5, 60)
-        self.VC_tableWidget.setColumnWidth(6, 60)
-
-        self.verticalLayout_23.addWidget(self.VC_tableWidget)
-        self.VC_scrollArea.setWidget(self.scrollAreaWidgetContents_3)
-        self.verticalLayout_20.addWidget(self.VC_scrollArea)
-        self.verticalLayout_54.addWidget(self.VC_table)
-        self.verticalLayout_53.addWidget(self.VC_item_body)
-
-        # Test Voice Changer Button
-        self.Test_VC = QtWidgets.QPushButton(self.scrollAreaWidgetContents_3)
-        self.Test_VC.setGeometry(QtCore.QRect(250, 440, 200, 80))
-        self.Test_VC.setMinimumSize(QtCore.QSize(200, 80))
-        self.Test_VC.setMaximumSize(QtCore.QSize(200, 80))
+        self.Voicechange_2.setMinimumSize(QtCore.QSize(200, 170))
+        self.Voicechange_2.setMaximumSize(QtCore.QSize(200, 170))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(16)
-        self.Test_VC.setFont(font)
-        self.Test_VC.setStyleSheet("QPushButton{\n"
-                                   "    background-color: #244D54;\n"
-                                   "    border-style : outset;\n"
-                                   "    border-width : 0.5px;\n"
-                                   "    border-radius: 25px;\n"
-                                   "    border-color : black;\n"
-                                   "\n"
-                                   "    color: #686868;\n"
-                                   "    text-align : center;\n"
-                                   "}\n"
-                                   "QPushButton:hover{\n"
-                                   "    background-color: #35707A;    \n"
-                                   "    border-width : 0.5px;\n"
-                                   "    border-color :  rgb(1, 209, 158) ;\n"
-                                   "    color: rgb(204, 204, 204);\n"
-                                   "}\n"
-                                   )
-        self.Test_VC.setObjectName("Test_VC")
+        self.Voicechange_2.setFont(font)
+        self.Voicechange_2.setStyleSheet("QPushButton {\n"
+                                        "    background-color: #56B7C7;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    \n"
+                                        "    color: #000000;\n"
+                                        "    text-align: center;\n"
+                                        "    text:24px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "QPushButton:hover{\n"
+                                        "    color : #FFFFFF;\n"
+                                        "    background-color : #4593A0 ;\n"
+                                        "    border-width: 0.5px;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    border-color:#00D19D ;\n"
+                                        "    border-width : 2px;\n"
+                                        "    border-style: outset;\n"
+                                        "}")
+        self.Voicechange_2.setObjectName("Voicechange_2")
+        self.gridLayout.addWidget(self.Voicechange_2, 0, 1, 1, 1)
 
-        # Noice button Function
-        self.Test_VC.clicked.connect(self.Test_VC_clicked)
+        # Voice Changer button 2 function
+        self.Voicechange_2.clicked.connect(self.VC_item_2_clicked)
 
-        # Voice Changer Eq Frame
-        self.horizontalLayout_6.addWidget(self.VC_item)
-        self.VC_Eq = QtWidgets.QFrame(self.VC_frame)
-        self.VC_Eq.setMinimumSize(QtCore.QSize(225, 720))
-        self.VC_Eq.setMaximumSize(QtCore.QSize(225, 720))
-        self.VC_Eq.setStyleSheet("QFrame{\n"
-                                 "    background-color: #324B4F\n"
-                                 "}")
-        self.VC_Eq.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq.setObjectName("VC_Eq")
-        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.VC_Eq)
-        self.verticalLayout_10.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_10.setSpacing(0)
-        self.verticalLayout_10.setObjectName("verticalLayout_10")
+        # Voice Changer button 4
+        self.Voicechange_4 = QtWidgets.QPushButton(self.VC_item)
 
-        # Voice Changer Eq Title Frame
-        self.VC_Eq_name_title = QtWidgets.QFrame(self.VC_Eq)
-        self.VC_Eq_name_title.setMinimumSize(QtCore.QSize(225, 90))
-        self.VC_Eq_name_title.setMaximumSize(QtCore.QSize(225, 90))
-        self.VC_Eq_name_title.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_name_title.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_name_title.setObjectName("VC_Eq_name_title")
-        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.VC_Eq_name_title)
+        self.Voicechange_4.setMinimumSize(QtCore.QSize(200, 170))
+        self.Voicechange_4.setMaximumSize(QtCore.QSize(200, 170))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(16)
+        self.Voicechange_4.setFont(font)
+        self.Voicechange_4.setStyleSheet("QPushButton {\n"
+                                        "    background-color: #56B7C7;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    \n"
+                                        "    color: #000000;\n"
+                                        "    text-align: center;\n"
+                                        "    text:24px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "QPushButton:hover{\n"
+                                        "    color : #FFFFFF;\n"
+                                        "    background-color : #4593A0 ;\n"
+                                        "    border-width: 0.5px;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    border-color:#00D19D ;\n"
+                                        "    border-width : 2px;\n"
+                                        "    border-style: outset;\n"
+                                        "}")
+        self.Voicechange_4.setObjectName("Voicechange_4")
+        self.gridLayout.addWidget(self.Voicechange_4, 1, 0, 1, 1)
+
+        # Voice Changer button 4 function
+        self.Voicechange_4.clicked.connect(self.VC_item_4_clicked)
+
+        # Voice Changer button 1
+        self.Voicechange_1 = QtWidgets.QPushButton(self.VC_item)
+        self.Voicechange_1.setMinimumSize(QtCore.QSize(200, 170))
+        self.Voicechange_1.setMaximumSize(QtCore.QSize(200, 170))
+
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(16)
+        self.Voicechange_1.setFont(font)
+        self.Voicechange_1.setStyleSheet("QPushButton {\n"
+                                        "    background-color: #56B7C7;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    \n"
+                                        "    color: #000000;\n"
+                                        "    text-align: center;\n"
+                                        "    text:24px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "QPushButton:hover{\n"
+                                        "    color : #FFFFFF;\n"
+                                        "    background-color : #4593A0 ;\n"
+                                        "    border-width: 0.5px;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    border-color:#00D19D ;\n"
+                                        "    border-width : 2px;\n"
+                                        "    border-style: outset;\n"
+                                        "}")
+        self.Voicechange_1.setObjectName("Voicechange_1")
+        self.gridLayout.addWidget(self.Voicechange_1, 0, 0, 1, 1)
+
+        # Voice Changer button function
+        self.Voicechange_1.clicked.connect(self.VC_item_1_clicked)
+
+        # Voice Changer button 3
+        self.Voicechange_3 = QtWidgets.QPushButton(self.VC_item)
+
+        self.Voicechange_3.setMinimumSize(QtCore.QSize(200, 170))
+        self.Voicechange_3.setMaximumSize(QtCore.QSize(200, 170))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        font.setPointSize(16)
+        self.Voicechange_3.setFont(font)
+        self.Voicechange_3.setStyleSheet("QPushButton {\n"
+                                        "    background-color: #56B7C7;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    \n"
+                                        "    color: #000000;\n"
+                                        "    text-align: center;\n"
+                                        "    text:24px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "QPushButton:hover{\n"
+                                        "    color : #FFFFFF;\n"
+                                        "    background-color : #4593A0 ;\n"
+                                        "    border-width: 0.5px;\n"
+                                        "    border-radius: 20px;\n"
+                                        "    border-color:#00D19D ;\n"
+                                        "    border-width : 2px;\n"
+                                        "    border-style: outset;\n"
+                                        "}")
+        self.Voicechange_3.setObjectName("Voicechange_3")
+        self.gridLayout.addWidget(self.Voicechange_3, 0, 2, 1, 1)
+
+        # Voice Changer button 3 function
+        self.Voicechange_3.clicked.connect(self.VC_item_3_clicked)
+
+        self.verticalLayout_54.addWidget(self.VC_item)
+
+        # Test Mic Button
+        self.VC_Testmic = QtWidgets.QFrame(self.VC_item_body)
+
+        self.VC_Testmic.setMinimumSize(QtCore.QSize(900, 130))
+        self.VC_Testmic.setMaximumSize(QtCore.QSize(900, 130))
+        self.VC_Testmic.setStyleSheet("QFrame{\n"
+                                      "    background-color: rgba(0, 0, 0, 0);\n"
+                                      "\n"
+                                      "    padding-left: 60px;\n"
+                                      "    padding-right: 60px;\n"
+                                      "    padding-top: 0px;\n"
+                                      "    padding-bottom: 20px;\n"
+                                      "}")
+
+        self.VC_Testmic.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.VC_Testmic.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.VC_Testmic.setObjectName("VC_Testmic")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.VC_Testmic)
         self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
-        self.VC_Eq_Head = QtWidgets.QLabel(self.VC_Eq_name_title)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(16)
-        self.VC_Eq_Head.setFont(font)
-        self.VC_Eq_Head.setStyleSheet("QLabel{\n"
-                                      "    color: #B0B0B0\n"
-                                      "}")
-        self.VC_Eq_Head.setAlignment(QtCore.Qt.AlignCenter)
-        self.VC_Eq_Head.setObjectName("VC_Eq_Head")
-        self.verticalLayout_12.addWidget(self.VC_Eq_Head)
+        self.VC_Testmi_button = QtWidgets.QPushButton(self.VC_Testmic)
 
-        # Voice Changer Eq item name
-        self.VC_name_item = QtWidgets.QLabel(self.VC_Eq_name_title)
+        # Test Mic Button Function
+        self.VC_Testmi_button.clicked.connect(self.VC_Testmi_button_clicked)
+
+        self.VC_Testmi_button.setMinimumSize(QtCore.QSize(780, 80))
+        self.VC_Testmi_button.setMaximumSize(QtCore.QSize(780, 80))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(20)
-        self.VC_name_item.setFont(font)
-        self.VC_name_item.setStyleSheet("QLabel{\n"
-                                        "    color: #FFFFFF\n"
-                                        "}")
-        self.VC_name_item.setAlignment(QtCore.Qt.AlignCenter)
-        self.VC_name_item.setObjectName("VC_name_item")
-        self.verticalLayout_12.addWidget(self.VC_name_item)
-        self.verticalLayout_10.addWidget(self.VC_Eq_name_title)
-
-        # Voice Changer Eq Setting Frame
-        self.VC_Eq_setting = QtWidgets.QFrame(self.VC_Eq)
-        self.VC_Eq_setting.setMinimumSize(QtCore.QSize(225, 510))
-        self.VC_Eq_setting.setMaximumSize(QtCore.QSize(225, 510))
-        self.VC_Eq_setting.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_setting.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_setting.setObjectName("VC_Eq_setting")
-        self.verticalLayout_16 = QtWidgets.QVBoxLayout(self.VC_Eq_setting)
-        self.verticalLayout_16.setContentsMargins(0, 5, 0, 0)
-        self.verticalLayout_16.setSpacing(5)
-        self.verticalLayout_16.setObjectName("verticalLayout_16")
-
-        # Voice Changer Eq Setting 1
-        self.VC_Eq_1 = QtWidgets.QFrame(self.VC_Eq_setting)
-        self.VC_Eq_1.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_1.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_1.setObjectName("VC_Eq_1")
-        self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.VC_Eq_1)
-        self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_17.setSpacing(0)
-        self.verticalLayout_17.setObjectName("verticalLayout_17")
-        self.VC_Eq_name = QtWidgets.QFrame(self.VC_Eq_1)
-        self.VC_Eq_name.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_name.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_name.setObjectName("VC_Eq_name")
-        self.verticalLayout_19 = QtWidgets.QVBoxLayout(self.VC_Eq_name)
-        self.verticalLayout_19.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_19.setSpacing(0)
-        self.verticalLayout_19.setObjectName("verticalLayout_19")
-        self.VC_Eq_p1 = QtWidgets.QLabel(self.VC_Eq_name)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.VC_Eq_p1.setFont(font)
-        self.VC_Eq_p1.setStyleSheet("QLabel{\n"
-                                    "    color: #FFFFFF\n"
-                                    "}")
-        self.VC_Eq_p1.setAlignment(QtCore.Qt.AlignCenter)
-        self.VC_Eq_p1.setObjectName("VC_Eq_p1")
-        self.verticalLayout_19.addWidget(self.VC_Eq_p1)
-        self.verticalLayout_17.addWidget(self.VC_Eq_name)
-        self.VC_Eq_labe_Ti = QtWidgets.QFrame(self.VC_Eq_1)
-        self.VC_Eq_labe_Ti.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_labe_Ti.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_labe_Ti.setObjectName("VC_Eq_labe_Ti")
-        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.VC_Eq_labe_Ti)
-        self.horizontalLayout_7.setContentsMargins(8, 0, 8, 0)
-        self.horizontalLayout_7.setSpacing(0)
-        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.VC_Eq_label_L = QtWidgets.QLabel(self.VC_Eq_labe_Ti)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_L.setFont(font)
-        self.VC_Eq_label_L.setStyleSheet("QLabel{\n"
-                                         "    color: #FFFFFF\n"
-                                         "}")
-        self.VC_Eq_label_L.setObjectName("VC_Eq_label_L")
-        self.horizontalLayout_7.addWidget(self.VC_Eq_label_L)
-        self.VC_Eq_label_H = QtWidgets.QLabel(self.VC_Eq_labe_Ti)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_H.setFont(font)
-        self.VC_Eq_label_H.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.VC_Eq_label_H.setStyleSheet("QLabel{\n"
-                                         "    color: #FFFFFF\n"
-                                         "}")
-        self.VC_Eq_label_H.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.VC_Eq_label_H.setObjectName("VC_Eq_label_H")
-        self.horizontalLayout_7.addWidget(self.VC_Eq_label_H)
-        self.verticalLayout_17.addWidget(self.VC_Eq_labe_Ti)
-
-        # Voice Changer Eq Setting 1 Slider
-        self.VC_slider_frame = QtWidgets.QFrame(self.VC_Eq_1)
-        self.VC_slider_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_slider_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_slider_frame.setObjectName("VC_slider_frame")
-        self.verticalLayout_18 = QtWidgets.QVBoxLayout(self.VC_slider_frame)
-        self.verticalLayout_18.setContentsMargins(10, 0, 10, 0)
-        self.verticalLayout_18.setSpacing(0)
-        self.verticalLayout_18.setObjectName("verticalLayout_18")
-
-        self.horizontalSlider_VC_Eq1 = QtWidgets.QSlider(self.VC_slider_frame)
-        self.horizontalSlider_VC_Eq1.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider_VC_Eq1.setMaximum(15)
-        self.horizontalSlider_VC_Eq1.setMinimum(2)
-        self.horizontalSlider_VC_Eq1.setValue(2)
-        self.horizontalSlider_VC_Eq1.setPageStep(1)
-        self.horizontalSlider_VC_Eq1.valueChanged.connect(self.VC_Eq_Slider1) #//TODO:
-        self.horizontalSlider_VC_Eq1.setObjectName("horizontalSlider_VC_Eq1")
-        self.verticalLayout_18.addWidget(self.horizontalSlider_VC_Eq1)
-
-        self.verticalLayout_17.addWidget(self.VC_slider_frame)
-        self.verticalLayout_16.addWidget(self.VC_Eq_1)
-
-        # Voice Changer Eq Setting 2
-        self.VC_Eq_2 = QtWidgets.QFrame(self.VC_Eq_setting)
-        self.VC_Eq_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_2.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_2.setObjectName("VC_Eq_2")
-        self.verticalLayout_32 = QtWidgets.QVBoxLayout(self.VC_Eq_2)
-        self.verticalLayout_32.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_32.setSpacing(0)
-        self.verticalLayout_32.setObjectName("verticalLayout_32")
-        self.VC_Eq_name_6 = QtWidgets.QFrame(self.VC_Eq_2)
-        self.VC_Eq_name_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_name_6.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_name_6.setObjectName("VC_Eq_name_6")
-        self.verticalLayout_33 = QtWidgets.QVBoxLayout(self.VC_Eq_name_6)
-        self.verticalLayout_33.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_33.setSpacing(0)
-        self.verticalLayout_33.setObjectName("verticalLayout_33")
-        self.VC_Eq_p1_6 = QtWidgets.QLabel(self.VC_Eq_name_6)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.VC_Eq_p1_6.setFont(font)
-        self.VC_Eq_p1_6.setStyleSheet("QLabel{\n"
-                                      "    color: #FFFFFF\n"
-                                      "}")
-        self.VC_Eq_p1_6.setAlignment(QtCore.Qt.AlignCenter)
-        self.VC_Eq_p1_6.setObjectName("VC_Eq_p1_6")
-        self.verticalLayout_33.addWidget(self.VC_Eq_p1_6)
-        self.verticalLayout_32.addWidget(self.VC_Eq_name_6)
-        self.VC_Eq_labe_Ti_6 = QtWidgets.QFrame(self.VC_Eq_2)
-        self.VC_Eq_labe_Ti_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_labe_Ti_6.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_labe_Ti_6.setObjectName("VC_Eq_labe_Ti_6")
-        self.horizontalLayout_12 = QtWidgets.QHBoxLayout(self.VC_Eq_labe_Ti_6)
-        self.horizontalLayout_12.setContentsMargins(8, 0, 8, 0)
-        self.horizontalLayout_12.setSpacing(0)
-        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
-        self.VC_Eq_label_L_6 = QtWidgets.QLabel(self.VC_Eq_labe_Ti_6)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_L_6.setFont(font)
-        self.VC_Eq_label_L_6.setStyleSheet("QLabel{\n"
-                                           "    color: #FFFFFF\n"
-                                           "}")
-        self.VC_Eq_label_L_6.setObjectName("VC_Eq_label_L_6")
-        self.horizontalLayout_12.addWidget(self.VC_Eq_label_L_6)
-        self.VC_Eq_label_H_6 = QtWidgets.QLabel(self.VC_Eq_labe_Ti_6)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_H_6.setFont(font)
-        self.VC_Eq_label_H_6.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.VC_Eq_label_H_6.setStyleSheet("QLabel{\n"
-                                           "    color: #FFFFFF\n"
-                                           "}")
-        self.VC_Eq_label_H_6.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.VC_Eq_label_H_6.setObjectName("VC_Eq_label_H_6")
-        self.horizontalLayout_12.addWidget(self.VC_Eq_label_H_6)
-        self.verticalLayout_32.addWidget(self.VC_Eq_labe_Ti_6)
-        self.VC_slider_frame_6 = QtWidgets.QFrame(self.VC_Eq_2)
-        self.VC_slider_frame_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_slider_frame_6.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_slider_frame_6.setObjectName("VC_slider_frame_6")
-        self.verticalLayout_34 = QtWidgets.QVBoxLayout(self.VC_slider_frame_6)
-        self.verticalLayout_34.setContentsMargins(10, 0, 10, 0)
-        self.verticalLayout_34.setSpacing(0)
-        self.verticalLayout_34.setObjectName("verticalLayout_34")
-        self.horizontalSlider_VC_Eq2 = QtWidgets.QSlider(self.VC_slider_frame_6)
-        self.horizontalSlider_VC_Eq2.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider_VC_Eq2.setMaximum(50)
-        self.horizontalSlider_VC_Eq2.setMinimum(6)
-        self.horizontalSlider_VC_Eq2.setValue(12)
-        self.horizontalSlider_VC_Eq2.setPageStep(1)
-        self.horizontalSlider_VC_Eq2.valueChanged.connect(self.VC_Eq_Slider2)#//TODO:
-        self.horizontalSlider_VC_Eq2.setObjectName("horizontalSlider_VC_Eq2")
-        self.verticalLayout_34.addWidget(self.horizontalSlider_VC_Eq2)
-        self.verticalLayout_32.addWidget(self.VC_slider_frame_6)
-        self.verticalLayout_16.addWidget(self.VC_Eq_2)
-
-        # Voice Changer Eq Setting 5
-        self.VC_Eq_5 = QtWidgets.QFrame(self.VC_Eq_setting)
-        self.VC_Eq_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_5.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_5.setObjectName("VC_Eq_5")
-        self.verticalLayout_50 = QtWidgets.QVBoxLayout(self.VC_Eq_5)
-        self.verticalLayout_50.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_50.setSpacing(0)
-        self.verticalLayout_50.setObjectName("verticalLayout_50")
-        self.VC_Eq_name_12 = QtWidgets.QFrame(self.VC_Eq_5)
-        self.VC_Eq_name_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_name_12.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_name_12.setObjectName("VC_Eq_name_12")
-        self.verticalLayout_51 = QtWidgets.QVBoxLayout(self.VC_Eq_name_12)
-        self.verticalLayout_51.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_51.setSpacing(0)
-        self.verticalLayout_51.setObjectName("verticalLayout_51")
-        self.VC_Eq_p1_12 = QtWidgets.QLabel(self.VC_Eq_name_12)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.VC_Eq_p1_12.setFont(font)
-        self.VC_Eq_p1_12.setStyleSheet("QLabel{\n"
-                                       "    color: #FFFFFF\n"
-                                       "}")
-        self.VC_Eq_p1_12.setAlignment(QtCore.Qt.AlignCenter)
-        self.VC_Eq_p1_12.setObjectName("VC_Eq_p1_12")
-        self.verticalLayout_51.addWidget(self.VC_Eq_p1_12)
-        self.verticalLayout_50.addWidget(self.VC_Eq_name_12)
-        self.VC_Eq_labe_Ti_12 = QtWidgets.QFrame(self.VC_Eq_5)
-        self.VC_Eq_labe_Ti_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_labe_Ti_12.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_labe_Ti_12.setObjectName("VC_Eq_labe_Ti_12")
-        self.horizontalLayout_18 = QtWidgets.QHBoxLayout(self.VC_Eq_labe_Ti_12)
-        self.horizontalLayout_18.setContentsMargins(8, 0, 8, 0)
-        self.horizontalLayout_18.setSpacing(0)
-        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
-        self.VC_Eq_label_L_12 = QtWidgets.QLabel(self.VC_Eq_labe_Ti_12)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_L_12.setFont(font)
-        self.VC_Eq_label_L_12.setStyleSheet("QLabel{\n"
-                                            "    color: #FFFFFF\n"
+        self.VC_Testmi_button.setFont(font)
+        self.VC_Testmi_button.setStyleSheet("QPushButton {\n"
+                                            "    background-color: #244D54;\n"
+                                            "    border-style: outset;\n"
+                                            "    border-width: 0.5px;\n"
+                                            "    border-radius: 25px;\n"
+                                            "    border-color: black;\n"
+                                            "    \n"
+                                            "    color: rgb(255, 255, 255);\n"
+                                            "    text-align: center;\n"
+                                            "\n"
+                                            "    padding: 20px\n"
+                                            "}\n"
+                                            "\n"
+                                            "QPushButton:hover{\n"
+                                            "    border-width : 0.5px;\n"
+                                            "    border-color :  rgb(1, 209, 158) ;\n"
+                                            "}\n"
+                                            "\n"
+                                            "QPushButton:pressed{\n"
+                                            "    background-color: #244D54;\n"
+                                            "    border-style : inset;\n"
+                                            "    border-width : 2px;\n"
+                                            "    border-color : #00D19D;\n"
+                                            "    color: #FFFFFF;\n"
                                             "}")
-        self.VC_Eq_label_L_12.setObjectName("VC_Eq_label_L_12")
-        self.horizontalLayout_18.addWidget(self.VC_Eq_label_L_12)
-        self.VC_Eq_label_H_12 = QtWidgets.QLabel(self.VC_Eq_labe_Ti_12)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_H_12.setFont(font)
-        self.VC_Eq_label_H_12.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.VC_Eq_label_H_12.setStyleSheet("QLabel{\n"
-                                            "    color: #FFFFFF\n"
-                                            "}")
-        self.VC_Eq_label_H_12.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.VC_Eq_label_H_12.setObjectName("VC_Eq_label_H_12")
-        self.horizontalLayout_18.addWidget(self.VC_Eq_label_H_12)
-        self.verticalLayout_50.addWidget(self.VC_Eq_labe_Ti_12)
-        self.VC_slider_frame_12 = QtWidgets.QFrame(self.VC_Eq_5)
-        self.VC_slider_frame_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_slider_frame_12.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_slider_frame_12.setObjectName("VC_slider_frame_12")
-        self.verticalLayout_52 = QtWidgets.QVBoxLayout(self.VC_slider_frame_12)
-        self.verticalLayout_52.setContentsMargins(10, 0, 10, 0)
-        self.verticalLayout_52.setSpacing(0)
-        self.verticalLayout_52.setObjectName("verticalLayout_52")
-        self.horizontalSlider_VC_Eq3 = QtWidgets.QSlider(self.VC_slider_frame_12)
-        self.horizontalSlider_VC_Eq3.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider_VC_Eq3.setMaximum(30)
-        self.horizontalSlider_VC_Eq3.setMinimum(0)
-        self.horizontalSlider_VC_Eq3.setValue(0)
-        self.horizontalSlider_VC_Eq3.setPageStep(1)
-        self.horizontalSlider_VC_Eq3.valueChanged.connect(self.VC_Eq_Slider3)#//TODO:
-        self.horizontalSlider_VC_Eq3.setObjectName("horizontalSlider_VC_Eq3")
-        self.verticalLayout_52.addWidget(self.horizontalSlider_VC_Eq3)
-        self.verticalLayout_50.addWidget(self.VC_slider_frame_12)
-        self.verticalLayout_16.addWidget(self.VC_Eq_5)
-
-        # Voice Changer Eq Setting 3
-        self.VC_Eq_3 = QtWidgets.QFrame(self.VC_Eq_setting)
-        self.VC_Eq_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_3.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_3.setObjectName("VC_Eq_3")
-        self.verticalLayout_38 = QtWidgets.QVBoxLayout(self.VC_Eq_3)
-        self.verticalLayout_38.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_38.setSpacing(0)
-        self.verticalLayout_38.setObjectName("verticalLayout_38")
-        self.VC_Eq_name_8 = QtWidgets.QFrame(self.VC_Eq_3)
-        self.VC_Eq_name_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_name_8.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_name_8.setObjectName("VC_Eq_name_8")
-        self.verticalLayout_39 = QtWidgets.QVBoxLayout(self.VC_Eq_name_8)
-        self.verticalLayout_39.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_39.setSpacing(0)
-        self.verticalLayout_39.setObjectName("verticalLayout_39")
-        self.VC_Eq_p1_8 = QtWidgets.QLabel(self.VC_Eq_name_8)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.VC_Eq_p1_8.setFont(font)
-        self.VC_Eq_p1_8.setStyleSheet("QLabel{\n"
-                                      "    color: #FFFFFF\n"
-                                      "}")
-        self.VC_Eq_p1_8.setAlignment(QtCore.Qt.AlignCenter)
-        self.VC_Eq_p1_8.setObjectName("VC_Eq_p1_8")
-        self.verticalLayout_39.addWidget(self.VC_Eq_p1_8)
-        self.verticalLayout_38.addWidget(self.VC_Eq_name_8)
-        self.VC_Eq_labe_Ti_8 = QtWidgets.QFrame(self.VC_Eq_3)
-        self.VC_Eq_labe_Ti_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_labe_Ti_8.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_labe_Ti_8.setObjectName("VC_Eq_labe_Ti_8")
-        self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.VC_Eq_labe_Ti_8)
-        self.horizontalLayout_14.setContentsMargins(8, 0, 8, 0)
-        self.horizontalLayout_14.setSpacing(0)
-        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
-        self.VC_Eq_label_L_8 = QtWidgets.QLabel(self.VC_Eq_labe_Ti_8)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_L_8.setFont(font)
-        self.VC_Eq_label_L_8.setStyleSheet("QLabel{\n"
-                                           "    color: #FFFFFF\n"
-                                           "}")
-        self.VC_Eq_label_L_8.setObjectName("VC_Eq_label_L_8")
-        self.horizontalLayout_14.addWidget(self.VC_Eq_label_L_8)
-        self.VC_Eq_label_H_8 = QtWidgets.QLabel(self.VC_Eq_labe_Ti_8)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_H_8.setFont(font)
-        self.VC_Eq_label_H_8.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.VC_Eq_label_H_8.setStyleSheet("QLabel{\n"
-                                           "    color: #FFFFFF\n"
-                                           "}")
-        self.VC_Eq_label_H_8.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.VC_Eq_label_H_8.setObjectName("VC_Eq_label_H_8")
-        self.horizontalLayout_14.addWidget(self.VC_Eq_label_H_8)
-        self.verticalLayout_38.addWidget(self.VC_Eq_labe_Ti_8)
-        self.VC_slider_frame_8 = QtWidgets.QFrame(self.VC_Eq_3)
-        self.VC_slider_frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_slider_frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_slider_frame_8.setObjectName("VC_slider_frame_8")
-        self.verticalLayout_40 = QtWidgets.QVBoxLayout(self.VC_slider_frame_8)
-        self.verticalLayout_40.setContentsMargins(10, 0, 10, 0)
-        self.verticalLayout_40.setSpacing(0)
-        self.verticalLayout_40.setObjectName("verticalLayout_40")
-        self.horizontalSlider_VC_Eq4 = QtWidgets.QSlider(self.VC_slider_frame_8)
-        self.horizontalSlider_VC_Eq4.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider_VC_Eq4.setObjectName("horizontalSlider_VC_Eq4")
-        self.verticalLayout_40.addWidget(self.horizontalSlider_VC_Eq4)
-        self.verticalLayout_38.addWidget(self.VC_slider_frame_8)
-        self.verticalLayout_16.addWidget(self.VC_Eq_3)
-
-        # Voice Changer Eq Setting 5
-        self.VC_Eq_5 = QtWidgets.QFrame(self.VC_Eq_setting)
-        self.VC_Eq_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_5.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_5.setObjectName("VC_Eq_5")
-        self.verticalLayout_41 = QtWidgets.QVBoxLayout(self.VC_Eq_5)
-        self.verticalLayout_41.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_41.setSpacing(0)
-        self.verticalLayout_41.setObjectName("verticalLayout_41")
-        self.VC_Eq_name_9 = QtWidgets.QFrame(self.VC_Eq_5)
-        self.VC_Eq_name_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_name_9.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_name_9.setObjectName("VC_Eq_name_9")
-        self.verticalLayout_42 = QtWidgets.QVBoxLayout(self.VC_Eq_name_9)
-        self.verticalLayout_42.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_42.setSpacing(0)
-        self.verticalLayout_42.setObjectName("verticalLayout_42")
-        self.VC_Eq_p1_9 = QtWidgets.QLabel(self.VC_Eq_name_9)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(14)
-        self.VC_Eq_p1_9.setFont(font)
-        self.VC_Eq_p1_9.setStyleSheet("QLabel{\n"
-                                      "    color: #FFFFFF\n"
-                                      "}")
-        self.VC_Eq_p1_9.setAlignment(QtCore.Qt.AlignCenter)
-        self.VC_Eq_p1_9.setObjectName("VC_Eq_p1_9")
-        self.verticalLayout_42.addWidget(self.VC_Eq_p1_9)
-        self.verticalLayout_41.addWidget(self.VC_Eq_name_9)
-        self.VC_Eq_labe_Ti_9 = QtWidgets.QFrame(self.VC_Eq_5)
-        self.VC_Eq_labe_Ti_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_labe_Ti_9.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_labe_Ti_9.setObjectName("VC_Eq_labe_Ti_9")
-        self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.VC_Eq_labe_Ti_9)
-        self.horizontalLayout_15.setContentsMargins(8, 0, 8, 0)
-        self.horizontalLayout_15.setSpacing(0)
-        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
-        self.VC_Eq_label_L_9 = QtWidgets.QLabel(self.VC_Eq_labe_Ti_9)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_L_9.setFont(font)
-        self.VC_Eq_label_L_9.setStyleSheet("QLabel{\n"
-                                           "    color: #FFFFFF\n"
-                                           "}")
-        self.VC_Eq_label_L_9.setObjectName("VC_Eq_label_L_9")
-        self.horizontalLayout_15.addWidget(self.VC_Eq_label_L_9)
-        self.VC_Eq_label_H_9 = QtWidgets.QLabel(self.VC_Eq_labe_Ti_9)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(12)
-        self.VC_Eq_label_H_9.setFont(font)
-        self.VC_Eq_label_H_9.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.VC_Eq_label_H_9.setStyleSheet("QLabel{\n"
-                                           "    color: #FFFFFF\n"
-                                           "}")
-        self.VC_Eq_label_H_9.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.VC_Eq_label_H_9.setObjectName("VC_Eq_label_H_9")
-        self.horizontalLayout_15.addWidget(self.VC_Eq_label_H_9)
-        self.verticalLayout_41.addWidget(self.VC_Eq_labe_Ti_9)
-        self.VC_slider_frame_9 = QtWidgets.QFrame(self.VC_Eq_5)
-        self.VC_slider_frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_slider_frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_slider_frame_9.setObjectName("VC_slider_frame_9")
-        self.verticalLayout_43 = QtWidgets.QVBoxLayout(self.VC_slider_frame_9)
-        self.verticalLayout_43.setContentsMargins(10, 0, 10, 0)
-        self.verticalLayout_43.setSpacing(0)
-        self.verticalLayout_43.setObjectName("verticalLayout_43")
-        self.horizontalSlider_VC_Eq5 = QtWidgets.QSlider(self.VC_slider_frame_9)
-        self.horizontalSlider_VC_Eq5.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider_VC_Eq5.setObjectName("horizontalSlider_VC_Eq5")
-        self.verticalLayout_43.addWidget(self.horizontalSlider_VC_Eq5)
-        self.verticalLayout_41.addWidget(self.VC_slider_frame_9)
-        self.verticalLayout_16.addWidget(self.VC_Eq_5)
-        self.verticalLayout_10.addWidget(self.VC_Eq_setting)
-        self.VC_Eq_button = QtWidgets.QFrame(self.VC_Eq)
-        self.VC_Eq_button.setMaximumSize(QtCore.QSize(225, 110))
-        self.VC_Eq_button.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.VC_Eq_button.setStyleSheet("QFrame{\n"
-                                        "    padding-left: 12.5px;\n"
-                                        "}")
-        self.VC_Eq_button.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.VC_Eq_button.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.VC_Eq_button.setObjectName("VC_Eq_button")
-        self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.VC_Eq_button)
-        self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_14.setSpacing(0)
-        self.verticalLayout_14.setObjectName("verticalLayout_14")
-
-        # VC_Eq_button
-        self.VC_Testmic_button = QtWidgets.QPushButton(self.VC_Eq_button)
-        self.VC_Testmic_button.setMinimumSize(QtCore.QSize(200, 80))
-        self.VC_Testmic_button.setMaximumSize(QtCore.QSize(200, 80))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(16)
-        self.VC_Testmic_button.setFont(font)
-        self.VC_Testmic_button.setStyleSheet("QPushButton{\n"
-                                             "    background-color: #244D54;\n"
-                                             "    border-style : outset;\n"
-                                             "    border-width : 0.5px;\n"
-                                             "    border-radius: 25px;\n"
-                                             "    border-color : black;\n"
-                                             "\n"
-                                             "    color: #686868;\n"
-                                             "    text-align : center;\n"
-                                             "}\n"
-                                             "QPushButton:hover{\n"
-                                             "    background-color: #35707A;    \n"
-                                             "    border-width : 0.5px;\n"
-                                             "    border-color :  rgb(1, 209, 158) ;\n"
-                                             "    color: rgb(204, 204, 204);\n"
-                                             "}\n"
-                                             )
-        self.VC_Testmic_button.setObjectName("VC_Testmic_button")
-
-        # Test Mic Button Function
-        self.VC_Testmic_button.clicked.connect(self.VC_Testmic_button_clicked)
-
-        self.verticalLayout_14.addWidget(self.VC_Testmic_button)
-        self.verticalLayout_10.addWidget(self.VC_Eq_button)
-        self.horizontalLayout_6.addWidget(self.VC_Eq)
+        self.VC_Testmi_button.setObjectName("VC_Testmi_button")
+        self.verticalLayout_12.addWidget(self.VC_Testmi_button)
+        self.verticalLayout_54.addWidget(self.VC_Testmic)
+        self.verticalLayout_53.addWidget(self.VC_item_body)
+        self.horizontalLayout_6.addWidget(self.VC_item_frame)
         self.horizontalLayout_5.addWidget(self.VC_frame)
         self.stackedWidget.addWidget(self.Voicechanger_page)
+        self.page = QtWidgets.QWidget()
+        self.page.setObjectName("page")
+        self.frame_2 = QtWidgets.QFrame(self.page)
+        self.frame_2.setGeometry(QtCore.QRect(20, 400, 171, 61))
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.stackedWidget.addWidget(self.page)
         self.horizontalLayout.addWidget(self.stackedWidget)
 
         self.retranslateUi(ui_main)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(ui_main)
 
     def updateInput_now(self, value):
@@ -2140,9 +1759,9 @@ class Ui_mainInterface(object):
     def open_device(self):
         subprocess.run(["control", "mmsys.cpl"])
 
-    
-    def updatevolume(self,value):
-        self.volume.SetMasterVolumeLevelScalar(self.horizontalSlider.value() / 100, None)
+    def updatevolume(self, value):
+        self.volume.SetMasterVolumeLevelScalar(
+            self.horizontalSlider.value() / 100, None)
 
         if value == 0:
             Ui_mainInterface.audio_mute = 1
@@ -2180,81 +1799,64 @@ class Ui_mainInterface(object):
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
 
         self.VC_title_label_2.setText(_translate("ui_main", "Voice Changer"))
+        self.Voicechange_2.setText(_translate("ui_main", "Button2"))
+        self.Voicechange_4.setText(_translate("ui_main", "Button4"))
+        self.Voicechange_1.setText(_translate("ui_main", "Button1"))
+        self.Voicechange_3.setText(_translate("ui_main", "Button3"))
+        self.VC_Testmi_button.setText(_translate("ui_main", "Test Microphone"))
 
-        ####
-        self.Test_VC.setText(_translate("ui_main", "Test item 1"))
-        ####
-
-        self.VC_Eq_Head.setText(_translate("ui_main", "Voice configuration"))
-        self.VC_name_item.setText(_translate("ui_main", "Alien"))
-        self.VC_Eq_p1.setText(_translate("ui_main", "Pitch Shift Factor"))
-        self.VC_Eq_label_L.setText(_translate("ui_main", "Low"))
-        self.VC_Eq_label_H.setText(_translate("ui_main", "High"))
-        self.VC_Eq_p1_6.setText(_translate("ui_main", "Bins"))
-        self.VC_Eq_label_L_6.setText(_translate("ui_main", "Low"))
-        self.VC_Eq_label_H_6.setText(_translate("ui_main", "High"))
-        self.VC_Eq_p1_12.setText(_translate("ui_main", "Hz"))
-        self.VC_Eq_label_L_12.setText(_translate("ui_main", "Low"))
-        self.VC_Eq_label_H_12.setText(_translate("ui_main", "High"))
-        # self.VC_Eq_p1_8.setText(_translate("ui_main", "???"))
-        # self.VC_Eq_label_L_8.setText(_translate("ui_main", "Low"))
-        # self.VC_Eq_label_H_8.setText(_translate("ui_main", "High"))
-        # self.VC_Eq_p1_9.setText(_translate("ui_main", "???"))
-        # self.VC_Eq_label_L_9.setText(_translate("ui_main", "Low"))
-        # self.VC_Eq_label_H_9.setText(_translate("ui_main", "High"))
-        self.VC_Testmic_button.setText(
-            _translate("ui_main", "Test Microphone"))
-        self.dash_label.setText(_translate("ui_main", "Dashbord"))
+        self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
         # self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
         self.settingmain.setText(_translate("ui_main", "Settings"))
         self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; color:#cccccc;\">CURRENT VERSION:</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt; font-weight:600; color:#cccccc;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">EchoEcho App: 1.0.1</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+                                              "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                              "p, li { white-space: pre-wrap; }\n"
+                                              "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+                                              "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; color:#cccccc;\">CURRENT VERSION:</span></p>\n"
+                                              "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt; font-weight:600; color:#cccccc;\"><br /></p>\n"
+                                              "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">EchoEcho App: 1.0.1</span></p>\n"
+                                              "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.detailequipment.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Open control panel sound card setting.</span></p></body></html>"))
-        self.Equipmentsetting.setText(_translate("ui_main", "Equipment setting"))
+                                                "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                                "p, li { white-space: pre-wrap; }\n"
+                                                "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+                                                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Open control panel sound card setting.</span></p></body></html>"))
+        self.Equipmentsetting.setText(
+            _translate("ui_main", "Equipment setting"))
         self.Tutorial.setText(_translate("ui_main", "Tutorial"))
         self.settingButton.setText(_translate("ui_main", "Setting"))
 
-    
     # Alert button clicked function
         # self.label.setText(_translate(
         #     "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>")) #//TODO:
         # self.Alert_button_detail.setText(_translate(
-        #     "ui_main", "Check your audio output device and try again")) #//TODO:
-        
-        self.label.setText(_translate(
-            "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No virtual cable found</span></p></body></html>")) #//TODO:
-        self.Alert_button_detail.setText(_translate(
-            "ui_main", "Check your virtual cable or install from vb-audio.com")) #//TODO:
+        #     "ui_main", "Check your audio output device and try again")) 
 
-    # Alert button clicked function 
+        self.label.setText(_translate(
+            "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No virtual cable found</span></p></body></html>"))  # //TODO:
+        self.Alert_button_detail.setText(_translate(
+            "ui_main", "Check your virtual cable or install from vb-audio.com"))
+
+    # Alert button clicked function
     def Alert_button_detail_clicked(self):
         print("Alert button clicked")
 
         self.settingmain.setText(_translate("ui_main", "Settings"))
         self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; color:#cccccc;\">CURRENT VERSION:</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt; font-weight:600; color:#cccccc;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">EchoEcho App: 1.0.1</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+                                              "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                              "p, li { white-space: pre-wrap; }\n"
+                                              "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+                                              "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt; font-weight:600; color:#cccccc;\">CURRENT VERSION:</span></p>\n"
+                                              "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt; font-weight:600; color:#cccccc;\"><br /></p>\n"
+                                              "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">EchoEcho App: 1.0.1</span></p>\n"
+                                              "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.detailequipment.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Open control panel sound card setting.</span></p></body></html>"))
-        self.Equipmentsetting.setText(_translate("ui_main", "Equipment setting"))
+                                                "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                                "p, li { white-space: pre-wrap; }\n"
+                                                "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+                                                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cccccc;\">Open control panel sound card setting.</span></p></body></html>"))
+        self.Equipmentsetting.setText(
+            _translate("ui_main", "Equipment setting"))
         self.Tutorial.setText(_translate("ui_main", "Tutorial"))
         self.settingButton.setText(_translate("ui_main", "Setting"))
 
@@ -2354,16 +1956,16 @@ class Ui_mainInterface(object):
                                             "}"
                                             )
             self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
-                frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.reduce_audio_callback)
+                                       frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.reduce_audio_callback)
             for line in self.lines:
                 line.remove()
             self.lines = self.ax.plot(self.plot_data)
             # self.CALLBACK = self.reduce_audio_callback
-            self.PLOT = self.reduce_update_plot 
+            self.PLOT = self.reduce_update_plot
         else:
             Ui_mainInterface.noise_reduce = 0
             self.current_plot = 'normal'
-            
+
             print("current plot = ", self.current_plot)
             # ทำปุ่มปิด
             self.Noise_button.setStyleSheet("QPushButton{\n"
@@ -2384,12 +1986,12 @@ class Ui_mainInterface(object):
                                             "}"
                                             )
             self.stream = self.pa.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE, input=True,
-                frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.normal_audio_callback)
+                                       frames_per_buffer=self.CHUNK_SIZE, stream_callback=self.normal_audio_callback)
             for line in self.lines:
                 line.remove()
             self.lines = self.ax.plot(self.plot_data)
             # self.CALLBACK = self.normal_audio_callback
-            self.PLOT = self.normal_update_plot 
+            self.PLOT = self.normal_update_plot
         self.timer.stop()
         self.timer.timeout.disconnect()
         self.timer.timeout.connect(self.PLOT)
@@ -2459,20 +2061,18 @@ class Ui_mainInterface(object):
             # self.table.setItem(row, 1, QTableWidgetItem(""))
             # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
 
-
             duration = self.getDuration(fname)
             self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
-
             
             play_button = self.play_button(fname, row)
-            self.SP_tableWidget.setCellWidget(row, 3, play_button)
+            self.SP_tableWidget.setCellWidget(row, 2, play_button)
             # play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
 
-            self.SP_tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
+            self.SP_tableWidget.setCellWidget(row, 3, self.listen_button("", fname))
 
             remove_button = self.remove_button(row, fname)
 
-            self.SP_tableWidget.setCellWidget(row, 5, remove_button)
+            self.SP_tableWidget.setCellWidget(row, 4, remove_button)
             remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
             
             self.filenames.append(fname)
@@ -2520,7 +2120,7 @@ class Ui_mainInterface(object):
     
     def play_button(self, fname, index):
         icon_play = QtGui.QIcon()
-        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_play_icon.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         # play_button = QPushButton(text=str(label))
         # play_button.setIcon(icon_play)
@@ -2536,11 +2136,11 @@ class Ui_mainInterface(object):
 
     def play_media(self, btn, fname, index):
         icon_pause = QtGui.QIcon()
-        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-pause-button-48.png"),
-                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_pause_icon.png"),
+                             QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon_play = QtGui.QIcon()
-        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-play-button-circled-48.png"),
-                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_play_icon.png"),
+                            QtGui.QIcon.Normal, QtGui.QIcon.Off)
         # media_content = QMediaContent(QUrl.fromLocalFile(fname))
         media_content = fname
         # print("show fname:", fname)
@@ -2573,7 +2173,7 @@ class Ui_mainInterface(object):
             for row in range(self.SP_tableWidget.rowCount()):
                 item = self.SP_tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.SP_tableWidget.cellWidget(row, 3)
+                    play_btn = self.SP_tableWidget.cellWidget(row, 2)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         # self.player.stop()
                         micplay = False
@@ -2581,22 +2181,13 @@ class Ui_mainInterface(object):
                         play_btn.setIcon(icon_play)
                         # play_btn.setText("Play")
 
-#==========================================================================
-            # current_count = int(self.SP_tableWidget.item(self.SP_tableWidget.currentRow(), 4).text())
-            # self.play_counts[fname] = current_count + 1  # บันทึกค่าเพิ่ม
-            # current_count = int(self.play_counts.get(fname, 0)) + 1
-            # self.play_counts[fname] = current_count
-            # self.save_file() 
-            # self.SP_tableWidget.item(self.SP_tableWidget.currentRow(), 4).setText(str(current_count + 1))
-
-            # self.save_file()
-            
             # self.player.setMedia(media_content)
             # self.player.play()
 
             micplay = True
             stop_threads = False
             micplay_file = media_content
+
             def runsound():
                 wf = wave.open(media_content, "rb")
                 sp_data = wf.readframes(1024)
@@ -2605,15 +2196,14 @@ class Ui_mainInterface(object):
                     sp_data = wf.readframes(1024)
                     if stop_threads:
                         break
-            t1 = threading.Thread(target = runsound)
+            t1 = threading.Thread(target=runsound)
             t1.daemon = True
             t1.start()
-            
+
             # while len(data) != 0:
             #     ui_virtual_microphone_stream.write(data)
             #     data = wf.readframes(1024)
 
-#==========================================================================
             btn.setIcon(icon_pause)
             # btn.setText("Stop")
             current_count = int(self.play_counts.get(fname, 0)) + 1
@@ -2623,27 +2213,26 @@ class Ui_mainInterface(object):
     def get_play(self, fname):
         for row in range(self.SP_tableWidget.rowCount()):
             if self.SP_tableWidget.item(row, 0).text() == os.path.basename(fname):
-                return self.SP_tableWidget.cellWidget(row, 3)
-            
-    # ========================================================================================================================================
-            
+                return self.SP_tableWidget.cellWidget(row, 2)
+
     def listen_button(self, label, fname):
         icon_listen = QtGui.QIcon()
-        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),
-                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_HP_icon.png"),
+                              QtGui.QIcon.Normal, QtGui.QIcon.Off)
         listen_button = QPushButton(label)
         listen_button.setIcon(icon_listen)
-        listen_button.setIconSize(QtCore.QSize(30, 30))
-        listen_button.clicked.connect(lambda: self.listen_media(listen_button, fname))
+        listen_button.setIconSize(QtCore.QSize(24, 24))
+        listen_button.clicked.connect(
+            lambda: self.listen_media(listen_button, fname))
         return listen_button
 
     def listen_media(self, btn, fname):
         icon_listen = QtGui.QIcon()
-        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-headphone-48.png"),
-                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_listen.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_HP_icon.png"),
+                              QtGui.QIcon.Normal, QtGui.QIcon.Off)
         icon_pause = QtGui.QIcon()
-        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-pause-button-48.png"),
-                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_pause_icon.png"),
+                             QtGui.QIcon.Normal, QtGui.QIcon.Off)
         media_content = QMediaContent(QUrl.fromLocalFile(fname))
         if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
             self.player.stop()
@@ -2690,11 +2279,11 @@ class Ui_mainInterface(object):
     # delete item button
     def remove_button(self, row, fname):
         icon_remove = QtGui.QIcon()
-        icon_remove.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-trash-can-48.png"),
-                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon_remove.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_trash_icon.png"),
+                              QtGui.QIcon.Normal, QtGui.QIcon.Off)
         remove_button = QPushButton()
         remove_button.setIcon(icon_remove)
-        remove_button.setIconSize(QtCore.QSize(30, 30))
+        remove_button.setIconSize(QtCore.QSize(24, 24))
         remove_button.clicked.connect(lambda: self.remove_file(row, fname))
         return remove_button
 
@@ -2724,8 +2313,8 @@ class Ui_mainInterface(object):
         self.q_normal.put(audio_data)
 
         return (None, pyaudio.paContinue)
-    
-    def reduce_audio_callback(self,in_data, frame_count, time_info, status):
+
+    def reduce_audio_callback(self, in_data, frame_count, time_info, status):
         # print("reduce_callback")
         # Convert byte stream to numpy array
         audio_data = np.frombuffer(in_data, dtype=np.float32)
@@ -2734,100 +2323,59 @@ class Ui_mainInterface(object):
         nyquist_rate = 44100 / 2.0
         pass_order = 5
         pass_stop = 40
-        lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
-        highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
+        lowpass_coefficients = butter(
+            pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
+        highpass_coefficients = butter(
+            pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
         audio_frame = np.frombuffer(audio_data, dtype=np.float32)
         audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
-        filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
-        filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
-        
+        filtered_audio_lowpass = signal.sosfiltfilt(
+            lowpass_coefficients, audio_frame)
+        filtered_audio = signal.sosfiltfilt(
+            highpass_coefficients, filtered_audio_lowpass)
+
         # Add new audio data to queue
         self.q_reduce.put(filtered_audio)
         return (None, pyaudio.paContinue)
-      
+
     #########################################################
     # Voice Changer Page Function
-    def Test_VC_clicked(self):
-        print("Test VC clicked")
-        if (Ui_mainInterface.Test_VC == 0):
-            Ui_mainInterface.Test_VC = 1
-            # ทำให้ปุ่มเปิด
-            self.Test_VC.setStyleSheet("QPushButton{\n"
-                                              "    border-radius: 25px;\n"
-                                              "    background-color: #244D54;\n"
-                                              "    border-style : inset;\n"
-                                              "    border-width : 2px;\n"
-                                              "    border-color : #00D19D;\n"
-                                              "    color: #FFFFFF;\n"
-                                              "}"
-                                              )
-        else:
-            Ui_mainInterface.Test_VC = 0
-            # ทำปุ่มปิด
-            self.Test_VC.setStyleSheet("QPushButton{\n"
-                                              "    background-color: #244D54;\n"
-                                              "    border-style : outset;\n"
-                                              "    border-width : 0.5px;\n"
-                                              "    border-radius: 25px;\n"
-                                              "    border-color : black;\n"
-                                              "\n"
-                                              "    color: #686868;\n"
-                                              "    text-align : center;\n"
-                                              "}\n"
-
-                                              "QPushButton:hover{\n"
-                                              "    background-color: #35707A;    \n"
-                                              "    border-width : 0.5px;\n"
-                                              "    border-color :  rgb(1, 209, 158) ;\n"
-                                              "    color: rgb(204, 204, 204);\n"
-                                              "}"
-                                              )
-
-    def VC_Testmic_button_clicked(self):
+    def VC_Testmi_button_clicked(self):
         print("VC Test mic button clicked")
         if (Ui_mainInterface.VC_test_microphone == 0):
             Ui_mainInterface.VC_test_microphone = 1
             # ทำให้ปุ่มเปิด
-            self.VC_Testmic_button.setStyleSheet("QPushButton{\n"
-                                              "    border-radius: 25px;\n"
-                                              "    background-color: #244D54;\n"
-                                              "    border-style : inset;\n"
-                                              "    border-width : 2px;\n"
-                                              "    border-color : #00D19D;\n"
-                                              "    color: #FFFFFF;\n"
-                                              "}"
-                                              )
+            self.VC_Testmi_button.setStyleSheet("QPushButton{\n"
+                                                "    border-radius: 25px;\n"
+                                                "    background-color: #244D54;\n"
+                                                "    border-style : inset;\n"
+                                                "    border-width : 2px;\n"
+                                                "    border-color : #00D19D;\n"
+                                                "    color: #FFFFFF;\n"
+                                                "}"
+                                                )
         else:
             Ui_mainInterface.VC_test_microphone = 0
             # ทำปุ่มปิด
-            self.VC_Testmic_button.setStyleSheet("QPushButton{\n"
-                                              "    background-color: #244D54;\n"
-                                              "    border-style : outset;\n"
-                                              "    border-width : 0.5px;\n"
-                                              "    border-radius: 25px;\n"
-                                              "    border-color : black;\n"
-                                              "\n"
-                                              "    color: #686868;\n"
-                                              "    text-align : center;\n"
-                                              "}\n"
+            self.VC_Testmi_button.setStyleSheet("QPushButton{\n"
+                                                "    background-color: #244D54;\n"
+                                                "    border-style : outset;\n"
+                                                "    border-width : 0.5px;\n"
+                                                "    border-radius: 25px;\n"
+                                                "    border-color : black;\n"
+                                                "\n"
+                                                "    color: #686868;\n"
+                                                "    text-align : center;\n"
+                                                "}\n"
 
-                                              "QPushButton:hover{\n"
-                                              "    background-color: #35707A;    \n"
-                                              "    border-width : 0.5px;\n"
-                                              "    border-color :  rgb(1, 209, 158) ;\n"
-                                              "    color: rgb(204, 204, 204);\n"
-                                              "}"
-                                              )
-            
-    def VC_Eq_Slider1(self, value):
-        print("VC Eq Slider1", value)
+                                                "QPushButton:hover{\n"
+                                                "    background-color: #35707A;    \n"
+                                                "    border-width : 0.5px;\n"
+                                                "    border-color :  rgb(1, 209, 158) ;\n"
+                                                "    color: rgb(204, 204, 204);\n"
+                                                "}"
+                                                )
 
-    def VC_Eq_Slider2(self, value):
-        print("VC Eq Slider2", value)
-
-    def VC_Eq_Slider3(self, value):
-        print("VC Eq Slider3", value)
-        
     def normal_update_plot(self):
         # Get all the available audio data from the queue
         # print(self.q.qsize())
@@ -2850,7 +2398,7 @@ class Ui_mainInterface(object):
             line.set_ydata(self.plot_data[:, column])
             line.set_color((1, 0, 0))
             self.canvas.draw()
-    
+
     def reduce_update_plot(self):
         if self.current_plot != 'reduce':
             return
@@ -2927,3 +2475,277 @@ class Ui_mainInterface(object):
         self.figure.patch.set_facecolor('none')
 
         self.canvas_d.draw()
+
+    def VC_item_1_clicked(self):
+        if (Ui_mainInterface.VC_item_1 == 0):
+            print("VC item 1 clicked")
+            Ui_mainInterface.VC_item_1 = 1
+            Ui_mainInterface.VC_item_2 = 0
+            Ui_mainInterface.VC_item_3 = 0
+            Ui_mainInterface.VC_item_4 = 0
+            self.Voicechange_1.setStyleSheet("QPushButton {\n"
+                                         "background-color: #4593A0;\n"
+                                         "border-radius: 20px;\n"
+                                         "}")
+            self.Voicechange_2.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_3.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_4.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+        else :
+            print("VC item 1 unclicked")
+            Ui_mainInterface.VC_item_1 = 0
+            self.Voicechange_1.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n")
+            
+    def VC_item_2_clicked(self):
+        if (Ui_mainInterface.VC_item_2 == 0):
+            print("VC item 2 clicked")
+            Ui_mainInterface.VC_item_1 = 0
+            Ui_mainInterface.VC_item_2 = 1
+            Ui_mainInterface.VC_item_3 = 0
+            Ui_mainInterface.VC_item_4 = 0
+            self.Voicechange_2.setStyleSheet("QPushButton {\n"
+                                         "background-color: #4593A0;\n"
+                                         "border-radius: 20px;\n"
+                                         "}")
+            self.Voicechange_1.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_3.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_4.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+        else :
+            Ui_mainInterface.VC_item_2 = 0
+            self.Voicechange_2.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n")
+    
+    def VC_item_3_clicked(self):
+        if (Ui_mainInterface.VC_item_3 == 0):
+            print("VC item 3 clicked")
+            Ui_mainInterface.VC_item_1 = 0
+            Ui_mainInterface.VC_item_2 = 0
+            Ui_mainInterface.VC_item_3 = 1
+            Ui_mainInterface.VC_item_4 = 0
+            self.Voicechange_3.setStyleSheet("QPushButton {\n"
+                                         "background-color: #4593A0;\n"
+                                         "border-radius: 20px;\n"
+                                         "}")
+            self.Voicechange_1.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_2.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_4.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+        else :
+            Ui_mainInterface.VC_item_3 = 0
+            self.Voicechange_3.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n")
+    
+    def VC_item_4_clicked(self):
+        if (Ui_mainInterface.VC_item_4 == 0):
+            print("VC item 4 clicked")
+            Ui_mainInterface.VC_item_1 = 0
+            Ui_mainInterface.VC_item_2 = 0
+            Ui_mainInterface.VC_item_3 = 0
+            Ui_mainInterface.VC_item_4 = 1
+            self.Voicechange_4.setStyleSheet("QPushButton {\n"
+                                         "background-color: #4593A0;\n"
+                                         "border-radius: 20px;\n"
+                                         "}")
+            self.Voicechange_1.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+                                         
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_2.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+            self.Voicechange_3.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n"
+
+                                         "QPushButton:hover{\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
+                                         "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
+                                         "}")
+        else :
+            Ui_mainInterface.VC_item_4 = 0
+            self.Voicechange_4.setStyleSheet("QPushButton{\n"
+                                         "background-color: #56B7C7;\n"
+                                         "border-radius: 20px;\n"
+                                         "color: #000000;\n"
+                                         "text-align: center;\n"
+                                         "}\n")
+    

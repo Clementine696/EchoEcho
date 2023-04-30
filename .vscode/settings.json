@@ -2,5 +2,8 @@
     "python.analysis.extraPaths": [
         "./Frontend/Pyqt6/widgets/pages"
     ],
-    "python.formatting.provider": "black"
+    "python.formatting.provider": "none",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    }
 }

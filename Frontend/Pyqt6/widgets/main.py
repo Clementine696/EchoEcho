@@ -18,45 +18,14 @@ import scipy.signal as signal
 
 #Voice Changer
 import librosa
-# define the pitch shift factor
-main_pitch_shift_factor = 2 # double the pitch
-main_bins = 12
-main_hz = 0
-# calculate the pitch shift amount in semitones
-pitch_shift_amount = librosa.hz_to_midi(main_pitch_shift_factor * librosa.midi_to_hz(main_hz))
-import scipy.signal as signal
-# define filter parameters
-cutoff_freq = 4000  # Hz
-filter_order = 10
-# create the filter
-nyquist_freq = 0.5 * 48000
-b, a = signal.butter(filter_order, cutoff_freq/nyquist_freq, btype='lowpass')
 
-
-def main_pitch_eq(value):
-    global main_pitch_shift_factor
-    global pitch_shift_amount
-    main_pitch_shift_factor = value
-    # print('main_pitch_shift_factor',main_pitch_shift_factor)
-    pitch_shift_amount = librosa.hz_to_midi(main_pitch_shift_factor * librosa.midi_to_hz(main_hz))
-
-def main_bins_eq(value):
-    global main_bins
-    main_bins = value
-    # print('main_bins',main_bins)
-
-def main_hz_eq(value):
-    global main_hz
-    global pitch_shift_amount
-    main_hz = value
-    # print('main_hz',main_hz)
-    pitch_shift_amount = librosa.hz_to_midi(main_pitch_shift_factor * librosa.midi_to_hz(main_hz))
 
 # IMPORT GUI FILE
 from ui_main import Ui_mainInterface
 
 Noise_reduce_state = False
-Voice_changer_state = False
+VC_item_1 = False
+VC_item_2 = False
 Test_mic_state = False
 Mute_mic_state = False
 Boost_mic_volumeFactor = 1
@@ -91,15 +60,6 @@ def Toggle_MuteMic():
         Mute_mic_state = False
         print("Microphone mute state = ",Mute_mic_state)
 
-def Toggle_Voicechaneger():
-    global Voice_changer_state
-    if(Voice_changer_state==False):
-        Voice_changer_state = True
-        print("VoiceChange_main test state = ",Voice_changer_state)
-    else:
-        Voice_changer_state = False
-        print("VoiceChange_main test state = ",Voice_changer_state)
-
 def Boost_Mic(value):
     global Boost_mic_volumeFactor
     if(value == 0):
@@ -109,11 +69,28 @@ def Boost_Mic(value):
     # Boost_mic_volumeFactor = value/10
 
 #soundpad
-def play_mic(row, filename):
-    fname = filename
-    # convert string to QUrl object using the QUrl constructor
-    print('main', filename)
+# def play_mic(row, filename):
+#     fname = filename
+#     # convert string to QUrl object using the QUrl constructor
+#     print('main', filename)
 
+def VC_item_1():
+    global VC_item_1
+    if(VC_item_1==False):
+        VC_item_1 = True
+        print("VoiceChange_main1 test state = ",VC_item_1)
+    else:
+        VC_item_1 = False
+        print("VoiceChange_main1 test state = ",VC_item_1)
+
+def VC_item_2():
+    global VC_item_2
+    if(VC_item_2==False):
+        VC_item_2 = True
+        print("VoiceChange_main1 test state = ",VC_item_2)
+    else:
+        VC_item_2 = False
+        print("VoiceChange_main1 test state = ",VC_item_2)
 
 def Re_Init_SoundSystem():
     global Pushed_reinit
@@ -238,9 +215,9 @@ class SoundSystem():
                 filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
                 output_sound = filtered_audio.tobytes()
                 
-            else:
-                # print('Normal voice')
-                output_sound = audio_data
+            # else:
+            #     # print('Normal voice')
+            #     output_sound = audio_data
 
             if(Mute_mic_state):
                 sine_segment = generators.Sine(1000).to_audio_segment()
@@ -253,18 +230,8 @@ class SoundSystem():
                 np.multiply(self.numpy_data, self.multiplier, out=self.numpy_data, casting="unsafe")
                 output_sound = self.numpy_data.tostring()
 
-            if(Voice_changer_state):
-                numpy_data = np.fromstring(audio_data, dtype=np.int16)
-                numpy_data_float = numpy_data.astype('float32') / 32767.0 # scale to range [-1, 1]
-                # pitch shift the audio data
-                # global pitch_shift_amount
-                # global bins
-                # global pitch_shifted_data
-                pitch_shifted_data = librosa.effects.pitch_shift(numpy_data_float, 48000, n_steps=pitch_shift_amount, bins_per_octave=main_bins)
-                # apply the filter to the pitch shifted data
-                # filtered_data = signal.filtfilt(b, a, pitch_shifted_data)
-                # convert the pitch shifted data to a string for playback
-                output_sound = (pitch_shifted_data * 32767).astype(np.int16).tostring()
+            # if(VC_item_1):
+                
 
             self.virtual_microphone_stream.write(output_sound)
 
@@ -302,6 +269,17 @@ class SoundSystem():
                 print(i['index'])
                 self.update_input(i['index'])
                 break
+
+#voicechanger
+    # def Toggle_VC_Item():
+    # global Test_item_VC_state
+    # if(Test_mic_state==False):
+    #     Test_mic_state = True
+    #     print("Microphone test state = ",Test_mic_state)
+    # else:
+    #     Test_mic_state = False
+    #     print("Microphone test state = ",Test_mic_state)
+
 ###
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -341,8 +319,9 @@ class MainWindow(QMainWindow):
         #link button
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)
         self.ui.Testmic_button.clicked.connect(Toggle_TestMic)
-        self.ui.Test_VC.clicked.connect(Toggle_Voicechaneger)
-        self.ui.VC_Testmic_button.clicked.connect(Toggle_TestMic)
+        self.ui.Voicechange_1.clicked.connect(VC_item_1)
+        self.ui.Voicechange_2.clicked.connect(VC_item_2)
+        self.ui.VC_Testmi_button.clicked.connect(Toggle_TestMic)
         
         
         self.createSound_system = False
@@ -364,23 +343,15 @@ class MainWindow(QMainWindow):
             #boostmic
             self.ui.horizontalSlider_2.valueChanged.connect(Boost_Mic)
 
-
-            self.ui.horizontalSlider_VC_Eq1.valueChanged.connect(main_pitch_eq) #//TODO:
-            self.ui.horizontalSlider_VC_Eq2.valueChanged.connect(main_bins_eq)
-            self.ui.horizontalSlider_VC_Eq3.valueChanged.connect(main_hz_eq)
-
+            #soundpad
+            # self.ui.play_button.clicked.connect(play_mic())
 
         except:
             print("init in main error")
             print('Please download VB cable or enable VB cable from the setting')
-
             self.ui.stackedWidget.setCurrentWidget(self.ui.Alert_page)
-            # self.ui.label.setText(_translate(
-            # "ui_main", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; color:#ffffff;\">No audio output device found</span></p></body></html>")) #//TODO:
-            # self.ui.Alert_button_detail.setText(_translate(
-            # "ui_main", "Check your audio output device and try again")) #//TODO:
-
-
+        
+    
         # while(self.createSound_system == False):
         #     #nav to Error handler page
         #     print('error')
