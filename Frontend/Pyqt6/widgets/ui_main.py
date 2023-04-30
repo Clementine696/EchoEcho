@@ -1036,6 +1036,7 @@ class Ui_mainInterface(object):
         explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)    
         labels = list(data.keys())[:10]
         values = list(data.values())[:10]
+
         # create the donut plot
         wedges, texts, autotexts = ax.pie(values, colors=colors, labels=labels,
                                         autopct='%.2f%%', startangle=90,
@@ -1050,7 +1051,6 @@ class Ui_mainInterface(object):
         # canvas.setStyleSheet("background-color: red;")
         # self.canvas.patch.set_facecolor('#244D54')
         fig.patch.set_facecolor('none')
-
         # add the canvas to the PyQt5 widget
         layout = QtWidgets.QVBoxLayout(self.widget_2)
         layout.addWidget(canvas)
@@ -1230,9 +1230,9 @@ class Ui_mainInterface(object):
         # self.SP_tableWidget.setRowCount(9)
 
         # self.SP_tableWidget.setRowCount(3)
-        self.SP_tableWidget.setColumnCount(6)
+        self.SP_tableWidget.setColumnCount(5)
         self.SP_tableWidget.setHorizontalHeaderLabels(
-            ['Name', 'Duration', 'Hotkeys', '', 'Status', ''])
+            ['Name', 'Duration', '', 'Status', ''])
         self.SP_tableWidget.verticalHeader().hide()
         # effect = QGraphicsDropShadowEffect()
         # self.SP_tableWidget.setGraphicsEffect(effect)
@@ -1288,10 +1288,9 @@ class Ui_mainInterface(object):
         self.SP_tableWidget.autofit = False
         self.SP_tableWidget.setColumnWidth(0, 400)
         self.SP_tableWidget.setColumnWidth(1, 130)
-        self.SP_tableWidget.setColumnWidth(2, 110)
+        self.SP_tableWidget.setColumnWidth(2, 80)
         self.SP_tableWidget.setColumnWidth(3, 80)
         self.SP_tableWidget.setColumnWidth(4, 80)
-        self.SP_tableWidget.setColumnWidth(5, 80)
 
         try:
             with open("soundpad.pickle", "rb") as file:
@@ -1309,13 +1308,13 @@ class Ui_mainInterface(object):
                     self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))   
 
                     play_button = self.play_button(fname, row)
-                    self.SP_tableWidget.setCellWidget(row, 3, play_button)
+                    self.SP_tableWidget.setCellWidget(row, 2, play_button)
 
-                    self.SP_tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
+                    self.SP_tableWidget.setCellWidget(row, 3, self.listen_button("", fname))
 
                     remove_button = self.remove_button(row, fname)
 
-                    self.SP_tableWidget.setCellWidget(row, 5, remove_button)
+                    self.SP_tableWidget.setCellWidget(row, 4, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
 
                     # for i in range(self.SP_tableWidget.rowCount()):
@@ -2450,23 +2449,18 @@ class Ui_mainInterface(object):
 
             self.SP_tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
-            # self.table.setItem(row, 1, QTableWidgetItem(""))
-            # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
-
-
             duration = self.getDuration(fname)
             self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
 
             
             play_button = self.play_button(fname, row)
-            self.SP_tableWidget.setCellWidget(row, 3, play_button)
-            # play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
+            self.SP_tableWidget.setCellWidget(row, 2, play_button)
 
-            self.SP_tableWidget.setCellWidget(row, 4, self.listen_button("", fname))
+            self.SP_tableWidget.setCellWidget(row, 3, self.listen_button("", fname))
 
             remove_button = self.remove_button(row, fname)
 
-            self.SP_tableWidget.setCellWidget(row, 5, remove_button)
+            self.SP_tableWidget.setCellWidget(row, 4, remove_button)
             remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
             
             self.filenames.append(fname)
@@ -2567,7 +2561,7 @@ class Ui_mainInterface(object):
             for row in range(self.SP_tableWidget.rowCount()):
                 item = self.SP_tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.SP_tableWidget.cellWidget(row, 3)
+                    play_btn = self.SP_tableWidget.cellWidget(row, 2)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         # self.player.stop()
                         micplay = False
@@ -2617,7 +2611,7 @@ class Ui_mainInterface(object):
     def get_play(self, fname):
         for row in range(self.SP_tableWidget.rowCount()):
             if self.SP_tableWidget.item(row, 0).text() == os.path.basename(fname):
-                return self.SP_tableWidget.cellWidget(row, 3)
+                return self.SP_tableWidget.cellWidget(row, 2)
             
     # ========================================================================================================================================
             
@@ -2655,7 +2649,7 @@ class Ui_mainInterface(object):
             for row in range(self.SP_tableWidget.rowCount()):
                 item = self.SP_tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.SP_tableWidget.cellWidget(row, 4)
+                    play_btn = self.SP_tableWidget.cellWidget(row, 3)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         self.player.stop()
                         play_btn.setIcon(icon_listen)
@@ -2670,7 +2664,7 @@ class Ui_mainInterface(object):
         for row in range(self.SP_tableWidget.rowCount()):
             item = self.SP_tableWidget.item(row, 0)
             if item is not None and item.text() == os.path.basename(fname):
-                return self.SP_tableWidget.cellWidget(row, 4)
+                return self.SP_tableWidget.cellWidget(row, 3)
 
     def getDuration(self, fname):
         if fname.endswith('.mp3'):
