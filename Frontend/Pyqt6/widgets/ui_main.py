@@ -1302,17 +1302,18 @@ class Ui_mainInterface(object):
 
         try:
             with open("soundpad.pickle", "rb") as file:
-                self.filenames = pickle.load(file)
-                for fname in self.filenames:
+                sp_data = pickle.load(file)
+                for fname, count in sp_data.items():
+                    self.filenames.append(fname)
+                    self.play_counts[fname] = count
+
                     row = self.SP_tableWidget.rowCount()
                     self.SP_tableWidget.insertRow(row)
 
-                    self.SP_tableWidget.setItem(
-                        row, 0, QTableWidgetItem(os.path.basename(fname)))
+                    self.SP_tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
                     duration = self.getDuration(fname)
-                    self.SP_tableWidget.setItem(
-                        row, 1, QTableWidgetItem(duration))
+                    self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))   
 
                     play_button = self.play_button(fname, row)
                     self.SP_tableWidget.setCellWidget(row, 2, play_button)
@@ -1324,11 +1325,7 @@ class Ui_mainInterface(object):
                     self.SP_tableWidget.setCellWidget(row, 4, remove_button)
                     remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
 
-                    # for i in range(self.SP_tableWidget.rowCount()):
-                    #     fname = self.filenames[i]
-                        # if fname in self.play_counts:
-                        #     play_count = QTableWidgetItem(str(self.play_counts[fname]))
-                    #         self.SP_tableWidget.setItem(i, 4, play_count)
+                print("audio load successfully")
 
                 print("audio load successfully")
 
