@@ -6,7 +6,7 @@ import time
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QDesktopWidget, QFileDialog,
     QTableWidget, QTableWidgetItem, QLabel, QMainWindow, QFormLayout,
-    QGroupBox, QScrollArea, QVBoxLayout, QHBoxLayout, QProgressDialog, QLineEdit, QShortcut
+    QGroupBox, QScrollArea, QVBoxLayout, QHBoxLayout, QProgressDialog, QLineEdit, QMessageBox
 )
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
@@ -23,6 +23,7 @@ class App(QWidget):
         self.filenames = []
         # self.hotkeys = {}
         self.count = []
+        self.play_counts = {}
         self.player = QMediaPlayer()
         self.table = QTableWidget()
         self.table.setColumnCount(5)
@@ -63,25 +64,40 @@ class App(QWidget):
         # read file in pickle
         try:
             with open("soundpad.pickle", "rb") as file:
-                self.filenames = pickle.load(file)
-                for fname in self.filenames:
+                data = pickle.load(file)
+                for fname, count in data.items():
+                    self.filenames.append(fname)
+                    self.play_counts[fname] = count
+
                     row = self.table.rowCount()
                     self.table.insertRow(row)
-                    
+
                     self.table.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
-                    
+
                     duration = self.getDuration(fname)
                     self.table.setItem(row, 1, QTableWidgetItem(duration))
-                    
-                    self.table.setCellWidget(row, 2, self.play_button("Play", fname))
-                    
-                    remove_button = self.remove_button(row, fname)
-                    self.table.setCellWidget(row, 3, remove_button)
-                    remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
-                
-                    play_count = QTableWidgetItem("0")
-                    self.table.setItem(row, 4, play_count)
 
+                    play_button = QPushButton("Play")
+                    self.table.setCellWidget(row, 2, play_button)
+                    play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
+
+                    remove_button = QPushButton("Remove")
+                    remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
+                    self.table.setCellWidget(row, 3, remove_button)
+
+                    # play_count = QTableWidgetItem(str(self.play_counts[fname]))
+                    # self.table.setItem(row, 4, play_count)
+
+                    for i in range(self.table.rowCount()):
+                        fname = self.filenames[i]
+                        if fname in self.play_counts:
+                            play_count = QTableWidgetItem(str(self.play_counts[fname]))
+                            self.table.setItem(i, 4, play_count)
+
+                    # if not all(os.path.exists(f) for f in self.filenames):
+                    #     self.filenames = [f for f in self.filenames if os.path.exists(f)]
+                    #     self.save_file()
+                
                 print("audio load successfully")
 
         except Exception as e:
@@ -92,8 +108,15 @@ class App(QWidget):
         folder = r""
       
         # เห็นเฉพาะ .wav, .mp3
-        fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options) 
+        fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV or MP3 (*.wav *.mp3)", options=options) 
         if fname:
+            if self.check_duplicate_file(fname):
+                msg_box = QMessageBox()
+                msg_box.setText("File name already exists.")
+                msg_box.exec_()
+                return
+            
             print("add file :", fname)
 
             row = self.table.rowCount()
@@ -103,22 +126,45 @@ class App(QWidget):
             duration = self.getDuration(fname)
             self.table.setItem(row, 1, QTableWidgetItem(duration))
             
-            self.table.setCellWidget(row, 2, self.play_button("Play", fname))
+            play_button = QPushButton("Play")
+            self.table.setCellWidget(row, 2, play_button)
+            play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
 
             remove_button = QPushButton("Remove")
             remove_button.clicked.connect(lambda _, row=row, fname=fname: self.remove_file(row, fname))
             self.table.setCellWidget(row, 3, remove_button)
 
-            play_count = QTableWidgetItem("0")
+            self.play_counts[fname] = 0
+            play_count = QTableWidgetItem(str(self.play_counts[fname]))
             self.table.setItem(row, 4, play_count)
 
             self.filenames.append(fname)
             self.save_file()
 
+    def check_duplicate_file(self, file_path):
+        file_name = os.path.basename(file_path)
+        if file_name in set([os.path.basename(fname) for fname in self.filenames]):
+            return True
+        return False
+
     def save_file(self):
+        data = {}
+        for fname in self.filenames:
+            # data[fname.split("/")[-1].split(".")[0]] = self.play_counts[fname]
+            data[fname] = self.play_counts[fname]
         # save file in pickle
         with open("soundpad.pickle", "wb") as file:
-            pickle.dump(self.filenames, file)
+            pickle.dump(data, file)
+        
+        print("save success")
+        print(data)
+
+        sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
+        with open("sort_counts.txt", "w", encoding="utf-8") as file:
+            for item in sort_counts:
+                file.write(os.path.basename(item[0]) + "," + str(item[1]) + "\n")
+    
+        print("sort success")
 
     def remove_button(self, row, fname):
         button = QPushButton("Remove")
@@ -126,25 +172,29 @@ class App(QWidget):
         return button
 
     def remove_file(self, row, fname):
-        # Remove the selected row from the table
-        if fname in self.filenames:
+        try:
             self.filenames.remove(fname)
-        self.table.removeRow(row)
-        
-        self.save_file()
+            self.play_counts.pop(fname)
+            for i in range(self.table.rowCount()):
+                if self.table.item(i, 0).text() == os.path.basename(fname):
+                    self.table.removeRow(i)
+                    break
+            self.save_file()
 
-        # Stop the player if it was playing the removed file
-        if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
-            self.player.stop()
+            if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
+                self.player.stop()
 
-        print("File removed successfully.")
+            print("File removed successfully.")
+
+        except Exception as e:
+            print("Error removing file:", e)
 
     def play_button(self, label, fname):
         button = QPushButton(label)
         button.clicked.connect(lambda: self.play_media(button, fname))
         return button
 
-    def play_media(self, btn, fname):
+    def play_media(self, btn, fname, index):
         media_content = QMediaContent(QUrl.fromLocalFile(fname))
         if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
             self.player.stop()
@@ -159,9 +209,13 @@ class App(QWidget):
 
             self.player.setMedia(media_content)
             self.player.play()
-            btn.setText("...")
+            btn.setText("Stop")
             current_count = int(self.table.item(self.table.currentRow(), 4).text())
+            self.play_counts[fname] = current_count + 1  # บันทึกค่าเพิ่ม
+            self.save_file()  # เรียกฟังก์ชั่นบันทึกไฟล์
             self.table.item(self.table.currentRow(), 4).setText(str(current_count + 1))
+
+            self.save_file()
 
             self.player.setMedia(media_content)
             self.player.play()
