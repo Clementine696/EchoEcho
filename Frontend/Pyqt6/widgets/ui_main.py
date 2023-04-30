@@ -942,11 +942,109 @@ class Ui_mainInterface(object):
         font.setPointSize(36)
         font.setBold(True)
         font.setWeight(75)
-        self.dashbord_label.setFont(font)
-        self.dashbord_label.setStyleSheet("color: #66DAED")
-        self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.dashbord_label.setObjectName("dashbord_label")
-        self.horizontalLayout_6.addWidget(self.dashbord_label)
+
+        # self.dashbord_label.setFont(font)
+        # self.dashbord_label.setStyleSheet("color: #66DAED")
+        # self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
+        # self.dashbord_label.setObjectName("dashbord_label")
+        # self.horizontalLayout_6.addWidget(self.dashbord_label)
+        self.dash_label.setFont(font)
+        self.dash_label.setStyleSheet("QLabel \n"
+"{\n"
+" color: #FFFFFF;\n"
+"}")
+        self.dash_label.setObjectName("dash_label")
+        self.verticalLayout_11.addWidget(self.dash_label, 0, QtCore.Qt.AlignHCenter)
+        self.verticalLayout_7.addWidget(self.frame_dash_title)
+        self.frame_7 = QtWidgets.QFrame(self.frame_dash_page)
+        self.frame_7.setStyleSheet("QFrame{\n"
+"    background-color: rgba(0, 0, 0, 0);\n"
+"}")
+        self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_7.setObjectName("frame_7")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.frame_7)
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_12.setSpacing(0)
+        self.verticalLayout_12.setObjectName("verticalLayout_12")
+        self.frame_9 = QtWidgets.QFrame(self.frame_7)
+        self.frame_9.setMinimumSize(QtCore.QSize(900, 150))
+        self.frame_9.setMaximumSize(QtCore.QSize(900, 150))
+        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_9.setObjectName("frame_9")
+        # frame_9 ใส่อันดับ
+        self.text_edit = QtWidgets.QTextEdit(self.frame_9)
+        self.text_edit.setGeometry(QtCore.QRect(10, 10, 880, 130))
+        self.text_edit.setObjectName("text_edit")
+        self.verticalLayout_d = QtWidgets.QVBoxLayout(self.frame_9)
+        self.verticalLayout_d.addWidget(self.text_edit, alignment=QtCore.Qt.AlignCenter)
+
+        self.show_data()
+
+        self.verticalLayout_12.addWidget(self.frame_9)
+        self.frame_10 = QtWidgets.QFrame(self.frame_7)
+        self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_10.setObjectName("frame_10")
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame_10)
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        self.widget_2 = QtWidgets.QWidget(self.frame_10)
+        self.widget_2.setObjectName("widget_2")
+
+        fig = Figure()
+        ax = fig.add_subplot(111)
+        # fig, ax = plt.subplots()
+        # ax.axis('equal')
+
+        # # define data for the donut plot
+        # data = [10, 20, 30, 40]
+        # labels = ['A', 'B', 'C', 'D']
+        # colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7']
+        # explode = (0, 0, 0, 0)
+
+        # อ่านไฟล์ sort_counts.txt เพื่อใช้ในการสร้างกราฟ
+        file_path = 'sort_counts.txt'
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+
+        data = {}
+        texts = []
+        for line in lines:
+            line = line.strip()
+            parts = line.split(',')
+            text = parts[0]
+            number = int(parts[1])
+            data[text] = number
+        colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9', '#F8B195', '#F67280', '#C06C84']
+        explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)    
+        labels = list(data.keys())[:10]
+        values = list(data.values())[:10]
+
+        # create the donut plot
+        wedges, texts, autotexts = ax.pie(values, colors=colors, labels=labels,
+                                        autopct='%.2f%%', startangle=90,
+                                        pctdistance=0.85, explode=explode[:len(values)])
+
+        # add a circle to create a donut chart
+        centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+        # plt.axis('equal')    
+        # plt.legend(loc='upper left')
+        ax.add_artist(centre_circle)
+        canvas = FigureCanvas(fig)
+        # canvas.setStyleSheet("background-color: red;")
+        # self.canvas.patch.set_facecolor('#244D54')
+        fig.patch.set_facecolor('none')
+        # add the canvas to the PyQt5 widget
+        layout = QtWidgets.QVBoxLayout(self.widget_2)
+        layout.addWidget(canvas)
+        # self.create_donutchart()
+        self.horizontalLayout_7.addWidget(self.widget_2)
+        self.verticalLayout_12.addWidget(self.frame_10)
+        self.verticalLayout_7.addWidget(self.frame_7)
+        self.horizontalLayout_6.addWidget(self.frame_dash_page)
         self.stackedWidget.addWidget(self.dashbord_page)
 
         # Soundpad Page
@@ -1194,17 +1292,21 @@ class Ui_mainInterface(object):
                     self.SP_tableWidget.setItem(
                         row, 1, QTableWidgetItem(duration))
 
-                    self.SP_tableWidget.setCellWidget(
-                        row, 2, self.play_button("", fname))
+                    play_button = self.play_button(fname, row)
+                    self.SP_tableWidget.setCellWidget(row, 2, play_button)
 
-                    self.SP_tableWidget.setCellWidget(
-                        row, 3, self.listen_button("", fname))
+                    self.SP_tableWidget.setCellWidget(row, 3, self.listen_button("", fname))
 
                     remove_button = self.remove_button(row, fname)
 
                     self.SP_tableWidget.setCellWidget(row, 4, remove_button)
-                    remove_button.clicked.connect(
-                        lambda _, r=row, f=fname: self.remove_file(r, f))
+                    remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+
+                    # for i in range(self.SP_tableWidget.rowCount()):
+                    #     fname = self.filenames[i]
+                        # if fname in self.play_counts:
+                        #     play_count = QTableWidgetItem(str(self.play_counts[fname]))
+                    #         self.SP_tableWidget.setItem(i, 4, play_count)
 
                 print("audio load successfully")
 
@@ -1944,23 +2046,23 @@ class Ui_mainInterface(object):
             self.SP_tableWidget.setItem(
                 row, 0, QTableWidgetItem(os.path.basename(fname)))
 
-            # self.table.setItem(row, 1, QTableWidgetItem(""))
-            # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
-
             duration = self.getDuration(fname)
             self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))
+            
+            play_button = self.play_button(fname, row)
+            self.SP_tableWidget.setCellWidget(row, 2, play_button)
 
-            self.SP_tableWidget.setCellWidget(
-                row, 3, self.play_button("", fname))
-
-            self.SP_tableWidget.setCellWidget(
-                row, 4, self.listen_button("", fname))
+            self.SP_tableWidget.setCellWidget(row, 3, self.listen_button("", fname))
 
             remove_button = self.remove_button(row, fname)
 
-            self.SP_tableWidget.setCellWidget(row, 5, remove_button)
-            remove_button.clicked.connect(
-                lambda _, r=row, f=fname: self.remove_file(r, f))
+            self.SP_tableWidget.setCellWidget(row, 4, remove_button)
+            remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+            
+            self.filenames.append(fname)
+
+            if fname not in self.play_counts:
+                self.play_counts[fname] = 0
 
             self.filenames.append(fname)
             self.save_file()
@@ -2017,7 +2119,7 @@ class Ui_mainInterface(object):
             for row in range(self.SP_tableWidget.rowCount()):
                 item = self.SP_tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.SP_tableWidget.cellWidget(row, 3)
+                    play_btn = self.SP_tableWidget.cellWidget(row, 2)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         # self.player.stop()
                         micplay = False
@@ -2055,10 +2157,9 @@ class Ui_mainInterface(object):
 
     def get_play(self, fname):
         for row in range(self.SP_tableWidget.rowCount()):
-            item = self.SP_tableWidget.item(row, 0)
-            if item is not None and item.text() == os.path.basename(fname):
-                return self.SP_tableWidget.cellWidget(row, 3)
-
+            if self.SP_tableWidget.item(row, 0).text() == os.path.basename(fname):
+                return self.SP_tableWidget.cellWidget(row, 2)
+            
     # ========================================================================================================================================
 
     def listen_button(self, label, fname):
@@ -2096,7 +2197,7 @@ class Ui_mainInterface(object):
             for row in range(self.SP_tableWidget.rowCount()):
                 item = self.SP_tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.SP_tableWidget.cellWidget(row, 4)
+                    play_btn = self.SP_tableWidget.cellWidget(row, 3)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         self.player.stop()
                         play_btn.setIcon(icon_listen)
@@ -2111,7 +2212,7 @@ class Ui_mainInterface(object):
         for row in range(self.SP_tableWidget.rowCount()):
             item = self.SP_tableWidget.item(row, 0)
             if item is not None and item.text() == os.path.basename(fname):
-                return self.SP_tableWidget.cellWidget(row, 4)
+                return self.SP_tableWidget.cellWidget(row, 3)
 
     def getDuration(self, fname):
         if fname.endswith('.mp3'):
