@@ -936,13 +936,34 @@ class Ui_mainInterface(object):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.dashbord_label = QtWidgets.QLabel(self.dashbord_page)
+        # self.dashbord_label = QtWidgets.QLabel(self.Audio_page)
+        self.frame_dash_page = QtWidgets.QFrame(self.dashbord_page)
+        self.frame_dash_page.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_dash_page.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_dash_page.setObjectName("frame_dash_page")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.frame_dash_page)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_7.setSpacing(0)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.frame_dash_title = QtWidgets.QFrame(self.frame_dash_page)
+        self.frame_dash_title.setMinimumSize(QtCore.QSize(900, 120))
+        self.frame_dash_title.setMaximumSize(QtCore.QSize(900, 120))
+        self.frame_dash_title.setStyleSheet("QFrame{\n"
+"    background-color: rgba(0, 0, 0, 0);\n"
+"}")
+        self.frame_dash_title.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_dash_title.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_dash_title.setObjectName("frame_dash_title")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.frame_dash_title)
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_11.setSpacing(0)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.dash_label = QtWidgets.QLabel(self.frame_dash_title)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(36)
         font.setBold(True)
         font.setWeight(75)
-
         # self.dashbord_label.setFont(font)
         # self.dashbord_label.setStyleSheet("color: #66DAED")
         # self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -1798,7 +1819,7 @@ class Ui_mainInterface(object):
         self.Voicechange_3.setText(_translate("ui_main", "Button3"))
         self.VC_Testmi_button.setText(_translate("ui_main", "Test Microphone"))
 
-        self.dashbord_label.setText(_translate("ui_main", "Dashbord"))
+        self.dash_label.setText(_translate("ui_main", "Dashbord"))
         # self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
         self.settingmain.setText(_translate("ui_main", "Settings"))
         self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -2722,3 +2743,13 @@ class Ui_mainInterface(object):
                                          "border-style: outset;\n"
                                          "}")
     
+    def show_data(self):
+        # โหลดข้อมูลจากไฟล์ .txt และแสดงผลใน QTextEdit ของ frame_9
+        try:
+            with open('sort_counts.txt', 'r') as f:
+                sort_data = f.readlines()
+                sort_data = ''.join(sort_data[:10]).split('\n')
+                sort_data = '\n'.join(sort_data)
+                self.text_edit.setText(sort_data)
+        except Exception as e:
+            print("Error loading text file:",e)
