@@ -5,8 +5,8 @@ import subprocess
 
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog
-from PyQt5.QtCore import Qt, QUrl, QTimer
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog, QMessageBox, QDialog
+from PyQt5.QtCore import Qt, QUrl, QTimer, QObject
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
 
 from mutagen.mp3 import MP3
@@ -29,6 +29,7 @@ import keyboard
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from random import randint
 import queue
 import sys
 from matplotlib.animation import FuncAnimation
@@ -783,6 +784,7 @@ class Ui_mainInterface(object):
         self.figure.patches.extend([self.rect])
         self.figure.patch.set_facecolor('#244D54')
         self.canvas = FigureCanvas(self.figure)
+        self.canvas_d = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
 
         # init lines
@@ -936,21 +938,146 @@ class Ui_mainInterface(object):
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.dashbord_label = QtWidgets.QLabel(self.dashbord_page)
+        # self.dashbord_label = QtWidgets.QLabel(self.Audio_page)
+        self.frame_dash_page = QtWidgets.QFrame(self.dashbord_page)
+        self.frame_dash_page.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_dash_page.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_dash_page.setObjectName("frame_dash_page")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.frame_dash_page)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_7.setSpacing(0)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.frame_dash_title = QtWidgets.QFrame(self.frame_dash_page)
+        self.frame_dash_title.setMinimumSize(QtCore.QSize(900, 120))
+        self.frame_dash_title.setMaximumSize(QtCore.QSize(900, 120))
+        self.frame_dash_title.setStyleSheet("QFrame{\n"
+"    background-color: rgba(0, 0, 0, 0);\n"
+"}")
+        self.frame_dash_title.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_dash_title.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_dash_title.setObjectName("frame_dash_title")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.frame_dash_title)
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_11.setSpacing(0)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.dash_label = QtWidgets.QLabel(self.frame_dash_title)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(36)
         font.setBold(True)
         font.setWeight(75)
-        self.dashbord_label.setFont(font)
-        self.dashbord_label.setStyleSheet("color: #66DAED")
-        self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.dashbord_label.setObjectName("dashbord_label")
-        self.horizontalLayout_6.addWidget(self.dashbord_label)
+        # self.dashbord_label.setFont(font)
+        # self.dashbord_label.setStyleSheet("color: #66DAED")
+        # self.dashbord_label.setAlignment(QtCore.Qt.AlignCenter)
+        # self.dashbord_label.setObjectName("dashbord_label")
+        # self.horizontalLayout_6.addWidget(self.dashbord_label)
+        self.dash_label.setFont(font)
+        self.dash_label.setStyleSheet("QLabel \n"
+"{\n"
+" color: #FFFFFF;\n"
+"}")
+        self.dash_label.setObjectName("dash_label")
+        self.verticalLayout_11.addWidget(self.dash_label, 0, QtCore.Qt.AlignHCenter)
+        self.verticalLayout_7.addWidget(self.frame_dash_title)
+        self.frame_7 = QtWidgets.QFrame(self.frame_dash_page)
+        self.frame_7.setStyleSheet("QFrame{\n"
+"    background-color: rgba(0, 0, 0, 0);\n"
+"}")
+        self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_7.setObjectName("frame_7")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.frame_7)
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_12.setSpacing(0)
+        self.verticalLayout_12.setObjectName("verticalLayout_12")
+        self.frame_9 = QtWidgets.QFrame(self.frame_7)
+        self.frame_9.setMinimumSize(QtCore.QSize(900, 150))
+        self.frame_9.setMaximumSize(QtCore.QSize(900, 150))
+        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_9.setObjectName("frame_9")
+        # frame_9 ใส่อันดับ
+        self.text_edit = QtWidgets.QTextEdit(self.frame_9)
+        self.text_edit.setGeometry(QtCore.QRect(10, 10, 880, 130))
+        self.text_edit.setObjectName("text_edit")
+        self.verticalLayout_d = QtWidgets.QVBoxLayout(self.frame_9)
+        self.verticalLayout_d.addWidget(self.text_edit, alignment=QtCore.Qt.AlignCenter)
+
+        self.show_data()
+
+        self.verticalLayout_12.addWidget(self.frame_9)
+        self.frame_10 = QtWidgets.QFrame(self.frame_7)
+        self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_10.setObjectName("frame_10")
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame_10)
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        self.widget_2 = QtWidgets.QWidget(self.frame_10)
+        self.widget_2.setObjectName("widget_2")
+
+        fig = Figure()
+        ax = fig.add_subplot(111)
+        # fig, ax = plt.subplots()
+        # ax.axis('equal')
+
+        # # define data for the donut plot
+        # data = [10, 20, 30, 40]
+        # labels = ['A', 'B', 'C', 'D']
+        # colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7']
+        # explode = (0, 0, 0, 0)
+        
+        # อ่านไฟล์ sort_counts.txt เพื่อใช้ในการสร้างกราฟ
+        file_path = 'sort_counts.txt'
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+
+        data = {}
+        texts = []
+        for line in lines:
+            line = line.strip()
+            parts = line.split(',')
+            text = parts[0]
+            number = int(parts[1])
+            data[text] = number
+        colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9', '#F8B195', '#F67280', '#C06C84']
+        explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)    
+        labels = list(data.keys())[:10]
+        values = list(data.values())[:10]
+        # create the donut plot
+        wedges, texts, autotexts = ax.pie(values, colors=colors, labels=labels,
+                                        autopct='%.2f%%', startangle=90,
+                                        pctdistance=0.85, explode=explode[:len(values)])
+
+        # add a circle to create a donut chart
+        centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+        # plt.axis('equal')    
+        # plt.legend(loc='upper left')
+        ax.add_artist(centre_circle)
+        canvas_d = FigureCanvas(fig)
+        # canvas_d.setStyleSheet("background-color: red;")
+        # self.canvas_d.patch.set_facecolor('#244D54')
+        fig.patch.set_facecolor('none')
+
+        # add the canvas_d to the PyQt5 widget
+        layout = QtWidgets.QVBoxLayout(self.widget_2)
+        layout.addWidget(canvas_d)
+        # self.create_donutchart()
+        self.horizontalLayout_7.addWidget(self.widget_2)
+        self.verticalLayout_12.addWidget(self.frame_10)
+        self.verticalLayout_7.addWidget(self.frame_7)
+        self.horizontalLayout_6.addWidget(self.frame_dash_page)
         self.stackedWidget.addWidget(self.dashbord_page)
 
+        self.timer_dashboard = QTimer()
+        self.timer_dashboard.timeout.connect(self.update_dashboard)
+        self.timer_dashboard.timeout.connect(self.update_dashboard_plot)
+        self.timer_dashboard.start(1000)
+        
         # Soundpad Page
         self.filenames = []
+        self.play_counts = {}
         self.player = QMediaPlayer()
         self.ui_main = ui_main
 
@@ -1117,9 +1244,11 @@ class Ui_mainInterface(object):
         # self.SP_tableWidget.setRowCount(9)
 
         # self.SP_tableWidget.setRowCount(3)
+
         self.SP_tableWidget.setColumnCount(5)
         self.SP_tableWidget.setHorizontalHeaderLabels(
             ['Name', 'Duration', '', 'Status', ''])
+
         self.SP_tableWidget.verticalHeader().hide()
         # effect = QGraphicsDropShadowEffect()
         # self.SP_tableWidget.setGraphicsEffect(effect)
@@ -1151,6 +1280,7 @@ class Ui_mainInterface(object):
         #                                   "}\n"
         #                                   )
         self.SP_tableWidget.setStyleSheet("QTableWidget::item {"
+
                                           "color: #d7d7d7;"
                                           "background-color: rgba(50, 75, 79, 140)"
                                           #   "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(138, 138, 138, 50), stop:0.886364 rgba(102, 218, 237, 255));"
@@ -1182,57 +1312,36 @@ class Ui_mainInterface(object):
 
         try:
             with open("soundpad.pickle", "rb") as file:
-                self.filenames = pickle.load(file)
-                for fname in self.filenames:
-                    row = self.SP_tableWidget.rowCount()
-                    self.SP_tableWidget.insertRow(row)
+                sp_data = pickle.load(file)
+                for fname, count in sp_data.items():
+                    self.filenames.append(fname)
+                    self.play_counts[fname] = count
 
-                    self.SP_tableWidget.setItem(
-                        row, 0, QTableWidgetItem(os.path.basename(fname)))
+                    self.SP_tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
                     duration = self.getDuration(fname)
-                    self.SP_tableWidget.setItem(
-                        row, 1, QTableWidgetItem(duration))
+                    self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))
+                    
+                    play_button = self.play_button(fname, row)
+                    self.SP_tableWidget.setCellWidget(row, 2, play_button)
 
-                    self.SP_tableWidget.setCellWidget(
-                        row, 2, self.play_button("", fname))
-
-                    self.SP_tableWidget.setCellWidget(
-                        row, 3, self.listen_button("", fname))
+                    self.SP_tableWidget.setCellWidget(row, 3, self.listen_button("", fname))
 
                     remove_button = self.remove_button(row, fname)
 
                     self.SP_tableWidget.setCellWidget(row, 4, remove_button)
-                    remove_button.clicked.connect(
-                        lambda _, r=row, f=fname: self.remove_file(r, f))
+                    remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+
+                    # for i in range(self.SP_tableWidget.rowCount()):
+                    #     fname = self.filenames[i]
+                        # if fname in self.play_counts:
+                        #     play_count = QTableWidgetItem(str(self.play_counts[fname]))
+                    #         self.SP_tableWidget.setItem(i, 4, play_count)
 
                 print("audio load successfully")
 
         except Exception as e:
             print("Error loading audio files:", e)
-
-        # for index in range(self.SP_tableWidget.rowCount()):
-
-        #     # play button
-        #     self.btn_play = QPushButton(self.SP_tableWidget)
-        #     self.btn_play.setText('Play')
-        #     self.SP_tableWidget.setCellWidget(index, 4, self.btn_play)
-        #     self.btn_play.clicked.connect(
-        #         lambda: self.SP_play_item(self.SP_tableWidget.currentRow()))
-
-        #     # listen button
-        #     self.btn_listen = QPushButton(self.SP_tableWidget)
-        #     self.btn_listen.setText('Listen')
-        #     self.SP_tableWidget.setCellWidget(index, 5, self.btn_listen)
-        #     self.btn_listen.clicked.connect(
-        #         lambda: self.SP_listen_item(self.SP_tableWidget.currentRow()))
-
-        #     # delete button
-        #     self.btn_delete = QPushButton(self.SP_tableWidget)
-        #     self.btn_delete.setText('delete')
-        #     self.SP_tableWidget.setCellWidget(index, 6, self.btn_delete)
-        #     self.btn_delete.clicked.connect(
-        #         lambda: self.remove_file(self.SP_tableWidget.currentRow()))
 
         self.verticalLayout_15.addWidget(self.SP_tableWidget)
         self.SP_scrollArea.setWidget(self.scrollAreaWidgetContents)
@@ -1928,59 +2037,104 @@ class Ui_mainInterface(object):
     # Soundpad Page Function
     # add item
 
-    def SP_add_item(self):
+    def SP_add_item(self, file_path):
         options = QFileDialog.Options()
         folder = r""
 
-        fname, _ = QFileDialog.getOpenFileName(
-            self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        fname, _ = QFileDialog.getOpenFileName(self.ui_main, "QFileDialog.getOpenFileName()", folder, "WAV Files (*.wav);; MP3 Files (*.mp3)", options=options)
+        # fname, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", folder, "WAV or MP3 (*.wav *.mp3)", options=options) 
 
         if fname:
+            if self.check_duplicate_file(fname):
+                msg_box = QMessageBox()
+                msg_box.setText("File name already exists.\nPlease select another file or change file name.")
+                msg_box.exec_()
+                return
+            
             print("add file :", fname)
 
             row = self.SP_tableWidget.rowCount()
             self.SP_tableWidget.insertRow(row)
 
-            self.SP_tableWidget.setItem(
-                row, 0, QTableWidgetItem(os.path.basename(fname)))
+            self.SP_tableWidget.setItem(row, 0, QTableWidgetItem(os.path.basename(fname)))
 
             # self.table.setItem(row, 1, QTableWidgetItem(""))
             # self.get_duration(QMediaPlayer.LoadedMedia, fname, row)
 
             duration = self.getDuration(fname)
-            self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration))
+            self.SP_tableWidget.setItem(row, 1, QTableWidgetItem(duration)) 
+            
+            play_button = self.play_button(fname, row)
+            self.SP_tableWidget.setCellWidget(row, 2, play_button)
+            # play_button.clicked.connect(lambda _, button=play_button, fname=fname, index=row: self.play_media(button, fname, index))
 
-            self.SP_tableWidget.setCellWidget(
-                row, 3, self.play_button("", fname))
-
-            self.SP_tableWidget.setCellWidget(
-                row, 4, self.listen_button("", fname))
+            self.SP_tableWidget.setCellWidget(row, 3, self.listen_button("", fname))
 
             remove_button = self.remove_button(row, fname)
 
-            self.SP_tableWidget.setCellWidget(row, 5, remove_button)
-            remove_button.clicked.connect(
-                lambda _, r=row, f=fname: self.remove_file(r, f))
-
+            self.SP_tableWidget.setCellWidget(row, 4, remove_button)
+            remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+            
             self.filenames.append(fname)
+
+            if fname not in self.play_counts:
+                self.play_counts[fname] = 0
+
             self.save_file()
 
+        else:
+            print("No file selected.")
+
+    def check_duplicate_file(self, file_path):
+        file_name = os.path.basename(file_path)
+        if file_name in set([os.path.basename(fname) for fname in self.filenames]):
+            return True
+        return False
+
+    def save_file(self):
+        sp_data = {}
+        for fname in self.filenames:
+            sp_data[fname] = self.play_counts[fname]
+            # sp_data[fname.split("/")[-1].split(".")[0]] = self.play_counts[fname]
+
+        # save file in pickle
+        with open("soundpad.pickle", "wb") as file:
+            pickle.dump(sp_data, file)
+        
+        # self.play_counts[fname] = count
+        
+        print("save success")
+        print(sp_data)
+
+        sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
+        with open("sort_counts.txt", "w", encoding="utf-8") as file:
+            for item in sort_counts:
+                file.write(os.path.basename(item[0]) + "," + str(item[1]) + "\n")
+    
+        print("sort success")
+
     # play item
-
+    
     # ========================================================================================================================================
-
-    def play_button(self, label, fname):
+    #//TODO:
+    
+    def play_button(self, fname, index):
         icon_play = QtGui.QIcon()
         icon_play.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_play_icon.png"),
-                            QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        play_button = QPushButton(label)
-        play_button.setIcon(icon_play)
-        play_button.setIconSize(QtCore.QSize(24, 24))
-        play_button.clicked.connect(
-            lambda: self.play_media(play_button, fname))
-        return play_button
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        # play_button = QPushButton(text=str(label))
+        # play_button.setIcon(icon_play)
+        button = QPushButton(icon_play, "")
+        button.setIconSize(QtCore.QSize(30, 30))
+        # button.clicked.connect(lambda: self.play_media(button, fname, index))
+        button.clicked.connect(lambda _, button=button: self.play_media(button, fname, index))
+        
+        # print("=====================================================")
+        # print("show fname:", fname, "index: ", index)
+        # print("=====================================================")
+        return button
 
-    def play_media(self, btn, fname):
+    def play_media(self, btn, fname, index):
         icon_pause = QtGui.QIcon()
         icon_pause.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/SP_pause_icon.png"),
                              QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -1989,9 +2143,10 @@ class Ui_mainInterface(object):
                             QtGui.QIcon.Normal, QtGui.QIcon.Off)
         # media_content = QMediaContent(QUrl.fromLocalFile(fname))
         media_content = fname
+        # print("show fname:", fname)
         # if self.player.state() == QMediaPlayer.PlayingState and self.player.media().canonicalUrl() == media_content.canonicalUrl():
         #     self.player.stop()
-        #     # play_button
+        #     # play_button 
         #     btn.setIcon(icon_play)
         #     # btn.setText("play")
         global micplay
@@ -2003,6 +2158,7 @@ class Ui_mainInterface(object):
             # play_button
             btn.setIcon(icon_play)
             # btn.setText("play")
+            # print(micplay_file, " state : ", micplay)
         else:
             if micplay == True:
                 curr_fname = micplay_file
@@ -2017,7 +2173,7 @@ class Ui_mainInterface(object):
             for row in range(self.SP_tableWidget.rowCount()):
                 item = self.SP_tableWidget.item(row, 0)
                 if item is not None and item.text() != os.path.basename(fname):
-                    play_btn = self.SP_tableWidget.cellWidget(row, 3)
+                    play_btn = self.SP_tableWidget.cellWidget(row, 2)
                     if play_btn.setIcon(icon_pause) == btn.setIcon(icon_pause):
                         # self.player.stop()
                         micplay = False
@@ -2025,7 +2181,6 @@ class Ui_mainInterface(object):
                         play_btn.setIcon(icon_play)
                         # play_btn.setText("Play")
 
-# ==========================================================================
             # self.player.setMedia(media_content)
             # self.player.play()
 
@@ -2035,10 +2190,10 @@ class Ui_mainInterface(object):
 
             def runsound():
                 wf = wave.open(media_content, "rb")
-                data = wf.readframes(1024)
-                while len(data) != 0:
-                    ui_virtual_microphone_stream.write(data)
-                    data = wf.readframes(1024)
+                sp_data = wf.readframes(1024)
+                while len(sp_data) != 0:
+                    ui_virtual_microphone_stream.write(sp_data)
+                    sp_data = wf.readframes(1024)
                     if stop_threads:
                         break
             t1 = threading.Thread(target=runsound)
@@ -2049,17 +2204,16 @@ class Ui_mainInterface(object):
             #     ui_virtual_microphone_stream.write(data)
             #     data = wf.readframes(1024)
 
-# ==========================================================================
             btn.setIcon(icon_pause)
             # btn.setText("Stop")
+            current_count = int(self.play_counts.get(fname, 0)) + 1
+            self.play_counts[fname] = current_count
+            self.save_file() 
 
     def get_play(self, fname):
         for row in range(self.SP_tableWidget.rowCount()):
-            item = self.SP_tableWidget.item(row, 0)
-            if item is not None and item.text() == os.path.basename(fname):
-                return self.SP_tableWidget.cellWidget(row, 3)
-
-    # ========================================================================================================================================
+            if self.SP_tableWidget.item(row, 0).text() == os.path.basename(fname):
+                return self.SP_tableWidget.cellWidget(row, 2)
 
     def listen_button(self, label, fname):
         icon_listen = QtGui.QIcon()
@@ -2134,25 +2288,24 @@ class Ui_mainInterface(object):
         return remove_button
 
     def remove_file(self, row, fname):
-        if fname in self.filenames:
+        try:
             self.filenames.remove(fname)
-            self.SP_tableWidget.removeRow(row)
+            self.play_counts.pop(fname)
+            for i in range(self.SP_tableWidget.rowCount()):
+                if self.SP_tableWidget.item(i, 0).text() == os.path.basename(fname):
+                    self.SP_tableWidget.removeRow(i)
+                    break
+            self.save_file()
 
-        self.save_file()
+            if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
+                self.player.stop()
 
-        # Stop the player if it was playing the removed file
-        if self.player.state() == QMediaPlayer.PlayingState and self.player.currentMedia().canonicalUrl().toLocalFile() == fname:
-            self.player.stop()
+            print("File removed successfully.")
 
-        print("File removed successfully.")
-
-    def save_file(self):
-        # save file in pickle
-        with open("soundpad.pickle", "wb") as file:
-
-            pickle.dump(self.filenames, file)
-
-    def normal_audio_callback(self, in_data, frame_count, time_info, status):
+        except Exception as e:
+            print("Error removing file:", e)
+            
+    def normal_audio_callback(self,in_data, frame_count, time_info, status):
         # Convert byte stream to numpy array
         # print("normal_callback")
         audio_data = np.frombuffer(in_data, dtype=np.float32)
@@ -2267,6 +2420,61 @@ class Ui_mainInterface(object):
             line.set_ydata(self.plot_data[:, column])
             line.set_color((0, 1, 0.29))
             self.canvas.draw()
+
+    # Dashboard
+    def show_data(self):
+        try:
+            with open('sort_counts.txt', 'r') as f:
+                sort_data = f.readlines()
+                sort_data = ''.join(sort_data[:10]).split('\n')
+                sort_data = '\n'.join(sort_data)
+                self.text_edit.setText(sort_data)
+        except Exception as e:
+            print("Error loading text file:",e)
+
+    def update_dashboard(self):
+        with open('sort_counts.txt', 'r') as f:
+            sort_data = f.readlines()
+            sort_data = ''.join(sort_data[:10]).split('\n')
+            sort_data = '\n'.join(sort_data)
+            self.text_edit.setText(sort_data)
+
+    def update_dashboard_plot(self):
+        fig = Figure()
+        ax = fig.add_subplot(111)
+        # Read data from file
+        file_path = 'sort_counts.txt'
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+
+        data = {}
+        texts = []
+        for line in lines:
+            line = line.strip()
+            parts = line.split(',')
+            text = parts[0]
+            number = int(parts[1])
+            data[text] = number
+
+        labels = list(data.keys())[:10]
+        values = list(data.values())[:10]
+
+        colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9', '#F8B195', '#F67280', '#C06C84']
+        explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        
+        self.canvas_d.figure.clear()
+        # ax = self.canvas_d.figure.add_subplot(111)
+        wedges, texts, autotexts = ax.pie(values, colors=colors, labels=labels,
+                                                autopct='%.2f%%', startangle=90,
+                                                pctdistance=0.85, explode=explode[:len(values)])
+
+        centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+        ax.add_artist(centre_circle)
+        ax.axis('equal')
+
+        self.figure.patch.set_facecolor('none')
+
+        self.canvas_d.draw()
 
     def VC_item_1_clicked(self):
         if (Ui_mainInterface.VC_item_1 == 0):
