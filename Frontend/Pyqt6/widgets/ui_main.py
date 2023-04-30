@@ -6,7 +6,7 @@ import subprocess
 # from icons import icons_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QSizePolicy, QHeaderView, QAbstractItemView, QFileDialog, QMessageBox, QDialog
-from PyQt5.QtCore import Qt, QUrl, QTimer
+from PyQt5.QtCore import Qt, QUrl, QTimer, QObject
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QAudioDeviceInfo, QAudio
 
 from mutagen.mp3 import MP3
@@ -777,6 +777,7 @@ class Ui_mainInterface(object):
         self.figure.patches.extend([self.rect])
         self.figure.patch.set_facecolor('#244D54')
         self.canvas = FigureCanvas(self.figure)
+        self.canvas_d = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
         
         #init lines
@@ -1018,7 +1019,7 @@ class Ui_mainInterface(object):
         # labels = ['A', 'B', 'C', 'D']
         # colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7']
         # explode = (0, 0, 0, 0)
-
+        
         # อ่านไฟล์ sort_counts.txt เพื่อใช้ในการสร้างกราฟ
         file_path = 'sort_counts.txt'
         with open(file_path, 'r') as f:
@@ -1046,14 +1047,14 @@ class Ui_mainInterface(object):
         # plt.axis('equal')    
         # plt.legend(loc='upper left')
         ax.add_artist(centre_circle)
-        canvas = FigureCanvas(fig)
-        # canvas.setStyleSheet("background-color: red;")
-        # self.canvas.patch.set_facecolor('#244D54')
+        canvas_d = FigureCanvas(fig)
+        # canvas_d.setStyleSheet("background-color: red;")
+        # self.canvas_d.patch.set_facecolor('#244D54')
         fig.patch.set_facecolor('none')
 
-        # add the canvas to the PyQt5 widget
+        # add the canvas_d to the PyQt5 widget
         layout = QtWidgets.QVBoxLayout(self.widget_2)
-        layout.addWidget(canvas)
+        layout.addWidget(canvas_d)
         # self.create_donutchart()
         self.horizontalLayout_7.addWidget(self.widget_2)
         self.verticalLayout_12.addWidget(self.frame_10)
@@ -1061,6 +1062,11 @@ class Ui_mainInterface(object):
         self.horizontalLayout_6.addWidget(self.frame_dash_page)
         self.stackedWidget.addWidget(self.dashbord_page)
 
+        self.timer_dashboard = QTimer()
+        self.timer_dashboard.timeout.connect(self.update_dashboard)
+        self.timer_dashboard.timeout.connect(self.update_dashboard_plot)
+        self.timer_dashboard.start(1000)
+        
         # Soundpad Page
         self.filenames = []
         self.play_counts = {}
@@ -2869,9 +2875,55 @@ class Ui_mainInterface(object):
 
     # Dashboard
     def show_data(self):
-        # โหลดข้อมูลจากไฟล์ .txt และแสดงผลใน QTextEdit ของ frame_9
+        try:
+            with open('sort_counts.txt', 'r') as f:
+                sort_data = f.readlines()
+                sort_data = ''.join(sort_data[:10]).split('\n')
+                sort_data = '\n'.join(sort_data)
+                self.text_edit.setText(sort_data)
+        except Exception as e:
+            print("Error loading text file:",e)
+
+    def update_dashboard(self):
         with open('sort_counts.txt', 'r') as f:
             sort_data = f.readlines()
             sort_data = ''.join(sort_data[:10]).split('\n')
             sort_data = '\n'.join(sort_data)
             self.text_edit.setText(sort_data)
+
+    def update_dashboard_plot(self):
+        fig = Figure()
+        ax = fig.add_subplot(111)
+        # Read data from file
+        file_path = 'sort_counts.txt'
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+
+        data = {}
+        texts = []
+        for line in lines:
+            line = line.strip()
+            parts = line.split(',')
+            text = parts[0]
+            number = int(parts[1])
+            data[text] = number
+
+        labels = list(data.keys())[:10]
+        values = list(data.values())[:10]
+
+        colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9', '#F8B195', '#F67280', '#C06C84']
+        explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        
+        self.canvas_d.figure.clear()
+        # ax = self.canvas_d.figure.add_subplot(111)
+        wedges, texts, autotexts = ax.pie(values, colors=colors, labels=labels,
+                                                autopct='%.2f%%', startangle=90,
+                                                pctdistance=0.85, explode=explode[:len(values)])
+
+        centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+        ax.add_artist(centre_circle)
+        ax.axis('equal')
+
+        self.figure.patch.set_facecolor('none')
+
+        self.canvas_d.draw()
