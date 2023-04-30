@@ -781,7 +781,7 @@ class Ui_mainInterface(object):
         # self.rect = plt.Rectangle((0.0017, 0.002), 0.995, 0.999, fill=False,
         #                           lw=1, zorder=1000, transform=self.figure.transFigure, figure=self.figure)
         # self.figure.patches.extend([self.rect])
-        self.figure.patch.set_facecolor('#62949C')
+        self.figure.patch.set_facecolor('none')
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
 
@@ -1036,8 +1036,8 @@ class Ui_mainInterface(object):
 
         # Table Layout
         self.SP_table = QtWidgets.QFrame(self.SP_item)
-        self.SP_table.setMinimumSize(QtCore.QSize(880, 470))
-        self.SP_table.setMaximumSize(QtCore.QSize(880, 470))
+        self.SP_table.setMinimumSize(QtCore.QSize(830, 470))
+        self.SP_table.setMaximumSize(QtCore.QSize(830, 470))
         self.SP_table.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.SP_table.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SP_table.setObjectName("SP_table")
@@ -1099,7 +1099,7 @@ class Ui_mainInterface(object):
         self.SP_scrollArea.setWidgetResizable(True)
         self.SP_scrollArea.setObjectName("SP_scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 880, 470))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 830, 470))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.SP_scrollArea.horizontalScrollBar().hide()
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(
@@ -1174,9 +1174,9 @@ class Ui_mainInterface(object):
         self.SP_tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
 
         self.SP_tableWidget.autofit = False
-        self.SP_tableWidget.setColumnWidth(0, 400)
-        self.SP_tableWidget.setColumnWidth(1, 130)
-        self.SP_tableWidget.setColumnWidth(2, 80)
+        self.SP_tableWidget.setColumnWidth(0, 401)
+        self.SP_tableWidget.setColumnWidth(1, 131)
+        self.SP_tableWidget.setColumnWidth(2, 81)
         self.SP_tableWidget.setColumnWidth(3, 80)
         self.SP_tableWidget.setColumnWidth(4, 80)
 
