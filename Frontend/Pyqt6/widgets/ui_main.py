@@ -1068,6 +1068,11 @@ class Ui_mainInterface(object):
         self.horizontalLayout_6.addWidget(self.frame_dash_page)
         self.stackedWidget.addWidget(self.dashbord_page)
 
+        self.timer_dashboard = QTimer()
+        self.timer_dashboard.timeout.connect(self.show_data)
+        # self.timer_dashboard.timeout.connect(self.update_dashboard_plot)
+        self.timer_dashboard.start(1000)
+
         # Soundpad Page
         self.filenames = []
         self.play_counts = {}
