@@ -52,7 +52,7 @@ while len(audio_data) != 0:
     filtered_data = signal.filtfilt(b, a, pitch_shifted_data)
 
     # convert the pitch shifted data to a string for playback
-    output_sound = (filtered_data * 32767).astype(np.int16).tostring()
+    output_sound = (pitch_shifted_data * 32767).astype(np.int16).tostring()
     # output_sound = pitch_shifted_data.astype(np.int16).tostring()
 
     # output_sound = (pitch_shifted_data * 32767).astype(np.int16).tostring()

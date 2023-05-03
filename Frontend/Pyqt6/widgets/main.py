@@ -18,7 +18,11 @@ import scipy.signal as signal
 
 #Voice Changer
 import librosa
+import wave
 
+#VC1
+swidth = 2
+n = 3
 
 # IMPORT GUI FILE
 from ui_main import Ui_mainInterface
@@ -74,7 +78,7 @@ def Boost_Mic(value):
 #     # convert string to QUrl object using the QUrl constructor
 #     print('main', filename)
 
-def VC_item_1():
+def VC_item_1_Tog():
     global VC_item_1
     if(VC_item_1==False):
         VC_item_1 = True
@@ -83,7 +87,7 @@ def VC_item_1():
         VC_item_1 = False
         print("VoiceChange_main1 test state = ",VC_item_1)
 
-def VC_item_2():
+def VC_item_2_Tog():
     global VC_item_2
     if(VC_item_2==False):
         VC_item_2 = True
@@ -213,7 +217,7 @@ class SoundSystem():
                 # reduced_noise = nr.reduce_noise(audio_frame, sr=44100)
                 filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
                 filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
-                output_sound = filtered_audio.tobytes()
+                audio_data = filtered_audio.tobytes()
                 
             # else:
             #     # print('Normal voice')
@@ -223,16 +227,42 @@ class SoundSystem():
                 sine_segment = generators.Sine(1000).to_audio_segment()
                 sine_segment = sine_segment-200
                 sine_data = sine_segment.raw_data
-                output_sound = sine_data
+                audio_data = sine_data
             else:
                 # Boostmic
                 self.numpy_data = np.fromstring(audio_data, dtype=np.int16)
                 np.multiply(self.numpy_data, self.multiplier, out=self.numpy_data, casting="unsafe")
-                output_sound = self.numpy_data.tostring()
+                audio_data = self.numpy_data.tostring()
 
-            # if(VC_item_1):
+            if(VC_item_1):
+                data = audio_data
+                data = np.array(wave.struct.unpack("%dh"%(len(data)/swidth), data))
+ 
+                # do real fast Fourier transform 
+                data = np.fft.rfft(data)
                 
+                # This does the shifting
+                data2 = [0]*len(data)
+                if n >= 0:
+                    data2[n:len(data)] = data[0:(len(data)-n)]
+                    data2[0:n] = data[(len(data)-n):len(data)]
+                else:
+                    data2[0:(len(data)+n)] = data[-n:len(data)]
+                    data2[(len(data)+n):len(data)] = data[0:-n]
+                
+                data = np.array(data2)
+                # Done shifting
+                
+                # inverse transform to get back to temporal data
+                data = np.fft.irfft(data)
+                
+                dataout = np.array(data, dtype='int16') 
+                audio_data = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
+                # stream.write(chunkout)
 
+            # elif(VC_item_2):
+
+            output_sound = audio_data
             self.virtual_microphone_stream.write(output_sound)
 
             if(Test_mic_state):
@@ -319,8 +349,8 @@ class MainWindow(QMainWindow):
         #link button
         self.ui.Noise_button.clicked.connect(Toggle_NoiseReduce)
         self.ui.Testmic_button.clicked.connect(Toggle_TestMic)
-        self.ui.Voicechange_1.clicked.connect(VC_item_1)
-        self.ui.Voicechange_2.clicked.connect(VC_item_2)
+        self.ui.Voicechange_1.clicked.connect(VC_item_1_Tog)
+        self.ui.Voicechange_2.clicked.connect(VC_item_2_Tog)
         self.ui.VC_Testmi_button.clicked.connect(Toggle_TestMic)
         
         
