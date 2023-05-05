@@ -1015,8 +1015,8 @@ class Ui_mainInterface(object):
         self.widget_2 = QtWidgets.QWidget(self.frame_10)
         self.widget_2.setObjectName("widget_2")
 
-        self.fig = Figure()
-        self.ax_d = self.fig.add_subplot(111)
+        # self.fig = Figure()
+        # self.ax_d = self.fig.add_subplot(111)
         # # fig, ax = plt.subplots()
         # # ax.axis('equal')
 
@@ -1037,8 +1037,19 @@ class Ui_mainInterface(object):
         # explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)    
         # labels = list(data.keys())[:10]
         # values = list(data.values())[:10]
+        
+        # self.canvas_d = FigureCanvas()
+        self.fig = Figure()
+        self.ax_d = self.fig.add_subplot(111)
+        self.canvas_d = FigureCanvas(self.fig)
+        # layout = QtWidgets.QVBoxLayout(self.widget_2)
+        # layout.addWidget(self.canvas_d) 
+        # self.ax = self.canvas_d.figure.subplots()
+        # self.pie = None
 
         self.update_dashboard_plot()
+
+        # self.update_dashboard_plot()
 
         # # create the pie plot
         # wedges, texts, autotexts = ax.pie(self.values, colors=self.colors, labels=self.labels,
@@ -2811,16 +2822,22 @@ class Ui_mainInterface(object):
         except Exception as e:
             print("Error loading text file:",e)
 
+    # def insert_ax(self):
+    #     self.ax = self.canvas_d.figure.subplots()
+    #     self.pie = None
+
     def update_dashboard_plot(self):
         # fig = Figure()
         # ax = fig.add_subplot(111)
-        self.canvas_d = FigureCanvas(self.fig)
+        # self.canvas_d = FigureCanvas(self.fig)
         # self.fig.set_canvas(self.canvas_d)
         # self.ax_d.clear()
         # self.canvas_d.clear()
         # self.canvas_d.draw()  
         # self.SetSize((self.Size[0],self.canvas_d.Size[1]))
         # อ่านไฟล์ sort_counts.txt เพื่อใช้ในการสร้างกราฟ
+        # self.ax_d.clear()
+
         with open('sort_counts.txt', 'r') as f:
             lines = f.readlines()
 
@@ -2837,15 +2854,22 @@ class Ui_mainInterface(object):
             self.labels = list(data.keys())[:10]
             self.values = list(data.values())[:10]
             # print("eeee", self.values)
-        # create the donut plot
+        # create the donut plot 
+            self.ax_d.clear()
             self.ax_d.pie(self.values, colors=self.colors, labels=self.labels,
                         autopct='%.2f%%', startangle=90,
-                        pctdistance=0.85, explode=self.explode[:len(self.values)])
-
-            # centre_circle = plt.Circle((0, 0), 0.70, fc='none')
-            # self.ax_d.add_artist(centre_circle)
-            # self.canvas_d = FigureCanvas(self.fig)
+                        pctdistance=0.85, explode=self.explode[:len(self.values)])     
+            # if self.pie:
+            #     self.pie.remove()    
+            # self.pie = self.ax_d.pie(self.values, colors=self.colors, labels=self.labels,
+            #                         autopct='%.2f%%', startangle=90,
+            #                         pctdistance=0.85, explode=self.explode[:len(self.values)])
             # self.canvas_d.draw()
+
+            centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+            self.ax_d.add_artist(centre_circle)
+            # self.canvas_d = FigureCanvas(self.fig)
+            self.canvas_d.draw()
             # self.canvas_d.flush_events()
 
         # # add a circle to create a donut chart
