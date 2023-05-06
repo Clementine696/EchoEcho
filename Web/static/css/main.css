@@ -5,6 +5,10 @@
 .bg-home {
     padding: 0;
 } */
+/* body{
+    background-color: #1A2729;
+} */
+
 .header{
     min-height: 100vh;
 }
@@ -155,3 +159,30 @@ table.table tr th, table.table tr td {
     padding: 12px 15px;
     vertical-align: middle;
 }
+
+.carousel-item, img{
+    /* height: 690px;
+    width: 1265px; */
+    padding-left: auto;
+    padding-right: auto;
+    /* height: 85%;
+    width: 85%; */
+    /* border: 1px solid red; */
+}
+
+.block-img {
+    padding-left: 110px;
+    padding-right: 110px;
+}
+
+.carousel {
+    position: relative;
+ }           
+ .carousel-control-prev {
+    right: auto;
+    left: 10px;
+ }
+ .carousel-control-next {
+    left: auto;
+    right: 10px;
+ }
