@@ -46,13 +46,13 @@ while len(audio_data) != 0:
     numpy_data = np.fromstring(audio_data, dtype=np.int16)
     numpy_data_float = numpy_data.astype('float32') / 32767.0 # scale to range [-1, 1]
     # pitch shift the audio data
-    pitch_shifted_data = librosa.effects.pitch_shift(numpy_data_float, 48000, n_steps=pitch_shift_amount, bins_per_octave=bins)
+    pitch_shifted_data = librosa.effects.pitch_shift(numpy_data_float, n_steps=pitch_shift_amount, sr=48000, bins_per_octave=bins)
 
     # apply the filter to the pitch shifted data
     filtered_data = signal.filtfilt(b, a, pitch_shifted_data)
 
     # convert the pitch shifted data to a string for playback
-    output_sound = (pitch_shifted_data * 32767).astype(np.int16).tostring()
+    output_sound = (filtered_data * 32767).astype(np.int16).tostring()
     # output_sound = pitch_shifted_data.astype(np.int16).tostring()
 
     # output_sound = (pitch_shifted_data * 32767).astype(np.int16).tostring()

@@ -12,13 +12,37 @@ import librosa
 p = pyaudio.PyAudio()
 
 # open a stream for microphone
-input_stream = p.open(format=pyaudio.paInt16,channels=1,rate=48000,input=True,frames_per_buffer=256,)
+input_stream = p.open(format=pyaudio.paInt16,channels=1,rate=48000,input=True,frames_per_buffer=2048)
 
 # open a stream for playing audio
-output_stream = p.open(format=pyaudio.paInt16, channels=1, rate=48000, output=True, frames_per_buffer=256)
+output_stream = p.open(format=pyaudio.paInt16, channels=1, rate=48000, output=True, frames_per_buffer=2048)
 
 # define the pitch shift amount in semitones
-pitch_shift_amount = 0
+pitch_shift_factor = 2 # double the pitch
+bins = 12
+hz = 0
+# calculate the pitch shift amount in semitones
+pitch_shift_amount = librosa.hz_to_midi(pitch_shift_factor * librosa.midi_to_hz(hz))
+
+###1
+import scipy.signal as signal
+# define filter parameters
+cutoff_freq = 4000  # Hz
+filter_order = 10
+# create the filter
+nyquist_freq = 0.5 * 48000
+b, a = signal.butter(filter_order, cutoff_freq/nyquist_freq, btype='lowpass')
+
+####2
+# import numpy as np
+from scipy import signal
+
+# define notch filter parameters
+notch_freq = 60.0  # Hz
+quality_factor = 30.0
+
+# create notch filter coefficients
+d, c = signal.iirnotch(notch_freq, quality_factor, fs=48000)
 
 audio_data = input_stream.read(2048)
 print('running press z to stop')
@@ -36,7 +60,10 @@ while len(audio_data) != 0:
     # pitch_shift_amount = librosa.midi_to_hz(librosa.util.midi_to_note(chroma)) - pitch
     
     # pitch shift the audio data
-    pitch_shifted_data = librosa.effects.pitch_shift(numpy_data_float, 48000, n_steps=pitch_shift_amount, bins_per_octave=12)
+    pitch_shifted_data = librosa.effects.pitch_shift(numpy_data_float, sr = 48000, n_steps=pitch_shift_amount, bins_per_octave=12)
+
+    # filtered_data = signal.filtfilt(b, a, pitch_shifted_data)
+    # filtered_data = signal.filtfilt(d, c, filtered_data)
 
     # convert the pitch shifted data to a string for playback
     output_sound = (pitch_shifted_data * 32767).astype(np.int16).tostring()
