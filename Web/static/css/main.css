@@ -171,8 +171,8 @@ table.table tr th, table.table tr td {
 }
 
 .block-img {
-    padding-left: 110px;
-    padding-right: 110px;
+    padding-left: 8%;
+    padding-right: 8%;
 }
 
 .carousel {
@@ -180,9 +180,9 @@ table.table tr th, table.table tr td {
  }           
  .carousel-control-prev {
     right: auto;
-    left: 10px;
+    left: 30px;
  }
  .carousel-control-next {
     left: auto;
-    right: 10px;
+    right: 30px;
  }
