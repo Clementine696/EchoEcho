@@ -2815,7 +2815,7 @@ class Ui_mainInterface(object):
         try:
             with open('sort_counts.txt', 'r') as f:
                 sort_data = f.readlines()
-                sort_data = ''.join(sort_data[:10]).split('\n')
+                sort_data = ''.join(sort_data[:3]).split('\n')
                 sort_data = '\n'.join(sort_data)
                 self.text_edit.setText(sort_data)
             
@@ -2849,10 +2849,10 @@ class Ui_mainInterface(object):
                 text = parts[0]
                 number = int(parts[1])
                 data[text] = number
-            self.colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9', '#F8B195', '#F67280', '#C06C84']
-            self.explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)    
-            self.labels = list(data.keys())[:10]
-            self.values = list(data.values())[:10]
+            self.colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9']
+            self.explode = (0, 0, 0, 0, 0, 0, 0)    
+            self.labels = list(data.keys())[:7]
+            self.values = list(data.values())[:7]
             # print("eeee", self.values)
         # create the donut plot 
             self.ax_d.clear()
