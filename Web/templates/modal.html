@@ -1,0 +1,36 @@
+{% extends "Soundpad.html" %}
+
+{% block modal %}
+
+
+<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Upload a File</h1>
+      </div>
+      <div class="modal-body">
+        <form>
+          <p class="modal__message">Select a file to upload from your computer or device.</p>
+          <div class="modal__actions">
+            <input type="file" class="upload-box" name"file-name"><br>
+            <input type="submit" class="submit-box" value="submit">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="{{url_for('voicechanger')}}" class"btn btn-secondary">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+$(document).ready(function(){
+    console.log("window is loaded")
+    $("#exampleModal").modal("show")
+})
+</script>
+{% endblock %}
