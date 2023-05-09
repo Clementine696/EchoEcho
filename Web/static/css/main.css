@@ -186,3 +186,54 @@ table.table tr th, table.table tr td {
     left: auto;
     right: 30px;
  }
+
+ .modal__actions {
+	/* animation-delay: 0.2s; */
+	display: flex;
+    flex-direction: column;
+	align-items: center;
+	/* flex-wrap: wrap; */
+ }
+
+ .modal-content {
+    background: radial-gradient(circle at 10% 20%, rgb(0, 0, 0) 0%, rgb(64, 64, 64) 90.2%);
+    color: #fff;
+ }
+
+ .modal-body {
+	display: flex;
+    align-items: center;
+	flex-direction: column;
+}
+
+.upload-box{
+    font-size: 16px;
+    background-color: transparent;
+    border-radius: 30px;
+    box-shadow: 5px 5px 10px black;
+    width: 380px;
+    outline: none;
+}
+
+::-webkit-file-upload-button{
+    color: #fff;
+    background: linear-gradient(109.6deg, rgb(14, 11, 56) 11.2%, rgb(239, 37, 37) 91.1%);;
+    padding: 20px;
+    border: none;
+    border-radius: 30px;
+    /* box-shadow: 1px 0 1px 1px #2e9481;   */
+    outline: none;
+}
+
+::-webkit-file-upload-button:hover{
+    background: linear-gradient(109.6deg, rgb(14, 11, 56) 11.2%, rgb(239, 37, 37) 91.1%);;
+    opacity: 0.7;
+}
+
+.submit-box {
+    background-color: #2e9481;
+    color: #d5d5d5;
+    border-radius: 10px;
+    width: 100px;
+    height: 40px;
+}
