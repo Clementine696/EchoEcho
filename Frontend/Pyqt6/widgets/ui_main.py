@@ -995,15 +995,23 @@ class Ui_mainInterface(object):
         self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_9.setObjectName("frame_9")
         # frame_9 ใส่อันดับ
-        self.text_edit = QtWidgets.QTextEdit(self.frame_9)
-        self.text_edit.setGeometry(QtCore.QRect(10, 10, 880, 130))
-        self.text_edit.setObjectName("text_edit")
-        self.text_edit.setReadOnly(True)
+        # self.text_edit = QtWidgets.QTextEdit(self.frame_9)
+        # self.text_edit.setGeometry(QtCore.QRect(10, 10, 880, 130))
+        # self.text_edit.setObjectName("text_edit")
+        # self.text_edit.setReadOnly(True)
+
+        self.label_dash = QtWidgets.QLabel(self.frame_9)
+        self.label_dash.setGeometry(QtCore.QRect(10, 10, 880, 130))
+        self.label_dash.setObjectName("label_dash")
+
         self.verticalLayout_d = QtWidgets.QVBoxLayout(self.frame_9)
-        self.verticalLayout_d.addWidget(self.text_edit)
+        # self.verticalLayout_d.addWidget(self.text_edit)
+        self.verticalLayout_d.addWidget(self.label_dash)
 
         self.show_data()
 
+        # self.text_edit.setStyleSheet("background-color: rgba(0, 0, 0, 0.3);color: #fff; font-size: 21px;border: 3px solid #52ffff;border-radius: 10px; padding-left:15px; padding-top: 16px;")
+        
         self.verticalLayout_12.addWidget(self.frame_9)
         self.frame_10 = QtWidgets.QFrame(self.frame_7)
         self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -2139,7 +2147,7 @@ class Ui_mainInterface(object):
         sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
         with open("sort_counts.txt", "w", encoding="utf-8") as file:
             for item in sort_counts:
-                file.write(os.path.basename(item[0]) + " ,    Play counts : " + str(item[1]) + "\n")
+                file.write(os.path.basename(item[0]) + "     Play counts : " + str(item[1]) + "\n")
     
         print("sort success")
 
@@ -2817,20 +2825,21 @@ class Ui_mainInterface(object):
             with open('sort_counts.txt', 'r') as f:
                 # sort_data = f.readlines()
                 # sort_data = ''.join(sort_data[:3]).split('\n')
-                # # sort_data = '\n'.join(sort_data)
-                # # self.text_edit.setText(sort_data)
+                # sort_data = '\n'.join(sort_data)
+                # self.label_dash.setText(sort_data)
 
-                # sort_data = "\n".join([f"Top {i} : {line}" for i, line in enumerate(sort_data, 1)])
                 sort_data = f.readlines()
                 sort_data = [line.strip() for line in sort_data]
                 sort_data = "\n".join([f"Top {i} : {line}" for i, line in enumerate(sort_data[:3], 1)])
-                self.text_edit.setText(sort_data)
+                self.label_dash.setText(sort_data)
+
+                if sort_data:
+                    self.label_dash.setStyleSheet("background-color: rgba(0, 0, 0, 0.3);color: #fff; font-size: 21px;border: 3px solid #52ffff;border-radius: 10px; padding-left:15px;")
             
         except Exception as e:
             print("Error loading text file:",e)
 
-        if sort_data:
-            self.text_edit.setStyleSheet("background-color: rgba(0, 0, 0, 0.3);color: #fff; font-size: 20px;border: 3px solid #52ffff;border-radius: 10px; padding:8px;")
+        
     # def insert_ax(self):
     #     self.ax = self.canvas_d.figure.subplots()
     #     self.pie = None
@@ -2854,7 +2863,7 @@ class Ui_mainInterface(object):
             texts = []
             for line in lines:
                 line = line.strip()
-                parts = line.split(' ,    Play counts : ')
+                parts = line.split('     Play counts : ')
                 text = parts[0]
                 number = int(parts[1])
                 data[text] = number
