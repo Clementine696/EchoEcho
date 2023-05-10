@@ -2139,7 +2139,7 @@ class Ui_mainInterface(object):
         sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
         with open("sort_counts.txt", "w", encoding="utf-8") as file:
             for item in sort_counts:
-                file.write(os.path.basename(item[0]) + "," + str(item[1]) + "\n")
+                file.write(os.path.basename(item[0]) + " ,    Play counts : " + str(item[1]) + "\n")
     
         print("sort success")
 
@@ -2815,11 +2815,16 @@ class Ui_mainInterface(object):
         # โหลดข้อมูลจากไฟล์ .txt และแสดงผลใน QTextEdit ของ frame_9
         try:
             with open('sort_counts.txt', 'r') as f:
+                # sort_data = f.readlines()
+                # sort_data = ''.join(sort_data[:3]).split('\n')
+                # # sort_data = '\n'.join(sort_data)
+                # # self.text_edit.setText(sort_data)
+
+                # sort_data = "\n".join([f"Top {i} : {line}" for i, line in enumerate(sort_data, 1)])
                 sort_data = f.readlines()
-                sort_data = ''.join(sort_data[:3]).split('\n')
-                sort_data = '\n'.join(sort_data)
+                sort_data = [line.strip() for line in sort_data]
+                sort_data = "\n".join([f"Top {i} : {line}" for i, line in enumerate(sort_data[:3], 1)])
                 self.text_edit.setText(sort_data)
-                
             
         except Exception as e:
             print("Error loading text file:",e)
@@ -2849,7 +2854,7 @@ class Ui_mainInterface(object):
             texts = []
             for line in lines:
                 line = line.strip()
-                parts = line.split(',')
+                parts = line.split(' ,    Play counts : ')
                 text = parts[0]
                 number = int(parts[1])
                 data[text] = number
