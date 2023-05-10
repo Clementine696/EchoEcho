@@ -30,6 +30,8 @@ from ui_main import Ui_mainInterface
 Noise_reduce_state = False
 VC_item_1 = False
 VC_item_2 = False
+VC_item_3 = False
+VC_item_4 = False
 Test_mic_state = False
 Mute_mic_state = False
 Boost_mic_volumeFactor = 1
@@ -81,9 +83,13 @@ def Boost_Mic(value):
 def VC_item_1_Tog():
     global VC_item_1
     global VC_item_2
+    global VC_item_3
+    global VC_item_4
     if(VC_item_1==False):
         VC_item_1 = True
         VC_item_2 = False
+        VC_item_3 = False
+        VC_item_4 = False
         print("VoiceChange_main1 test state = ",VC_item_1)
     else:
         VC_item_1 = False
@@ -92,13 +98,47 @@ def VC_item_1_Tog():
 def VC_item_2_Tog():
     global VC_item_1
     global VC_item_2
+    global VC_item_3
+    global VC_item_4
     if(VC_item_2==False):
-        VC_item_2 = True
         VC_item_1 = False
-        print("VoiceChange_main1 test state = ",VC_item_2)
+        VC_item_2 = True
+        VC_item_3 = False
+        VC_item_4 = False
+        print("VoiceChange_main2 test state = ",VC_item_2)
     else:
         VC_item_2 = False
-        print("VoiceChange_main1 test state = ",VC_item_2)
+        print("VoiceChange_main2 test state = ",VC_item_2)
+
+def VC_item_3_Tog():
+    global VC_item_1
+    global VC_item_2
+    global VC_item_3
+    global VC_item_4
+    if(VC_item_3==False):
+        VC_item_1 = False
+        VC_item_2 = False
+        VC_item_3 = True
+        VC_item_4 = False
+        print("VoiceChange_main3 test state = ",VC_item_3)
+    else:
+        VC_item_3 = False
+        print("VoiceChange_main3 test state = ",VC_item_3)
+
+def VC_item_4_Tog():
+    global VC_item_1
+    global VC_item_2
+    global VC_item_3
+    global VC_item_4
+    if(VC_item_4==False):
+        VC_item_1 = False
+        VC_item_2 = False
+        VC_item_3 = False
+        VC_item_4 = True
+        print("VoiceChange_main4 test state = ",VC_item_4)
+    else:
+        VC_item_4 = False
+        print("VoiceChange_main4 test state = ",VC_item_4)
 
 def Re_Init_SoundSystem():
     global Pushed_reinit
@@ -206,38 +246,38 @@ class SoundSystem():
 
             #Noise suppression
             if(Noise_reduce_state):
-                # cutoff_low = 8000
-                # cutoff_high = 3000
-                # nyquist_rate = 44100 / 2.0
-                # pass_order = 5
-                # pass_stop = 40
-                # lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
-                # highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
+                cutoff_low = 8000
+                cutoff_high = 3000
+                nyquist_rate = 44100 / 2.0
+                pass_order = 5
+                pass_stop = 40
+                lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
+                highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
                 # # print('Noise suppressed')
                 audio_frame = np.frombuffer(audio_data, dtype=np.int16)
-                # audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
+                audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
                 
-                # filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
-                # filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
-                # output_sound = filtered_audio.tobytes()
+                filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
+                filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
+                output_sound = filtered_audio.tobytes()
                 
                 output_sound = nr.reduce_noise(audio_frame, sr=44100)
             # else:
             #     # print('Normal voice')
             #     output_sound = audio_data
 
-            #Boostmic
-            # self.multiplier = pow(2, (sqrt(sqrt(sqrt(Boost_mic_volumeFactor))) * 192 - 192)/6)
-            # if(Mute_mic_state):
-            #     sine_segment = generators.Sine(1000).to_audio_segment()
-            #     sine_segment = sine_segment-200
-            #     sine_data = sine_segment.raw_data
-            #     audio_data = sine_data
-            # else:
-            #     # Boostmic
-            #     self.numpy_data = np.fromstring(audio_data, dtype=np.int16)
-            #     np.multiply(self.numpy_data, self.multiplier, out=self.numpy_data, casting="unsafe")
-            #     output_sound = self.numpy_data.tostring()
+            # Boostmic
+            self.multiplier = pow(2, (sqrt(sqrt(sqrt(Boost_mic_volumeFactor))) * 192 - 192)/6)
+            if(Mute_mic_state):
+                sine_segment = generators.Sine(1000).to_audio_segment()
+                sine_segment = sine_segment-200
+                sine_data = sine_segment.raw_data
+                audio_data = sine_data
+            else:
+                # Boostmic
+                self.numpy_data = np.fromstring(audio_data, dtype=np.int16)
+                np.multiply(self.numpy_data, self.multiplier, out=self.numpy_data, casting="unsafe")
+                audio_data = self.numpy_data.tostring()
 
             if(VC_item_1):
                 data = audio_data
@@ -248,6 +288,7 @@ class SoundSystem():
                 
                 # This does the shifting
                 data2 = [0]*len(data)
+                n = 6
                 if n >= 0:
                     data2[n:len(data)] = data[0:(len(data)-n)]
                     data2[0:n] = data[(len(data)-n):len(data)]
@@ -264,7 +305,83 @@ class SoundSystem():
                 dataout = np.array(data, dtype='int16') 
                 audio_data = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
 
-            # elif(VC_item_2):
+            elif(VC_item_2):
+                data = audio_data
+                data = np.array(wave.struct.unpack("%dh"%(len(data)/swidth), data))
+ 
+                # do real fast Fourier transform 
+                data = np.fft.rfft(data)
+                
+                # This does the shifting
+                data2 = [0]*len(data)
+                n = 3
+                if n >= 0:
+                    data2[n:len(data)] = data[0:(len(data)-n)]
+                    data2[0:n] = data[(len(data)-n):len(data)]
+                else:
+                    data2[0:(len(data)+n)] = data[-n:len(data)]
+                    data2[(len(data)+n):len(data)] = data[0:-n]
+                
+                data = np.array(data2)
+                # Done shifting
+                
+                # inverse transform to get back to temporal data
+                data = np.fft.irfft(data)
+                
+                dataout = np.array(data, dtype='int16') 
+                audio_data = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
+
+            elif(VC_item_3):
+                data = audio_data
+                data = np.array(wave.struct.unpack("%dh"%(len(data)/swidth), data))
+ 
+                # do real fast Fourier transform 
+                data = np.fft.rfft(data)
+                
+                # This does the shifting
+                data2 = [0]*len(data)
+                n = -3
+                if n >= 0:
+                    data2[n:len(data)] = data[0:(len(data)-n)]
+                    data2[0:n] = data[(len(data)-n):len(data)]
+                else:
+                    data2[0:(len(data)+n)] = data[-n:len(data)]
+                    data2[(len(data)+n):len(data)] = data[0:-n]
+                
+                data = np.array(data2)
+                # Done shifting
+                
+                # inverse transform to get back to temporal data
+                data = np.fft.irfft(data)
+                
+                dataout = np.array(data, dtype='int16') 
+                audio_data = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
+
+            elif(VC_item_4):
+                data = audio_data
+                data = np.array(wave.struct.unpack("%dh"%(len(data)/swidth), data))
+ 
+                # do real fast Fourier transform 
+                data = np.fft.rfft(data)
+                
+                # This does the shifting
+                data2 = [0]*len(data)
+                n = -8
+                if n >= 0:
+                    data2[n:len(data)] = data[0:(len(data)-n)]
+                    data2[0:n] = data[(len(data)-n):len(data)]
+                else:
+                    data2[0:(len(data)+n)] = data[-n:len(data)]
+                    data2[(len(data)+n):len(data)] = data[0:-n]
+                
+                data = np.array(data2)
+                # Done shifting
+                
+                # inverse transform to get back to temporal data
+                data = np.fft.irfft(data)
+                
+                dataout = np.array(data, dtype='int16') 
+                audio_data = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
 
             # output_sound = audio_data
             self.virtual_microphone_stream.write(audio_data)
@@ -355,6 +472,8 @@ class MainWindow(QMainWindow):
         self.ui.Testmic_button.clicked.connect(Toggle_TestMic)
         self.ui.Voicechange_1.clicked.connect(VC_item_1_Tog)
         self.ui.Voicechange_2.clicked.connect(VC_item_2_Tog)
+        self.ui.Voicechange_3.clicked.connect(VC_item_3_Tog)
+        self.ui.Voicechange_4.clicked.connect(VC_item_4_Tog)
         self.ui.VC_Testmi_button.clicked.connect(Toggle_TestMic)
         
         
