@@ -25,29 +25,30 @@
             </th>
             <th>Index</th>
             <th>Audio_name</th>
-            <th>Audio_file</th>
             <th>Duration</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
+
+          {% for row in audio_files %}
           <tr>
             <td>
               <span class="custom-checkbox">
-                  <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                  <label for="checkbox1"></label>
-                </span>
+                                  <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                                  <label for="checkbox1"></label>
+                              </span>
             </td>
-            <td>Thomas Hardy</td>
-            <td>thomashardy@mail.com</td>
-            <td>89 Chiaroscuro Rd, Portland, USA</td>
-            <td>(171) 555-2222</td>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td> 
             <td>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-              </svg>
+              
+                <button class="btn btn-success" id="download-btn-{{ row[0] }}">Download</button>
+              
             </td>
           </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
@@ -55,4 +56,39 @@
 </div>
 {% endblock %}
 
-
+{% block script %}
+<script>
+    console.log("window is loaded");
+    const downloadButtons = document.querySelectorAll('[id^="download-btn-"]');
+    console.log(downloadButtons);
+    downloadButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const audioIndex = event.target.id.split('-')[2];
+            console.log(audioIndex);
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `/download/${audioIndex}`);
+            xhr.responseType = 'blob'; // ระบุชนิดข้อมูลที่รับกลับมาเป็น blob
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                  const responseBlob = xhr.response;
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                      const responseText = reader.result;
+                      const response = JSON.parse(responseText);
+                      const audioName = response.audio_name;
+                      const audioSrc = response.audio_src;
+                      console.log(audioName);
+                      console.log(audioSrc);
+                      const a = document.createElement('a');
+                      a.href = audioSrc;
+                      a.download = audioName;
+                      a.click();
+                  };
+                reader.readAsText(responseBlob);
+                }
+            };
+            xhr.send();
+        });
+    });
+</script>
+{% endblock %}

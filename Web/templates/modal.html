@@ -2,6 +2,7 @@
 
 {% block modal %}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 
 <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -10,27 +11,79 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Upload a File</h1>
       </div>
       <div class="modal-body">
-        <form>
+        <form action="{{url_for('modal')}}" method="POST">
           <p class="modal__message">Select a file to upload from your computer or device.</p>
           <div class="modal__actions">
-            <input type="file" class="upload-box" name"file-name"><br>
+            <input type="file" class="upload-box" name="file-name"><br>
             <input type="submit" class="submit-box" value="submit">
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <a href="{{url_for('voicechanger')}}" class"btn btn-secondary">Close</a>
+        <a href="{{url_for('voicechanger')}}" class="btn btn-secondary">Close</a>
       </div>
     </div>
   </div>
 </div>
 
 {% endblock %}
+
 {% block script %}
 <script>
 $(document).ready(function(){
     console.log("window is loaded")
     $("#exampleModal").modal("show")
+
+    function handleUpload(){
+        console.log("uploading")
+        const audio_file = document.querySelector('input[type=file]').files[0];
+        const file_ext = audio_file.name.split('.').pop().toLowerCase();
+
+        // validate file extension only .mp3 and .wav files are allowed
+        if (file_ext !== 'mp3' && file_ext !== 'wav') {
+          alert('Please upload only .mp3 or .wav files.');
+          return;
+        }
+        // const audio_file = document.querySelector('#upload-box').files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(audio_file);
+
+        reader.onload = function(){
+          const dataURL = reader.result;
+          const sound = new Howl({
+                src: [dataURL],
+                onload: function(){
+                  const duration = Math.round(sound.duration() * 100) / 100
+                  console.log("file name", audio_file.name)
+                  console.log("duration", duration)
+
+                  const formData = new FormData();
+                  formData.append('audio_name', audio_file.name);
+                  formData.append('duration', duration);
+                  formData.append('audio_src', dataURL);
+                  
+                  const xhr = new XMLHttpRequest();
+                  xhr.open('POST', '/addAudio', true);
+                  xhr.onload = function () {
+                    if(xhr.status === 200){
+                      console.log(xhr.responseText);
+                      alert("Upload successfully");
+                      window.location.href = "{{url_for('voicechanger')}}";
+                    } else {
+                      console.log(xhr.responseText);
+                      alert("Upload failed");
+                    }
+                  };
+                  xhr.send(formData);
+                }
+          });
+        }
+    }
+
+    $("form").submit(function(event){
+      event.preventDefault()
+      handleUpload()
+    })
 })
 </script>
 {% endblock %}
