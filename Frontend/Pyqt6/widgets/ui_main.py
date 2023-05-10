@@ -998,8 +998,9 @@ class Ui_mainInterface(object):
         self.text_edit = QtWidgets.QTextEdit(self.frame_9)
         self.text_edit.setGeometry(QtCore.QRect(10, 10, 880, 130))
         self.text_edit.setObjectName("text_edit")
+        self.text_edit.setReadOnly(True)
         self.verticalLayout_d = QtWidgets.QVBoxLayout(self.frame_9)
-        self.verticalLayout_d.addWidget(self.text_edit, alignment=QtCore.Qt.AlignCenter)
+        self.verticalLayout_d.addWidget(self.text_edit)
 
         self.show_data()
 
@@ -2818,10 +2819,13 @@ class Ui_mainInterface(object):
                 sort_data = ''.join(sort_data[:3]).split('\n')
                 sort_data = '\n'.join(sort_data)
                 self.text_edit.setText(sort_data)
+                
             
         except Exception as e:
             print("Error loading text file:",e)
 
+        if sort_data:
+            self.text_edit.setStyleSheet("background-color: rgba(0, 0, 0, 0.3);color: #fff; font-size: 20px;border: 3px solid #52ffff;border-radius: 10px; padding:8px;")
     # def insert_ax(self):
     #     self.ax = self.canvas_d.figure.subplots()
     #     self.pie = None
@@ -2856,9 +2860,10 @@ class Ui_mainInterface(object):
             # print("eeee", self.values)
         # create the donut plot 
             self.ax_d.clear()
-            self.ax_d.pie(self.values, colors=self.colors, labels=self.labels,
+            self.ax_d.pie(self.values, colors=self.colors,
                         autopct='%.2f%%', startangle=90,
-                        pctdistance=0.85, explode=self.explode[:len(self.values)])     
+                        pctdistance=0.85, explode=self.explode[:len(self.values)])  
+            self.fig.subplots_adjust(bottom = -0.07, left = -0.4)   
             # if self.pie:
             #     self.pie.remove()    
             # self.pie = self.ax_d.pie(self.values, colors=self.colors, labels=self.labels,
@@ -2868,6 +2873,13 @@ class Ui_mainInterface(object):
 
             centre_circle = plt.Circle((0, 0), 0.70, fc='none')
             self.ax_d.add_artist(centre_circle)
+            if self.values:
+                self.ax_d.legend(labels=self.labels, loc='upper right', bbox_to_anchor = (2, 0.85))
+                title = self.ax_d.set_title("Chart Soundpad")
+                title.set_fontsize(18)
+                title.set_fontweight('semibold')
+                title.set_color('white')
+                title.set_position([1.05, 1])
             # self.canvas_d = FigureCanvas(self.fig)
             self.canvas_d.draw()
             # self.canvas_d.flush_events()
