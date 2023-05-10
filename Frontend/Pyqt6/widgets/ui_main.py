@@ -27,6 +27,10 @@ from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import keyboard
 
+#Logo
+# import tkinter as tk
+# from PIL import ImageTk, Image
+
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import queue
