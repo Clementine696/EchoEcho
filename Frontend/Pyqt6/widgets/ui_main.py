@@ -1816,7 +1816,8 @@ class Ui_mainInterface(object):
     def retranslateUi(self, ui_main):
         _translate = QtCore.QCoreApplication.translate
         ui_main.setWindowTitle(_translate("ui_main", "EchoEcho"))
-        # ui_main.setWindowIcon(_translate("ui_main", 'icons/logo_App.png'))
+        # Window_icon = QtGui.QIcon('Frontend/Pyqt6/icons/SP_play_icon.png')
+        ui_main.setWindowIcon(QtGui.QIcon('Frontend/Pyqt6/icons/logo_App.png'))
         self.Microphone_button.setText(_translate("ui_main", "Microphone"))
         # Test
         # self.Alert_button.setText(_translate("ui_main", "Test"))
