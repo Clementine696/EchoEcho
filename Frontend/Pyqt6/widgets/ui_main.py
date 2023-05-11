@@ -1823,7 +1823,7 @@ class Ui_mainInterface(object):
         # self.Alert_button.setText(_translate("ui_main", "Test"))
 
         self.Soundpad_button.setText(_translate("ui_main", "Soundpad"))
-        self.Voicechanger_button.setText(_translate("ui_main", "VoiceChanger"))
+        self.Voicechanger_button.setText(_translate("ui_main", "Voicechanger"))
         self.Mic_title_label.setText(_translate("ui_main", "Microphone"))
         self.setting_Button.setText(_translate("ui_main", "Setting"))
         self.Noise_button.setText(_translate("ui_main", "\n"
@@ -1835,14 +1835,14 @@ class Ui_mainInterface(object):
         # self.audio_label.setText(_translate("ui_main", "Audio"))
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
 
-        self.VC_title_label_2.setText(_translate("ui_main", "Voice Changer"))
+        self.VC_title_label_2.setText(_translate("ui_main", "Voicechanger"))
         self.Voicechange_2.setText(_translate("ui_main", "Sudlor"))
         self.Voicechange_4.setText(_translate("ui_main", "Robot"))
         self.Voicechange_1.setText(_translate("ui_main", "Chipmunk"))
         self.Voicechange_3.setText(_translate("ui_main", "GigaChad"))
         self.VC_Testmi_button.setText(_translate("ui_main", "Test Microphone"))
 
-        self.dash_label.setText(_translate("ui_main", "Dashbord"))
+        self.dash_label.setText(_translate("ui_main", "Dashboard"))
         # self.VoiceChanger_label.setText(_translate("ui_main", "VoiceChanger"))
         self.settingmain.setText(_translate("ui_main", "Settings"))
         self.detaildefault.setHtml(_translate("ui_main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -2475,8 +2475,13 @@ class Ui_mainInterface(object):
             Ui_mainInterface.VC_item_3 = 0
             Ui_mainInterface.VC_item_4 = 0
             self.Voicechange_1.setStyleSheet("QPushButton {\n"
-                                         "background-color: #4593A0;\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
                                          "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_2.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2485,14 +2490,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
                                          
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_3.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2501,14 +2501,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
 
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_4.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2517,14 +2512,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
 
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
         else :
             print("VC item 1 unclicked")
@@ -2536,24 +2526,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
                                          
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
-                                         "}"
-                                         
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
-                                         "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
             
     def VC_item_2_clicked(self):
@@ -2564,8 +2539,13 @@ class Ui_mainInterface(object):
             Ui_mainInterface.VC_item_3 = 0
             Ui_mainInterface.VC_item_4 = 0
             self.Voicechange_2.setStyleSheet("QPushButton {\n"
-                                         "background-color: #4593A0;\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
                                          "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_1.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2574,14 +2554,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
                                          
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_3.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2589,15 +2564,10 @@ class Ui_mainInterface(object):
                                          "color: #000000;\n"
                                          "text-align: center;\n"
                                          "}\n"
-
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_4.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2605,15 +2575,10 @@ class Ui_mainInterface(object):
                                          "color: #000000;\n"
                                          "text-align: center;\n"
                                          "}\n"
-
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
         else :
             Ui_mainInterface.VC_item_2 = 0
@@ -2624,24 +2589,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
                                          
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
-                                         "}"
-                                         
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
-                                         "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
     
     def VC_item_3_clicked(self):
@@ -2652,8 +2602,13 @@ class Ui_mainInterface(object):
             Ui_mainInterface.VC_item_3 = 1
             Ui_mainInterface.VC_item_4 = 0
             self.Voicechange_3.setStyleSheet("QPushButton {\n"
-                                         "background-color: #4593A0;\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
                                          "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_1.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2662,14 +2617,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
                                          
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_2.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2677,15 +2627,10 @@ class Ui_mainInterface(object):
                                          "color: #000000;\n"
                                          "text-align: center;\n"
                                          "}\n"
-
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_4.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2693,15 +2638,10 @@ class Ui_mainInterface(object):
                                          "color: #000000;\n"
                                          "text-align: center;\n"
                                          "}\n"
-
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
         else :
             Ui_mainInterface.VC_item_3 = 0
@@ -2712,24 +2652,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
                                          
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
-                                         "}"
-                                         
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
-                                         "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
     
     def VC_item_4_clicked(self):
@@ -2740,8 +2665,13 @@ class Ui_mainInterface(object):
             Ui_mainInterface.VC_item_3 = 0
             Ui_mainInterface.VC_item_4 = 1
             self.Voicechange_4.setStyleSheet("QPushButton {\n"
-                                         "background-color: #4593A0;\n"
+                                         "color : #FFFFFF;\n"
+                                         "background-color : #4593A0;\n"
+                                         "border-width: 0.5px;\n"
                                          "border-radius: 20px;\n"
+                                         "border-color:#00D19D;\n"
+                                         "border-width : 2px;\n"
+                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_1.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2750,14 +2680,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
                                          
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_2.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2765,15 +2690,10 @@ class Ui_mainInterface(object):
                                          "color: #000000;\n"
                                          "text-align: center;\n"
                                          "}\n"
-
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
             self.Voicechange_3.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
@@ -2781,15 +2701,10 @@ class Ui_mainInterface(object):
                                          "color: #000000;\n"
                                          "text-align: center;\n"
                                          "}\n"
-
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
         else :
             Ui_mainInterface.VC_item_4 = 0
@@ -2800,24 +2715,9 @@ class Ui_mainInterface(object):
                                          "text-align: center;\n"
                                          "}\n"
                                          
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
+                                         "QPushButton:hover {\n"
+                                         "background-color: #4593A0;\n"
                                          "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
-                                         "}"
-                                         
-                                         "QPushButton:hover{\n"
-                                         "color : #FFFFFF;\n"
-                                         "background-color : #4593A0;\n"
-                                         "border-width: 0.5px;\n"
-                                         "border-radius: 20px;\n"
-                                         "border-color:#00D19D;\n"
-                                         "border-width : 2px;\n"
-                                         "border-style: outset;\n"
                                          "}")
     
     def show_data(self):
