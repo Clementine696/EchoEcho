@@ -161,13 +161,8 @@ table.table tr th, table.table tr td {
 }
 
 .carousel-item, img{
-    /* height: 690px;
-    width: 1265px; */
     padding-left: auto;
     padding-right: auto;
-    /* height: 85%;
-    width: 85%; */
-    /* border: 1px solid red; */
 }
 
 .block-img {
