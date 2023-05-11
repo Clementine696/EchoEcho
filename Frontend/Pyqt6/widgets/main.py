@@ -246,22 +246,22 @@ class SoundSystem():
 
             #Noise suppression
             if(Noise_reduce_state):
-                cutoff_low = 8000
-                cutoff_high = 3000
-                nyquist_rate = 44100 / 2.0
-                pass_order = 5
-                pass_stop = 40
-                lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
-                highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
-                # # print('Noise suppressed')
+                # cutoff_low = 8000
+                # cutoff_high = 3000
+                # nyquist_rate = 44100 / 2.0
+                # pass_order = 5
+                # pass_stop = 40
+                # lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
+                # highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
+                # # # print('Noise suppressed')
                 audio_frame = np.frombuffer(audio_data, dtype=np.int16)
                 audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
                 
-                filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
-                filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
-                output_sound = filtered_audio.tobytes()
+                # filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
+                # filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
+                # output_sound = filtered_audio.tobytes()
                 
-                output_sound = nr.reduce_noise(audio_frame, sr=44100)
+                # output_sound = nr.reduce_noise(audio_frame, sr=44100)
             # else:
             #     # print('Normal voice')
             #     output_sound = audio_data
