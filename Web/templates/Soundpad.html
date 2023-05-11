@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>Soundpad page</h1>
+<h1 class="head_title"><b>SOUND EFFECT</b></h1>
 <div class="container">
     <div class="table-wrapper">
       <div class="table-title">
         <div class="row">
           <div class="col-sm-6">
-            <h2>Manage <b>Employees</b></h2>
+            <h2>Sound Effect For You</h2>
           </div>
           <div class="col-sm-6">
-            <a href="{{url_for('modal')}}" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add </span></a>
+            <a href="{{url_for('modal')}}" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add Sound</span></a>
           </div>
         </div>
       </div>
@@ -23,8 +23,8 @@
                                   <label for="selectAll"></label>
                               </span>
             </th>
-            <th>Index</th>
-            <th>Audio_name</th>
+            <th>No.</th>
+            <th>Name Audio</th>
             <th>Duration</th>
             <th>Actions</th>
           </tr>

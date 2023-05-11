@@ -24,8 +24,20 @@
       </div>
     </div>
   </div>
+  {% block alert%}
+<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+  <div class="toast bg-dark" >
+    <div class="toast-header">
+      <i class="fa-brands fa-facebook-f"></i>
+      <strong class="mr-auto">alert</strong>
+    </div>
+    <div class="toast-body">
+      Please upload only .mp3 or .wav files.
+    </div>
+  </div>
 </div>
-
+{% endblock %}
+</div>
 {% endblock %}
 
 {% block script %}
@@ -41,8 +53,13 @@ $(document).ready(function(){
 
         // validate file extension only .mp3 and .wav files are allowed
         if (file_ext !== 'mp3' && file_ext !== 'wav') {
-          alert('Please upload only .mp3 or .wav files.');
-          return;
+          
+          $(".toast").show();
+
+          setTimeout(function() {
+            $(".toast").hide();
+          }, 3000);
+          return; 
         }
         // const audio_file = document.querySelector('#upload-box').files[0];
         const reader = new FileReader();
