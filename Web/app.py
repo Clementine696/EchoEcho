@@ -2,8 +2,14 @@ from flask import Flask, render_template, url_for, request, redirect, send_file,
 import base64
 import sqlite3
 
-# เชื่อมต่อ database
+# # เชื่อมต่อ database
+# db_local = "Audio_DB.db"
+
+## สร้าง database ใหม่
 db_local = "Audio_DB.db"
+conn = sqlite3.connect(db_local)
+cursor = conn.cursor()
+cursor.execute("CREATE TABLE IF NOT EXISTS Soundpad (id INTEGER PRIMARY KEY AUTOINCREMENT, audio_name TEXT NOT NULL, audio_src BLOB NOT NULL , duration FLOAT NOT NULL)")
 
 app = Flask(__name__)
 
