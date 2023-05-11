@@ -244,9 +244,14 @@ table.table tr th, table.table tr td {
 }
 
 .toast{
-    color: #1ef;
+    color: rgb(16, 216, 231);
     z-index: 1070;
     position: fixed;
     top: 0;
     right: 10px;
+}
+
+.toast-header{
+    color: rgb(187, 177, 33);
+    background-color: #2a2f34;
 }
