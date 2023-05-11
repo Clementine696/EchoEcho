@@ -246,38 +246,39 @@ class SoundSystem():
 
             #Noise suppression
             if(Noise_reduce_state):
-                # cutoff_low = 8000
-                # cutoff_high = 3000
-                # nyquist_rate = 44100 / 2.0
-                # pass_order = 5
-                # pass_stop = 40
-                # lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
-                # highpass_coefficients = butter(pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
-                # # # print('Noise suppressed')
+                cutoff_low = 8000
+                cutoff_high = 3000
+                nyquist_rate = 44100 / 2.0
+                pass_order = 5
+                pass_stop = 40
+                lowpass_coefficients = butter(pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
+                highpass_coefficients = butter(pass_stop, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
+                # # print('Noise suppressed')
                 audio_frame = np.frombuffer(audio_data, dtype=np.int16)
                 audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
                 
-                # filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
-                # filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
-                # output_sound = filtered_audio.tobytes()
-                
-                # output_sound = nr.reduce_noise(audio_frame, sr=44100)
-            # else:
-            #     # print('Normal voice')
-            #     output_sound = audio_data
+                filtered_audio_lowpass = signal.sosfiltfilt(lowpass_coefficients, audio_frame)
+                filtered_audio = signal.sosfiltfilt(highpass_coefficients, filtered_audio_lowpass)
+                audio_frame = filtered_audio.tobytes()
+                output_sound = np.frombuffer(audio_frame, dtype=np.int16)
 
-            # Boostmic
+            else:
+                # print('Normal voice')
+                output_sound = audio_data
+
+            #Boostmic
             self.multiplier = pow(2, (sqrt(sqrt(sqrt(Boost_mic_volumeFactor))) * 192 - 192)/6)
             if(Mute_mic_state):
                 sine_segment = generators.Sine(1000).to_audio_segment()
                 sine_segment = sine_segment-200
                 sine_data = sine_segment.raw_data
-                audio_data = sine_data
+                output_sound = sine_data
             else:
                 # Boostmic
                 self.numpy_data = np.fromstring(audio_data, dtype=np.int16)
                 np.multiply(self.numpy_data, self.multiplier, out=self.numpy_data, casting="unsafe")
                 audio_data = self.numpy_data.tostring()
+                output_sound = audio_data
 
             if(VC_item_1):
                 data = audio_data
@@ -303,7 +304,7 @@ class SoundSystem():
                 data = np.fft.irfft(data)
                 
                 dataout = np.array(data, dtype='int16') 
-                audio_data = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
+                output_sound = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
 
             elif(VC_item_2):
                 data = audio_data
@@ -329,7 +330,7 @@ class SoundSystem():
                 data = np.fft.irfft(data)
                 
                 dataout = np.array(data, dtype='int16') 
-                audio_data = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
+                output_sound = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
 
             elif(VC_item_3):
                 data = audio_data
@@ -355,7 +356,7 @@ class SoundSystem():
                 data = np.fft.irfft(data)
                 
                 dataout = np.array(data, dtype='int16') 
-                audio_data = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
+                output_sound = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
 
             elif(VC_item_4):
                 data = audio_data
@@ -381,14 +382,14 @@ class SoundSystem():
                 data = np.fft.irfft(data)
                 
                 dataout = np.array(data, dtype='int16') 
-                audio_data = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
+                output_sound = wave.struct.pack("%dh"%(len(dataout)), *list(dataout)) #convert back to 16-bit data
 
             # output_sound = audio_data
-            self.virtual_microphone_stream.write(audio_data)
+            self.virtual_microphone_stream.write(output_sound)
 
             if(Test_mic_state):
                 # print('TesttttttttttttMic')
-                self.default_output_stream.write(audio_data)
+                self.default_output_stream.write(output_sound)
 
             #emergency close thread
             # if(keyboard.is_pressed('z')):

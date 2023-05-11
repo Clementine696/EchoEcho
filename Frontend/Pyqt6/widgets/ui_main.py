@@ -2372,7 +2372,7 @@ class Ui_mainInterface(object):
         lowpass_coefficients = butter(
             pass_order, cutoff_low / nyquist_rate, btype='low', analog=False, output='sos')
         highpass_coefficients = butter(
-            pass_order, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
+            pass_stop, cutoff_high / nyquist_rate, btype='high', analog=False, output='sos')
         audio_frame = np.frombuffer(audio_data, dtype=np.float32)
         audio_frame = signal.decimate(audio_frame, 4, zero_phase=True)
         filtered_audio_lowpass = signal.sosfiltfilt(
