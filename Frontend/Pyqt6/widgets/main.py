@@ -288,7 +288,7 @@ class SoundSystem():
                 
                 # This does the shifting
                 data2 = [0]*len(data)
-                n = 6
+                n = 12
                 if n >= 0:
                     data2[n:len(data)] = data[0:(len(data)-n)]
                     data2[0:n] = data[(len(data)-n):len(data)]

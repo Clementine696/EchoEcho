@@ -1835,10 +1835,10 @@ class Ui_mainInterface(object):
         self.SP_title_label.setText(_translate("ui_main", "Soundpad"))
 
         self.VC_title_label_2.setText(_translate("ui_main", "Voice Changer"))
-        self.Voicechange_2.setText(_translate("ui_main", "Button2"))
-        self.Voicechange_4.setText(_translate("ui_main", "Button4"))
-        self.Voicechange_1.setText(_translate("ui_main", "Button1"))
-        self.Voicechange_3.setText(_translate("ui_main", "Button3"))
+        self.Voicechange_2.setText(_translate("ui_main", "Pitchshift"))
+        self.Voicechange_4.setText(_translate("ui_main", "Robot"))
+        self.Voicechange_1.setText(_translate("ui_main", "Chipmunk"))
+        self.Voicechange_3.setText(_translate("ui_main", "Chad"))
         self.VC_Testmi_button.setText(_translate("ui_main", "Test Microphone"))
 
         self.dash_label.setText(_translate("ui_main", "Dashbord"))
