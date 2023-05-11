@@ -2083,7 +2083,7 @@ class Ui_mainInterface(object):
         if fname:
             if self.check_duplicate_file(fname):
                 msg_box = QMessageBox()
-                msg_box.setText("File name already exists.\nPlease select another file or change file name.")
+                msg_box.setText("File name already exists.Please select another file or change file name.")
                 msg_box.exec_()
                 return
             
