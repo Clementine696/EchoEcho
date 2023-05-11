@@ -2517,7 +2517,6 @@ class Ui_mainInterface(object):
                                          "border-radius: 20px;\n"
                                          "}")
         else :
-            print("VC item 1 unclicked")
             Ui_mainInterface.VC_item_1 = 0
             self.Voicechange_1.setStyleSheet("QPushButton{\n"
                                          "background-color: #56B7C7;\n"
