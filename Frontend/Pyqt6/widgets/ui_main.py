@@ -999,14 +999,23 @@ class Ui_mainInterface(object):
         self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_9.setObjectName("frame_9")
         # frame_9 ใส่อันดับ
-        self.text_edit = QtWidgets.QTextEdit(self.frame_9)
-        self.text_edit.setGeometry(QtCore.QRect(10, 10, 880, 130))
-        self.text_edit.setObjectName("text_edit")
+        # self.text_edit = QtWidgets.QTextEdit(self.frame_9)
+        # self.text_edit.setGeometry(QtCore.QRect(10, 10, 880, 130))
+        # self.text_edit.setObjectName("text_edit")
+        # self.text_edit.setReadOnly(True)
+
+        self.label_dash = QtWidgets.QLabel(self.frame_9)
+        self.label_dash.setGeometry(QtCore.QRect(10, 10, 880, 130))
+        self.label_dash.setObjectName("label_dash")
+
         self.verticalLayout_d = QtWidgets.QVBoxLayout(self.frame_9)
-        self.verticalLayout_d.addWidget(self.text_edit, alignment=QtCore.Qt.AlignCenter)
+        # self.verticalLayout_d.addWidget(self.text_edit)
+        self.verticalLayout_d.addWidget(self.label_dash)
 
         self.show_data()
 
+        # self.text_edit.setStyleSheet("background-color: rgba(0, 0, 0, 0.3);color: #fff; font-size: 21px;border: 3px solid #52ffff;border-radius: 10px; padding-left:15px; padding-top: 16px;")
+        
         self.verticalLayout_12.addWidget(self.frame_9)
         self.frame_10 = QtWidgets.QFrame(self.frame_7)
         self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -1019,58 +1028,73 @@ class Ui_mainInterface(object):
         self.widget_2 = QtWidgets.QWidget(self.frame_10)
         self.widget_2.setObjectName("widget_2")
 
-        fig = Figure()
-        ax = fig.add_subplot(111)
-        # fig, ax = plt.subplots()
-        # ax.axis('equal')
+        # self.fig = Figure()
+        # self.ax_d = self.fig.add_subplot(111)
+        # # fig, ax = plt.subplots()
+        # # ax.axis('equal')
 
-        # # define data for the donut plot
-        # data = [10, 20, 30, 40]
-        # labels = ['A', 'B', 'C', 'D']
-        # colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7']
-        # explode = (0, 0, 0, 0)
+        # # อ่านไฟล์ sort_counts.txt เพื่อใช้ในการสร้างกราฟ
+        # file_path = 'sort_counts.txt'
+        # with open(file_path, 'r') as f:
+        #     lines = f.readlines()
 
-        # อ่านไฟล์ sort_counts.txt เพื่อใช้ในการสร้างกราฟ
-        file_path = 'sort_counts.txt'
-        with open(file_path, 'r') as f:
-            lines = f.readlines()
+        # data = {}
+        # texts = []
+        # for line in lines:
+        #     line = line.strip()
+        #     parts = line.split(',')
+        #     text = parts[0]
+        #     number = int(parts[1])
+        #     data[text] = number
+        # colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9', '#F8B195', '#F67280', '#C06C84']
+        # explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)    
+        # labels = list(data.keys())[:10]
+        # values = list(data.values())[:10]
+        
+        # self.canvas_d = FigureCanvas()
+        self.fig = Figure()
+        self.ax_d = self.fig.add_subplot(111)
+        self.canvas_d = FigureCanvas(self.fig)
+        # layout = QtWidgets.QVBoxLayout(self.widget_2)
+        # layout.addWidget(self.canvas_d) 
+        # self.ax = self.canvas_d.figure.subplots()
+        # self.pie = None
 
-        data = {}
-        texts = []
-        for line in lines:
-            line = line.strip()
-            parts = line.split(',')
-            text = parts[0]
-            number = int(parts[1])
-            data[text] = number
-        colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9', '#F8B195', '#F67280', '#C06C84']
-        explode = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)    
-        labels = list(data.keys())[:10]
-        values = list(data.values())[:10]
+        self.update_dashboard_plot()
 
-        # create the donut plot
-        wedges, texts, autotexts = ax.pie(values, colors=colors, labels=labels,
-                                        autopct='%.2f%%', startangle=90,
-                                        pctdistance=0.85, explode=explode[:len(values)])
+        # self.update_dashboard_plot()
 
-        # add a circle to create a donut chart
-        centre_circle = plt.Circle((0, 0), 0.70, fc='none')
-        # plt.axis('equal')    
-        # plt.legend(loc='upper left')
-        ax.add_artist(centre_circle)
-        canvas = FigureCanvas(fig)
+        # # create the pie plot
+        # wedges, texts, autotexts = ax.pie(self.values, colors=self.colors, labels=self.labels,
+        #                                 autopct='%.2f%%', startangle=90,
+        #                                 pctdistance=0.85, explode=self.explode[:len(self.values)])
+
+        # # add a circle to create a pie chart
+        
+        # # plt.axis('equal')    
+        # # plt.legend(loc='upper left')
+
+        # centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+        # self.ax.add_artist(centre_circle)
+        # self.canvas_d = FigureCanvas(fig)
         # canvas.setStyleSheet("background-color: red;")
         # self.canvas.patch.set_facecolor('#244D54')
-        fig.patch.set_facecolor('none')
+        self.fig.patch.set_facecolor('none')
         # add the canvas to the PyQt5 widget
         layout = QtWidgets.QVBoxLayout(self.widget_2)
-        layout.addWidget(canvas)
+        layout.addWidget(self.canvas_d)
+
         # self.create_donutchart()
         self.horizontalLayout_7.addWidget(self.widget_2)
         self.verticalLayout_12.addWidget(self.frame_10)
         self.verticalLayout_7.addWidget(self.frame_7)
         self.horizontalLayout_6.addWidget(self.frame_dash_page)
         self.stackedWidget.addWidget(self.dashbord_page)
+
+        # self.timer_dashboard = QTimer()
+        # self.timer_dashboard.timeout.connect(self.show_data)
+        # self.timer_dashboard.timeout.connect(self.update_dashboard_plot)
+        # self.timer_dashboard.start(1000)
 
         # Soundpad Page
         self.filenames = []
@@ -2127,7 +2151,7 @@ class Ui_mainInterface(object):
         sort_counts = sorted(self.play_counts.items(), key=lambda x: x[1], reverse=True)
         with open("sort_counts.txt", "w", encoding="utf-8") as file:
             for item in sort_counts:
-                file.write(os.path.basename(item[0]) + "," + str(item[1]) + "\n")
+                file.write(os.path.basename(item[0]) + "     Play counts : " + str(item[1]) + "\n")
     
         print("sort success")
 
@@ -2226,24 +2250,20 @@ class Ui_mainInterface(object):
             t1 = threading.Thread(target = runsound)
             t1.daemon = True
             t1.start()
-            
-            # while len(data) != 0:
-            #     ui_virtual_microphone_stream.write(data)
-            #     data = wf.readframes(1024)
 
-#==========================================================================
             btn.setIcon(icon_pause)
             # btn.setText("Stop")
             current_count = int(self.play_counts.get(fname, 0)) + 1
             self.play_counts[fname] = current_count
             self.save_file() 
 
+            # self.show_data()
+            # self.update_dashboard_plot()
+
     def get_play(self, fname):
         for row in range(self.SP_tableWidget.rowCount()):
             if self.SP_tableWidget.item(row, 0).text() == os.path.basename(fname):
                 return self.SP_tableWidget.cellWidget(row, 2)
-            
-    # ========================================================================================================================================
             
     def listen_button(self, label, fname):
         icon_listen = QtGui.QIcon()
@@ -2807,9 +2827,91 @@ class Ui_mainInterface(object):
         # โหลดข้อมูลจากไฟล์ .txt และแสดงผลใน QTextEdit ของ frame_9
         try:
             with open('sort_counts.txt', 'r') as f:
+                # sort_data = f.readlines()
+                # sort_data = ''.join(sort_data[:3]).split('\n')
+                # sort_data = '\n'.join(sort_data)
+                # self.label_dash.setText(sort_data)
+
                 sort_data = f.readlines()
-                sort_data = ''.join(sort_data[:10]).split('\n')
-                sort_data = '\n'.join(sort_data)
-                self.text_edit.setText(sort_data)
+                sort_data = [line.strip() for line in sort_data]
+                sort_data = "\n".join([f"Top {i} : {line}" for i, line in enumerate(sort_data[:3], 1)])
+                self.label_dash.setText(sort_data)
+
+                if sort_data:
+                    self.label_dash.setStyleSheet("background-color: rgba(0, 0, 0, 0.3);color: #fff; font-size: 21px;border: 3px solid #52ffff;border-radius: 10px; padding-left:15px;")
+            
         except Exception as e:
             print("Error loading text file:",e)
+
+        
+    # def insert_ax(self):
+    #     self.ax = self.canvas_d.figure.subplots()
+    #     self.pie = None
+
+    def update_dashboard_plot(self):
+        # fig = Figure()
+        # ax = fig.add_subplot(111)
+        # self.canvas_d = FigureCanvas(self.fig)
+        # self.fig.set_canvas(self.canvas_d)
+        # self.ax_d.clear()
+        # self.canvas_d.clear()
+        # self.canvas_d.draw()  
+        # self.SetSize((self.Size[0],self.canvas_d.Size[1]))
+        # อ่านไฟล์ sort_counts.txt เพื่อใช้ในการสร้างกราฟ
+        # self.ax_d.clear()
+
+        with open('sort_counts.txt', 'r') as f:
+            lines = f.readlines()
+
+            data = {}
+            texts = []
+            for line in lines:
+                line = line.strip()
+                parts = line.split('     Play counts : ')
+                text = parts[0]
+                number = int(parts[1])
+                data[text] = number
+            self.colors = ['#B9DDF1', '#9FCAE6', '#73A4CA', '#497AA7', '#244D54', '#999999', '#C9C9C9']
+            self.explode = (0, 0, 0, 0, 0, 0, 0)    
+            self.labels = list(data.keys())[:7]
+            self.values = list(data.values())[:7]
+            # print("eeee", self.values)
+        # create the donut plot 
+            self.ax_d.clear()
+            self.ax_d.pie(self.values, colors=self.colors,
+                        autopct='%.2f%%', startangle=90,
+                        pctdistance=0.85, explode=self.explode[:len(self.values)])  
+            self.fig.subplots_adjust(bottom = -0.07, left = -0.4)   
+            # if self.pie:
+            #     self.pie.remove()    
+            # self.pie = self.ax_d.pie(self.values, colors=self.colors, labels=self.labels,
+            #                         autopct='%.2f%%', startangle=90,
+            #                         pctdistance=0.85, explode=self.explode[:len(self.values)])
+            # self.canvas_d.draw()
+
+            centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+            self.ax_d.add_artist(centre_circle)
+            if self.values:
+                self.ax_d.legend(labels=self.labels, loc='upper right', bbox_to_anchor = (2, 0.85))
+                title = self.ax_d.set_title("Chart Soundpad")
+                title.set_fontsize(18)
+                title.set_fontweight('semibold')
+                title.set_color('white')
+                title.set_position([1.05, 1])
+            # self.canvas_d = FigureCanvas(self.fig)
+            self.canvas_d.draw()
+            # self.canvas_d.flush_events()
+
+        # # add a circle to create a donut chart
+        # centre_circle = plt.Circle((0, 0), 0.70, fc='none')
+        # plt.axis('equal')    
+        # plt.legend(loc='upper left')
+        # ax.add_artist(centre_circle)
+
+        # canvas_d = FigureCanvas(fig)
+        # # canvas.setStyleSheet("background-color: red;")
+        # # self.canvas.patch.set_facecolor('#244D54')
+        # fig.patch.set_facecolor('none')
+ 
+        # layout = QtWidgets.QVBoxLayout(self.widget_2)
+        # layout.addWidget(canvas_d)
