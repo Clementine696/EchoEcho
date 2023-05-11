@@ -1349,7 +1349,7 @@ class Ui_mainInterface(object):
                     remove_button = self.remove_button(row, fname)
 
                     self.SP_tableWidget.setCellWidget(row, 4, remove_button)
-                    remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+                    # remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
 
                 print("audio load successfully")
 
@@ -2115,7 +2115,7 @@ class Ui_mainInterface(object):
             remove_button = self.remove_button(row, fname)
 
             self.SP_tableWidget.setCellWidget(row, 4, remove_button)
-            remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
+            # remove_button.clicked.connect(lambda _, r=row, f=fname: self.remove_file(r, f))
             
             self.filenames.append(fname)
 
@@ -2333,8 +2333,21 @@ class Ui_mainInterface(object):
         remove_button = QPushButton()
         remove_button.setIcon(icon_remove)
         remove_button.setIconSize(QtCore.QSize(30, 30))
-        remove_button.clicked.connect(lambda: self.remove_file(row, fname))
+        remove_button.clicked.connect(lambda: self.confirm_remove_file(row, fname))
         return remove_button
+    
+    def confirm_remove_file(self, row, fname):
+        message_box = QMessageBox()
+        message_box.setIcon(QMessageBox.Warning)
+        message_box.setText(f"Are you sure you want to delete {fname}?")
+        message_box.setWindowTitle("Confirm Deletion")
+        message_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        message_box.setDefaultButton(QMessageBox.No)
+        response = message_box.exec()
+        if response == QMessageBox.Yes:
+            self.remove_file(row, fname)
+        else:
+            print("File removal cancelled.")
 
     def remove_file(self, row, fname):
         try:
