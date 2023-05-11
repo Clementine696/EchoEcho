@@ -1146,21 +1146,24 @@ class Ui_mainInterface(object):
         self.SP_title_label.setObjectName("SP_title_label")
 
         self.horizontalLayout_6.addWidget(self.SP_title_label)
-        self.pushButton = QtWidgets.QPushButton(self.SP_title)
-        self.pushButton.setMinimumSize(QtCore.QSize(50, 50))
-        self.pushButton.setMaximumSize(QtCore.QSize(50, 50))
+        self.DasB_pushButton = QtWidgets.QPushButton(self.SP_title)
+        self.DasB_pushButton.setMinimumSize(QtCore.QSize(50, 50))
+        self.DasB_pushButton.setMaximumSize(QtCore.QSize(50, 50))
         # self.pushButton.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.pushButton.setObjectName("pushButton")
+        self.DasB_pushButton.setObjectName("pushButton")
         icon_dash = QtGui.QIcon()
-        icon_dash.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/icons8-combo-chart-96.png"),
+        icon_dash.addPixmap(QtGui.QPixmap("Frontend/Pyqt6/icons/DB_piechart4.png"),
                             QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        # self.DasB_pushButton.setStyleSheet("QFrame{\n"
+        #                            "    padding-right: 20px\n"
+        #                            "}")
 
         # DAshboad button clicked
         # self.pushButton.clicked.connect()
 
-        self.pushButton.setIcon(icon_dash)
-        self.pushButton.setIconSize(QtCore.QSize(40, 40))
-        self.horizontalLayout_6.addWidget(self.pushButton)
+        self.DasB_pushButton.setIcon(icon_dash)
+        self.DasB_pushButton.setIconSize(QtCore.QSize(40, 40))
+        self.horizontalLayout_6.addWidget(self.DasB_pushButton)
         # self.verticalLayout_7.addWidget(self.SP_title_label)
         self.verticalLayout_6.addWidget(self.SP_title)
         self.SP_item = QtWidgets.QFrame(self.SP_body)

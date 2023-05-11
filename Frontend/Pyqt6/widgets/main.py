@@ -457,9 +457,9 @@ class MainWindow(QMainWindow):
         self.ui.Voicechanger_button.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Voicechanger_page))
         
-        self.ui.pushButton.clicked.connect(self.ui.show_data)
-        self.ui.pushButton.clicked.connect(self.ui.update_dashboard_plot)
-        self.ui.pushButton.clicked.connect(
+        self.ui.DasB_pushButton.clicked.connect(self.ui.show_data)
+        self.ui.DasB_pushButton.clicked.connect(self.ui.update_dashboard_plot)
+        self.ui.DasB_pushButton.clicked.connect(
             lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.dashbord_page))
         
         # # page settingmain
