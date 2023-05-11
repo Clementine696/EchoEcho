@@ -27,10 +27,6 @@ from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 import keyboard
 
-#Logo
-# import tkinter as tk
-# from PIL import ImageTk, Image
-
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import queue
@@ -126,7 +122,6 @@ class Ui_mainInterface(object):
                               "    background-color: #071e26;\n"
                               "    border-radius: 10px;\n"
                               "}")
-
         # LEFT SIDE
         self.Left_side = QtWidgets.QFrame(ui_main)
         self.Left_side.setGeometry(QtCore.QRect(-1, 0, 380, 721))
@@ -1797,6 +1792,7 @@ class Ui_mainInterface(object):
     def retranslateUi(self, ui_main):
         _translate = QtCore.QCoreApplication.translate
         ui_main.setWindowTitle(_translate("ui_main", "EchoEcho"))
+        # ui_main.setWindowIcon(_translate("ui_main", 'icons/logo_App.png'))
         self.Microphone_button.setText(_translate("ui_main", "Microphone"))
         # Test
         # self.Alert_button.setText(_translate("ui_main", "Test"))
