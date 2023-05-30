@@ -17,6 +17,10 @@ app = Flask(__name__)
 def Home():
     return render_template('home.html')
 
+@app.route('/appDowload')
+def appDowload():
+    return redirect('https://drive.google.com/file/d/1NrYLSRL5q67KPUdJECEmYjQhf_aGx-Of/view?usp=sharing')
+
 @app.route('/tutorial')
 def tutorial():
     return render_template('tutorial.html')
